@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - ARSA Token</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+      color: white;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Admin Panel Styles */
+    .admin-panel {
+      display: none;
+      min-height: 100vh;
+    }
+    
+    .navbar {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+    
+    .main-content {
+      display: flex;
+      min-height: calc(100vh - 80px);
+    }
+    
+    .sidebar {
+      width: 280px;
+      background: rgba(255, 255, 255, 0.03);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2rem 0;
+    }
+    
+    .menu-item {
+      display: block;
+      padding: 1rem 2rem;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+    
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      border-left-color: #667eea;
+    }
+    
+    .menu-item.active {
+      background: rgba(102, 126, 234, 0.1);
+      color: #a5b4fc;
+      border-left-color: #667eea;
+    }
+    
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .content-section {
+      display: none;
+    }
+    
+    .content-section.active {
+      display: block;
+    }
+    
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(5px);
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #a5b4fc;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    .table th,
+    .table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+    
+    .action-btns {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: rgba(102, 126, 234, 0.1);
+      border: 1px solid rgba(102, 126, 234, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    
+    .restricted-content {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .access-denied {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        padding: 1rem 0;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Admin Panel (Login removed - use login.html instead) -->
+  <div id="adminPanel" class="admin-panel">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="logo">🏢 ARSA Admin Panel</div>
+      <div class="user-info">
+        <span>Hoşgeldiniz, <strong id="usernameDisplay"></strong></span>
+        <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <!-- Sidebar Menu -->
+      <aside class="sidebar">
+        <a href="#" class="menu-item active" onclick="showSection('dashboard')">📊 Dashboard</a>
+        <a href="#" class="menu-item" onclick="showSection('properties')">🏢 Emlak Yönetimi</a>
+        <a href="#" class="menu-item" onclick="showSection('rental')">💸 Kira Dağıtımı</a>
+        <a href="#" class="menu-item" onclick="showSection('content')">📝 İçerik Yönetimi</a>
+        <a href="#" class="menu-item" onclick="showSection('users')">👥 Kullanıcı Yönetimi</a>
+        <a href="#" class="menu-item" onclick="showSection('settings')">⚙️ Ayarlar</a>
+      </aside>
+
+      <!-- Content Area -->
+      <main class="content-area">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+          <h1 class="page-title">📊 Dashboard</h1>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">12</div>
+              <div class="stat-label">Toplam Emlak</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">7,350</div>
+              <div class="stat-label">Satılan NFT</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">€1.2M</div>
+              <div class="stat-label">Toplam TVL</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">182</div>
+              <div class="stat-label">Aktif Yatırımcı</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Son Aktiviteler</div>
+            <div class="table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Tarih</th>
+                    <th>İşlem</th>
+                    <th>Kullanıcı</th>
+                    <th>Durum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>03.08.2025 14:30</td>
+                    <td>Yeni emlak eklendi</td>
+                    <td>admin</td>
+                    <td style="color: #10b981;">Başarılı</td>
+                  </tr>
+                  <tr>
+                    <td>03.08.2025 13:15</td>
+                    <td>Kira dağıtımı</td>
+                    <td>admin</td>
+                    <td style="color: #10b981;">Başarılı</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Properties Section -->
+        <section id="properties" class="content-section">
+          <h1 class="page-title">🏢 Emlak Yönetimi</h1>
+          
+          <div class="card" id="propertyForm">
+            <div class="card-title">Yeni Emlak Ekle</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Emlak Başlığı</label>
+                <input type="text" id="propertyTitle" placeholder="Örn: Berlin Ofis Kompleksi" />
+              </div>
+              <div class="form-group">
+                <label>Konum</label>
+                <input type="text" id="propertyLocation" placeholder="Şehir, Ülke" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Toplam Değer (€)</label>
+                <input type="number" id="propertyValue" placeholder="850000" />
+              </div>
+              <div class="form-group">
+                <label>Yıllık Getiri (%)</label>
+                <input type="number" id="propertyYield" step="0.1" placeholder="6.2" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>NFT Sayısı</label>
+                <input type="number" id="nftCount" placeholder="8500" />
+              </div>
+              <div class="form-group">
+                <label>Görsel URL</label>
+                <input type="url" id="propertyImage" placeholder="https://..." />
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-group">
+                <label>Açıklama</label>
+                <textarea id="propertyDescription" placeholder="Emlak hakkında detaylı açıklama..."></textarea>
+              </div>
+            </div>
+            <button class="btn" onclick="addProperty()">Emlak Ekle</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Emlak Listesi</div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Başlık</th>
+                  <th>Konum</th>
+                  <th>Değer (€)</th>
+                  <th>Getiri (%)</th>
+                  <th>NFT</th>
+                  <th>İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="propertyTable">
+                <tr>
+                  <td>1</td>
+                  <td>Berlin Ofis</td>
+                  <td>Berlin, Almanya</td>
+                  <td>850,000</td>
+                  <td>6.2</td>
+                  <td>8500</td>
+                  <td class="action-btns">
+                    <button class="btn btn-success btn-sm">Düzenle</button>
+                    <button class="btn btn-danger btn-sm">Sil</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Amsterdam Rezidans</td>
+                  <td>Amsterdam, Hollanda</td>
+                  <td>690,000</td>
+                  <td>5.8</td>
+                  <td>6900</td>
+                  <td class="action-btns">
+                    <button class="btn btn-success btn-sm">Düzenle</button>
+                    <button class="btn btn-danger btn-sm">Sil</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Rental Section -->
+        <section id="rental" class="content-section">
+          <h1 class="page-title">💸 Kira Dağıtımı</h1>
+          
+          <div class="card" id="rentalDistribution">
+            <div class="card-title">Kira Dağıtımı Yap</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Emlak Seçin</label>
+                <select id="rentalProperty">
+                  <option value="">Emlak seçin...</option>
+                  <option value="1">Berlin Ofis</option>
+                  <option value="2">Amsterdam Rezidans</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Aylık Kira (€)</label>
+                <input type="number" id="rentalAmount" placeholder="4500" />
+              </div>
+            </div>
+            <button class="btn" onclick="distributeRental()">Kirayı Dağıt</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Son Kira Dağıtımları</div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tarih</th>
+                  <th>Emlak</th>
+                  <th>Tutar (€)</th>
+                  <th>NFT Sahipleri</th>
+                  <th>Durum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>01.08.2025</td>
+                  <td>Berlin Ofis</td>
+                  <td>4,500</td>
+                  <td>85</td>
+                  <td style="color: #10b981;">Tamamlandı</td>
+                </tr>
+                <tr>
+                  <td>01.08.2025</td>
+                  <td>Amsterdam Rezidans</td>
+                  <td>3,200</td>
+                  <td>69</td>
+                  <td style="color: #10b981;">Tamamlandı</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Content Management Section -->
+        <section id="content" class="content-section">
+          <h1 class="page-title">📝 İçerik Yönetimi</h1>
+          
+          <div class="card">
+            <div class="card-title">Anasayfa İçerikleri</div>
+            <div class="form-group">
+              <label>Ana Başlık</label>
+              <input type="text" id="heroTitle" value="NFT ile Gayrimenkul Yatırımı Yapın" />
+            </div>
+            <div class="form-group">
+              <label>Alt Başlık</label>
+              <textarea id="heroSubtitle">Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz. Gerçek mülkler üzerinden NFT satın al, her ay pasif gelir kazan.</textarea>
+            </div>
+            <div class="form-group">
+              <label>Özellik Başlığı</label>
+              <input type="text" id="featureTitle" value="Neden ARSA Token?" />
+            </div>
+            <div class="form-group">
+              <label>Özellik Alt Başlığı</label>
+              <textarea id="featureSubtitle">Gayrimenkul yatırımında geleceği bugünden yaşayın.</textarea>
+            </div>
+            <button class="btn" onclick="saveContent()">İçerikleri Kaydet</button>
+          </div>
+        </section>
+
+        <!-- Users Section -->
+        <section id="users" class="content-section">
+          <h1 class="page-title">👥 Kullanıcı Yönetimi</h1>
+          
+          <div id="userAccessDenied" class="access-denied" style="display: none;">
+            <h3>🚫 Erişim Reddedildi</h3>
+            <p>Bu alana yalnızca "superadmin" yetkisi olan kullanıcılar erişebilir.</p>
+          </div>
+
+          <div id="userManagement">
+            <div class="card">
+              <div class="card-title">Yeni Kullanıcı Ekle</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Kullanıcı Adı</label>
+                  <input type="text" id="newUsername" placeholder="kullanici" />
+                </div>
+                <div class="form-group">
+                  <label>Şifre</label>
+                  <input type="password" id="newPassword" placeholder="••••••••" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Rol</label>
+                <select id="newUserRole">
+                  <option value="editor">Editor</option>
+                  <option value="superadmin">Super Admin</option>
+                </select>
+              </div>
+              <button class="btn" onclick="addUser()">Kullanıcı Ekle</button>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Kullanıcı Listesi</div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Kullanıcı Adı</th>
+                    <th>Rol</th>
+                    <th>Son Giriş</th>
+                    <th>İşlemler</th>
+                  </tr>
+                </thead>
+                <tbody id="userTable">
+                  <tr>
+                    <td>admin</td>
+                    <td style="color: #667eea;">superadmin</td>
+                    <td>03.08.2025 15:30</td>
+                    <td class="action-btns">
+                      <button class="btn btn-success btn-sm">Düzenle</button>
+                      <button class="btn btn-danger btn-sm">Sil</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>editor</td>
+                    <td style="color: #10b981;">editor</td>
+                    <td>02.08.2025 10:15</td>
+                    <td class="action-btns">
+                      <button class="btn btn-success btn-sm">Düzenle</button>
+                      <button class="btn btn-danger btn-sm">Sil</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="content-section">
+          <h1 class="page-title">⚙️ Ayarlar</h1>
+          
+          <div class="card">
+            <div class="card-title">Genel Ayarlar</div>
+            <div class="form-group">
+              <label>Site Başlığı</label>
+              <input type="text" value="ARSA Token - Gayrimenkul NFT Platformu" />
+            </div>
+            <div class="form-group">
+              <label>Platform Komisyonu (%)</label>
+              <input type="number" step="0.1" value="2.5" />
+            </div>
+            <div class="form-group">
+              <label>Minimum NFT Satış Fiyatı (€)</label>
+              <input type="number" value="100" />
+            </div>
+            <button class="btn">Ayarları Kaydet</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Güvenlik Ayarları</div>
+            <div class="form-group">
+              <label>Mevcut Şifre</label>
+              <input type="password" placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+              <label>Yeni Şifre</label>
+              <input type="password" placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+              <label>Yeni Şifre (Tekrar)</label>
+              <input type="password" placeholder="••••••••" />
+            </div>
+            <button class="btn">Şifreyi Güncelle</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // User database
+    let users = [
+      { username: 'admin', password: 'arsa123', role: 'superadmin' },
+      { username: 'editor', password: 'arsaedit', role: 'editor' }
+    ];
+
+    // Property counter
+    let propertyCounter = 2;
+
+    // Check if user is logged in on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      const userRole = sessionStorage.getItem('userRole');
+      const username = sessionStorage.getItem('username');
+
+      if (isLoggedIn === 'true') {
+        showAdminPanel();
+        document.getElementById('usernameDisplay').textContent = username || 'Kullanıcı';
+        
+        // Check user permissions
+        if (userRole !== 'superadmin') {
+          restrictUserAccess();
+        }
+      } else {
+        // Redirect to login page if not logged in
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Logout function
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    }
+
+    // Show admin panel (login screen removed)
+    function showAdminPanel() {
+      document.getElementById('adminPanel').style.display = 'block';
+    }
+
+    // Section navigation
+    function showSection(sectionName) {
+      // Hide all sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Remove active class from all menu items
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Show selected section
+      document.getElementById(sectionName).classList.add('active');
+      
+      // Add active class to clicked menu item
+      event.target.classList.add('active');
+    }
+
+    // Restrict access for non-superadmin users
+    function restrictUserAccess() {
+      // Hide user management section for non-superadmin
+      const userManagement = document.getElementById('userManagement');
+      const userAccessDenied = document.getElementById('userAccessDenied');
+      
+      if (userManagement && userAccessDenied) {
+        userManagement.style.display = 'none';
+        userAccessDenied.style.display = 'block';
+      }
+      
+      // Restrict property form for editors
+      const propertyForm = document.getElementById('propertyForm');
+      const rentalDistribution = document.getElementById('rentalDistribution');
+      
+      if (sessionStorage.getItem('userRole') === 'editor') {
+        if (propertyForm) propertyForm.classList.add('restricted-content');
+        if (rentalDistribution) rentalDistribution.classList.add('restricted-content');
+      }
+    }
+
+    // Property management functions
+    function addProperty() {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+
+      const title = document.getElementById('propertyTitle').value.trim();
+      const location = document.getElementById('propertyLocation').value.trim();
+      const value = document.getElementById('propertyValue').value.trim();
+      const yield_rate = document.getElementById('propertyYield').value.trim();
+      const nftCount = document.getElementById('nftCount').value.trim();
+      const image = document.getElementById('propertyImage').value.trim();
+      const description = document.getElementById('propertyDescription').value.trim();
+
+      if (!title || !location || !value || !yield_rate || !nftCount) {
+        alert('Lütfen tüm zorunlu alanları doldurun!');
+        return;
+      }
+
+      propertyCounter++;
+      const table = document.getElementById('propertyTable');
+      const newRow = table.insertRow();
+      
+      newRow.innerHTML = `
+        <td>${propertyCounter}</td>
+        <td>${title}</td>
+        <td>${location}</td>
+        <td>${parseInt(value).toLocaleString()}</td>
+        <td>${yield_rate}</td>
+        <td>${parseInt(nftCount).toLocaleString()}</td>
+        <td class="action-btns">
+          <button class="btn btn-success btn-sm" onclick="editProperty(this)">Düzenle</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteProperty(this)">Sil</button>
+        </td>
+      `;
+
+      // Clear form
+      clearPropertyForm();
+      alert('Emlak başarıyla eklendi!');
+    }
+
+    function clearPropertyForm() {
+      document.getElementById('propertyTitle').value = '';
+      document.getElementById('propertyLocation').value = '';
+      document.getElementById('propertyValue').value = '';
+      document.getElementById('propertyYield').value = '';
+      document.getElementById('nftCount').value = '';
+      document.getElementById('propertyImage').value = '';
+      document.getElementById('propertyDescription').value = '';
+    }
+
+    function editProperty(button) {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+      
+      const row = button.closest('tr');
+      const cells = row.querySelectorAll('td');
+      
+      // Fill form with current data
+      document.getElementById('propertyTitle').value = cells[1].textContent;
+      document.getElementById('propertyLocation').value = cells[2].textContent;
+      document.getElementById('propertyValue').value = cells[3].textContent.replace(/,/g, '');
+      document.getElementById('propertyYield').value = cells[4].textContent;
+      document.getElementById('nftCount').value = cells[5].textContent.replace(/,/g, '');
+      
+      // Remove the row for editing
+      row.remove();
+      
+      alert('Emlak bilgileri forma yüklendi. Düzenleyip tekrar ekleyin.');
+    }
+
+    function deleteProperty(button) {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+      
+      if (confirm('Bu emlakı silmek istediğinizden emin misiniz?')) {
+        button.closest('tr').remove();
+        alert('Emlak başarıyla silindi!');
+      }
+    }
+
+    // Rental distribution function
+    function distributeRental() {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+
+      const property = document.getElementById('rentalProperty').value;
+      const amount = document.getElementById('rentalAmount').value;
+
+      if (!property || !amount) {
+        alert('Lütfen emlak ve kira miktarını seçin!');
+        return;
+      }
+
+      // Simulate rental distribution
+      document.getElementById('rentalProperty').value = '';
+      document.getElementById('rentalAmount').value = '';
+      
+      alert(`€${parseInt(amount).toLocaleString()} kira başarıyla dağıtıldı!`);
+    }
+
+    // Content management function
+    function saveContent() {
+      const heroTitle = document.getElementById('heroTitle').value;
+      const heroSubtitle = document.getElementById('heroSubtitle').value;
+      const featureTitle = document.getElementById('featureTitle').value;
+      const featureSubtitle = document.getElementById('featureSubtitle').value;
+
+      // Save to localStorage
+      localStorage.setItem('heroTitle', heroTitle);
+      localStorage.setItem('heroSubtitle', heroSubtitle);
+      localStorage.setItem('featureTitle', featureTitle);
+      localStorage.setItem('featureSubtitle', featureSubtitle);
+
+      alert('İçerikler başarıyla kaydedildi!');
+    }
+
+    // User management functions
+    function addUser() {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+
+      const username = document.getElementById('newUsername').value.trim();
+      const password = document.getElementById('newPassword').value.trim();
+      const role = document.getElementById('newUserRole').value;
+
+      if (!username || !password) {
+        alert('Lütfen tüm alanları doldurun!');
+        return;
+      }
+
+      // Check if user already exists
+      if (users.find(u => u.username === username)) {
+        alert('Bu kullanıcı adı zaten mevcut!');
+        return;
+      }
+
+      // Add new user
+      users.push({ username, password, role });
+
+      // Add to table
+      const table = document.getElementById('userTable');
+      const newRow = table.insertRow();
+      const now = new Date().toLocaleString('tr-TR');
+      
+      newRow.innerHTML = `
+        <td>${username}</td>
+        <td style="color: ${role === 'superadmin' ? '#667eea' : '#10b981'};">${role}</td>
+        <td>Henüz giriş yapmadı</td>
+        <td class="action-btns">
+          <button class="btn btn-success btn-sm" onclick="editUser(this)">Düzenle</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteUser(this)">Sil</button>
+        </td>
+      `;
+
+      // Clear form
+      document.getElementById('newUsername').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('newUserRole').value = 'editor';
+      
+      alert('Kullanıcı başarıyla eklendi!');
+    }
+
+    function editUser(button) {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+      
+      alert('Kullanıcı düzenleme özelliği yakında eklenecek!');
+    }
+
+    function deleteUser(button) {
+      const userRole = sessionStorage.getItem('userRole');
+      if (userRole !== 'superadmin') {
+        alert('Bu işlem için yetkiniz bulunmuyor!');
+        return;
+      }
+      
+      const row = button.closest('tr');
+      const username = row.cells[0].textContent;
+      
+      if (username === sessionStorage.getItem('username')) {
+        alert('Kendi hesabınızı silemezsiniz!');
+        return;
+      }
+      
+      if (confirm(`${username} kullanıcısını silmek istediğinizden emin misiniz?`)) {
+        // Remove from users array
+        users = users.filter(u => u.username !== username);
+        
+        // Remove from table
+        row.remove();
+        
+        alert('Kullanıcı başarıyla silindi!');
+      }
+    }
+
+    // Clear all forms
+    function clearForms() {
+      document.querySelectorAll('input').forEach(input => {
+        if (input.type !== 'button') {
+          input.value = '';
+        }
+      });
+      document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.value = '';
+      });
+    }
+  </script>
+</body>
+</html>
