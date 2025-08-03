@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Paneline Hoş Geldiniz</h1>
+    <p>Bu sayfa yalnızca admin kullanıcılar tarafından erişilebilir.</p>
+    <button onclick="logout()">Çıkış Yap</button>
+  </div>
+  <script>
+    // LocalStorage'dan kullanıcı verisini al
+    const userRole = localStorage.getItem("userrole");
+    const userEmail = localStorage.getItem("useremail");
+    const isEmergency = window.location.search.includes("emergency=admin");
+
+    if (userRole !== "admin" && !isEmergency) {{
+      document.body.innerHTML = `
+        <div class='access-denied'>
+          <h2>⛔ Erişim Reddedildi!</h2>
+          <p>Bu sayfaya yalnızca admin yetkisi olanlar erişebilir.</p>
+          <a href='index.html'>← Ana Sayfa</a>
+        </div>`;
+    }}
+
+    function logout() {{
+      localStorage.clear();
+      window.location.href = "login.html";
+    }}
+  </script>
+</body>
+</html>
