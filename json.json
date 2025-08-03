@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "email": "admin@arsa.token",
+    "password": "$2b$12$rQZ9pVzF5vUy.Wz0pMF3K.bOy.6T3UE2xvH7oJgM4bE2wRfH9Hzm2",
+    "role": "admin",
+    "createdAt": "2025-08-03T12:00:00.000Z",
+    "lastLogin": null
+  }
+]
