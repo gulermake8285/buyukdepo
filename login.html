@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARSA Token - Giriş</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">🏢</div>
+    <h1 class="title">ARSA Token</h1>
+    <p class="subtitle">Güvenli giriş yapın</p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">E-posta Adresi</label>
+        <input type="email" id="email" placeholder="E-posta adresinizi girin" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input type="password" id="password" placeholder="Şifrenizi girin" required>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">
+        <span id="btnText">Giriş Yap</span>
+      </button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <div class="back-link">
+      <a href="index.html">← Ana sayfaya dön</a>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
