@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş/Kayıt - ARSA Token</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+      color: white;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Animated Background */
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: hidden;
+    }
+
+    .background::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      animation: float 20s linear infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-50px, -50px) rotate(360deg); }
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: floatUp 15s linear infinite;
+    }
+
+    .shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      width: 120px;
+      height: 120px;
+      left: 20%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      width: 60px;
+      height: 60px;
+      left: 70%;
+      animation-delay: 4s;
+    }
+
+    .shape:nth-child(4) {
+      width: 100px;
+      height: 100px;
+      left: 80%;
+      animation-delay: 6s;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Login Container */
+    .login-container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .login-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3rem;
+      border-radius: 25px;
+      width: 450px;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+      animation: slideInUp 0.8s ease;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .login-logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .login-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+    }
+
+    /* Tab System */
+    .tab-container {
+      margin-bottom: 2rem;
+    }
+
+    .tab-buttons {
+      display: flex;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 0.3rem;
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 1rem;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 1.2rem 1rem;
+      border: none;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 15px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    .alert.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .alert.success {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10b981;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .back-btn {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-btn:hover {
+      color: white;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Security indicators */
+    .security-info {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .security-info p {
+      color: #10b981;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+      margin-top: 0.5rem;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .strength-weak { background: #ef4444; width: 25%; }
+    .strength-fair { background: #f59e0b; width: 50%; }
+    .strength-good { background: #10b981; width: 75%; }
+    .strength-strong { background: #059669; width: 100%; }
+
+    /* Responsive Design */
+    @media (max-width: 500px) {
+      .login-box {
+        width: 100%;
+        max-width: 380px;
+        padding: 2rem;
+        margin: 1rem;
+      }
+
+      .login-title {
+        font-size: 1.8rem;
+      }
+
+      .login-logo {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background">
+    <div class="floating-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+  </div>
+
+  <!-- Login Container -->
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="login-logo">🏢</div>
+        <h1 class="login-title">ARSA Token</h1>
+        <p class="login-subtitle">Gayrimenkul NFT Platformu</p>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="tab-container">
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="switchTab('login')">Giriş Yap</button>
+          <button class="tab-btn" onclick="switchTab('register')">Kayıt Ol</button>
+        </div>
+
+        <!-- Login Tab -->
+        <div id="loginTab" class="tab-content active">
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">E-posta Adresi</label>
+              <input type="email" id="loginEmail" placeholder="e-posta@example.com" required autocomplete="email">
+              <div class="input-icon">📧</div>
+            </div>
+            
+            <div class="form-group">
+              <label for="loginPassword">Şifre</label>
+              <input type="password" id="loginPassword" placeholder="Şifrenizi girin" required autocomplete="current-password">
+              <div class="input-icon">🔒</div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="loginButton">
+              <span class="loading-spinner" id="loginSpinner"></span>
+              <span id="loginButtonText">Giriş Yap</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Register Tab -->
+        <div id="registerTab" class="tab-content">
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="registerEmail">E-posta Adresi</label>
+              <input type="email" id="registerEmail" placeholder="e-posta@example.com" required autocomplete="email">
+              <div class="input-icon">📧</div>
+            </div>
+            
+            <div class="form-group">
+              <label for="registerPassword">Şifre</label>
+              <input type="password" id="registerPassword" placeholder="En az 6 karakter" required autocomplete="new-password">
+              <div class="input-icon">🔒</div>
+              <div class="password-strength">
+                <div class="password-strength-bar" id="passwordStrengthBar"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Şifre Tekrar</label>
+              <input type="password" id="confirmPassword" placeholder="Şifrenizi tekrar girin" required autocomplete="new-password">
+              <div class="input-icon">🔒</div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="registerButton">
+              <span class="loading-spinner" id="registerSpinner"></span>
+              <span id="registerButtonText">Kayıt Ol</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="alert" id="alertBox"></div>
+
+      <div class="security-info">
+        <p>🛡️ Güvenli bağlantı - Verileriniz şifrelenir</p>
+      </div>
+
+      <div class="back-link">
+        <a href="index.html" class="back-btn">
+          ← Ana siteye geri dön
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Backend API URL
+    const API_BASE_URL = 'http://localhost:3000';
+
+    // Tab switching
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(tabName + 'Tab').classList.add('active');
+
+      // Clear alerts
+      hideAlert();
+    }
+
+    // Password strength checker
+    function checkPasswordStrength(password) {
+      const strengthBar = document.getElementById('passwordStrengthBar');
+      let strength = 0;
+      
+      if (password.length >= 8) strength += 25;
+      if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
+      if (password.match(/\d/)) strength += 25;
+      if (password.match(/[!@#$%^&*(),.?":{}|<>]/)) strength += 25;
+
+      strengthBar.className = 'password-strength-bar';
+      
+      if (strength <= 25) {
+        strengthBar.classList.add('strength-weak');
+      } else if (strength <= 50) {
+        strengthBar.classList.add('strength-fair');
+      } else if (strength <= 75) {
+        strengthBar.classList.add('strength-good');
+      } else {
+        strengthBar.classList.add('strength-strong');
+      }
+    }
+
+    // Show/hide alert
+    function showAlert(message, type = 'error') {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.textContent = message;
+      alertBox.className = `alert ${type}`;
+      alertBox.style.display = 'block';
+    }
+
+    function hideAlert() {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+    }
+
+    // API request helper
+    async function makeApiRequest(endpoint, data) {
+      try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        return { success: result.success, data: result, status: response.status };
+      } catch (error) {
+        console.error('API Request Error:', error);
+        return { 
+          success: false, 
+          data: { message: 'Sunucu ile bağlantı kurulamadı. Lütfen daha sonra tekrar deneyin.' },
+          status: 0
+        };
+      }
+    }
+
+    // Login form handler
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const loginButton = document.getElementById('loginButton');
+      const loginSpinner = document.getElementById('loginSpinner');
+      const loginButtonText = document.getElementById('loginButtonText');
+
+      // Validation
+      if (!email || !password) {
+        showAlert('Lütfen tüm alanları doldurun!');
+        return;
+      }
+
+      // Show loading
+      loginButton.disabled = true;
+      loginSpinner.style.display = 'inline-block';
+      loginButtonText.textContent = 'Giriş yapılıyor...';
+      hideAlert();
+
+      try {
+        const result = await makeApiRequest('/login', { email, password });
+
+        if (result.success) {
+          // Başarılı giriş
+          showAlert('Giriş başarılı! Yönlendiriliyor...', 'success');
+          
+          // Local storage'a kullanıcı bilgilerini kaydet
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userEmail', result.data.user.email);
+          localStorage.setItem('userId', result.data.user.id);
+          localStorage.setItem('userRole', result.data.user.role);
+          
+          // Yönlendirme
+          setTimeout(() => {
+            if (result.data.user.role === 'admin') {
+              window.location.href = 'admin.html';
+            } else {
+              window.location.href = 'dashboard.html';
+            }
+          }, 1500);
+          
+        } else {
+          showAlert(result.data.message || 'Giriş başarısız!');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showAlert('Bir hata oluştu. Lütfen tekrar deneyin.');
+      } finally {
+        // Reset button
+        loginButton.disabled = false;
+        loginSpinner.style.display = 'none';
+        loginButtonText.textContent = 'Giriş Yap';
+      }
+    });
+
+    // Register form handler
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const registerButton = document.getElementById('registerButton');
+      const registerSpinner = document.getElementById('registerSpinner');
+      const registerButtonText = document.getElementById('registerButtonText');
+
+      // Validation
+      if (!email || !password || !confirmPassword) {
+        showAlert('Lütfen tüm alanları doldurun!');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showAlert('Şifreler eşleşmiyor!');
+        return;
+      }
+
+      if (password.length < 6) {
+        showAlert('Şifre en az 6 karakter olmalıdır!');
+        return;
+      }
+
+      // Show loading
+      registerButton.disabled = true;
+      registerSpinner.style.display = 'inline-block';
+      registerButtonText.textContent = 'Kayıt yapılıyor...';
+      hideAlert();
+
+      try {
+        const result = await makeApiRequest('/register', { email, password, confirmPassword });
+
+        if (result.success) {
+          // Başarılı kayıt
+          showAlert('Kayıt başarılı! Giriş yapabilirsiniz.', 'success');
+          
+          // Form temizle ve giriş sekmesine geç
+          document.getElementById('registerForm').reset();
+          setTimeout(() => {
+            switchTabProgrammatically('login');
+          }, 2000);
+          
+        } else {
+          showAlert(result.data.message || 'Kayıt başarısız!');
+        }
+      } catch (error) {
+        console.error('Register error:', error);
+        showAlert('Bir hata oluştu. Lütfen tekrar deneyin.');
+      } finally {
+        // Reset button
+        registerButton.disabled = false;
+        registerSpinner.style.display = 'none';
+        registerButtonText.textContent = 'Kayıt Ol';
+      }
+    });
+
+    // Programmatic tab switching
+    function switchTabProgrammatically(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      if (tabName === 'login') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+      }
+
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(tabName + 'Tab').classList.add('active');
+
+      // Clear alerts
+      hideAlert();
+    }
+
+    // Password strength checking
+    document.getElementById('registerPassword').addEventListener('input', function(e) {
+      checkPasswordStrength(e.target.value);
+    });
+
+    // Check if already logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      const userRole = localStorage.getItem('userRole');
+      
+      if (isLoggedIn === 'true') {
+        // Already logged in, redirect based on role
+        if (userRole === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      }
+    });
+
+    // Enter key support
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const activeTab = document.querySelector('.tab-content.active');
+        if (activeTab.id === 'loginTab') {
+          document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        } else {
+          document.getElementById('registerForm').dispatchEvent(new Event('submit'));
+        }
+      }
+    });
+
+    // Focus first input on load
+    setTimeout(() => {
+      document.getElementById('loginEmail').focus();
+    }, 500);
+  </script>
+</body>
+</html>
