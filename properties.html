@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - ARSA Token</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Properties Page Specific Styles - FIXED WITH PROPER PADDING */
+        
+        /* Container için düzeltilmiş padding */
+        .properties-container {
+            padding-left: 2rem;
+            padding-right: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .properties-header {
+            padding: 120px 0 60px;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .properties-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .properties-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+        }
+
+        .properties-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .properties-stat {
+            text-align: center;
+        }
+
+        .properties-stat .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .properties-stat .label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Filter and Search Section */
+        .filter-section {
+            padding: 40px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 150px;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-group {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1rem 1rem 1rem 3rem;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .filter-select option {
+            background: #1a1a3e;
+            color: white;
+        }
+
+        .clear-filters {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .clear-filters:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Results and View Options */
+        .results-header {
+            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-info {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .results-count {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .view-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sort-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            color: white;
+            outline: none;
+        }
+
+        .sort-select option {
+            background: #1a1a3e;
+            color: white;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.3rem;
+        }
+
+        .view-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 7px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Properties Grid - DÜZELTME YAPILDI */
+        .properties-main {
+            padding: 2rem 0 4rem;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            opacity: 1;
+            visibility: visible;
+            transition: all 0.3s ease;
+        }
+
+        .properties-grid.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Enhanced Property Card */
+        .property-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .property-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%);
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            z-index: 2;
+        }
+
+        .property-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 2;
+        }
+
+        .status-available {
+            background: rgba(16, 185, 129, 0.9);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-sold {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .property-overlay {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            z-index: 2;
+        }
+
+        .property-overlay h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .property-overlay p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .property-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .stat-name {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.2rem;
+        }
+
+        .investment-summary {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: #667eea;
+            border-top: 1px solid rgba(102, 126, 234, 0.3);
+            padding-top: 0.5rem;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn-view {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.8rem;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .btn-invest {
+            flex: 2;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-invest:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-invest:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Property Images - Dynamic Backgrounds */
+        .img-office-berlin { background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'); }
+        .img-apartment-amsterdam { background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'); }
+        .img-shopping-vienna { background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'); }
+
+        /* Error States */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .pagination-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .pagination-btn:hover:not(.disabled) {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .properties-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            
+            .filter-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .properties-stats {
+                gap: 1.5rem;
+            }
+
+            .properties-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .properties-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .properties-title {
+                font-size: 2rem;
+            }
+
+            .properties-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .view-controls {
+                justify-content: space-between;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .property-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">🏗️ ARSA Token</div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="properties.html" style="color: #667eea;">Emlaklar</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html#about">Hakkımızda</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="language-selector">
+                    <select id="languageSelect" class="language-dropdown">
+                        <option value="tr">🇹🇷 TR</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="ar">🇸🇦 AR</option>
+                    </select>
+                </div>
+                <button class="connect-wallet">Cüzdan Bağla</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Properties Header -->
+    <section class="properties-header">
+        <div class="properties-container">
+            <h1 class="properties-title fade-in">Yatırım Emlakları</h1>
+            <p class="properties-subtitle fade-in">Avrupa'da premium gayrimenkul fırsatlarını keşfedin</p>
+            
+            <div class="properties-stats fade-in">
+                <div class="properties-stat">
+                    <span class="number">24</span>
+                    <span class="label">Toplam Emlak</span>
+                </div>
+                <div class="properties-stat">
+                    <span class="number">18</span>
+                    <span class="label">Şimdi Mevcut</span>
+                </div>
+                <div class="properties-stat">
+                    <span class="number">€45.2M</span>
+                    <span class="label">Toplam Portföy Değeri</span>
+                </div>
+                <div class="properties-stat">
+                    <span class="number">7.8%</span>
+                    <span class="label">Ortalama Getiri</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="properties-container">
+            <div class="filter-container">
+                <div class="search-group">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Şehir, emlak adı veya türe göre arayın...">
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Konum</label>
+                    <select class="filter-select" id="locationFilter">
+                        <option value="">Tüm Konumlar</option>
+                        <option value="germany">🇩🇪 Almanya</option>
+                        <option value="netherlands">🇳🇱 Hollanda</option>
+                        <option value="austria">🇦🇹 Avusturya</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Emlak Türü</label>
+                    <select class="filter-select" id="typeFilter">
+                        <option value="">Tüm Türler</option>
+                        <option value="office">Ofis</option>
+                        <option value="residential">Konut</option>
+                        <option value="retail">Ticari</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Durum</label>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Tüm Durumlar</option>
+                        <option value="available">Mevcut</option>
+                        <option value="selling">Hızla Satıyor</option>
+                        <option value="sold">Tükendi</option>
+                    </select>
+                </div>
+                
+                <button class="clear-filters" id="clearFilters">Temizle</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results and View Options -->
+    <section class="results-header">
+        <div class="properties-container">
+            <div class="results-header">
+                <div class="results-info">
+                    Gösteriliyor <span class="results-count" id="resultsCount">3</span> emlak
+                </div>
+                
+                <div class="view-controls">
+                    <select class="sort-select" id="sortSelect">
+                        <option value="newest">En Yeni Önce</option>
+                        <option value="price-low">Fiyat: Düşükten Yükseğe</option>
+                        <option value="price-high">Fiyat: Yüksekten Düşüğe</option>
+                        <option value="yield-high">En Yüksek Getiri</option>
+                    </select>
+                    
+                    <div class="view-toggle">
+                        <button class="view-btn active" id="gridView" title="Izgara Görünümü">⊞</button>
+                        <button class="view-btn" id="listView" title="Liste Görünümü">☰</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Main Content - ÖNEMLİ: Container eklendi -->
+    <section class="properties-main">
+        <div class="properties-container">
+            
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <div class="no-results-icon">🏢</div>
+                <h3>Emlak bulunamadı</h3>
+                <p>Arama kriterlerinizi değiştirmeyi deneyin</p>
+            </div>
+
+            <!-- Grid View - DÜZELTME YAPILDI -->
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Property 1 - Berlin Office -->
+                <div class="property-card fade-in">
+                    <div class="property-image img-office-berlin">
+                        <div class="property-badge">Ofis</div>
+                        <div class="property-status">
+                            <span class="status-available">Mevcut</span>
+                        </div>
+                        <div class="property-overlay">
+                            <h3>Şehir Merkezi Ofis Kompleksi</h3>
+                            <p>📍 Berlin, Almanya</p>
+                        </div>
+                    </div>
+                    <div class="property-info">
+                        <div class="property-stats">
+                            <div class="stat">
+                                <span class="stat-value">€850K</span>
+                                <span class="stat-name">Toplam Değer</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">7.2%</span>
+                                <span class="stat-name">Yıllık Getiri</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">2,295</span>
+                                <span class="stat-name">Mevcut</span>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-summary">
+                            <div class="summary-row">
+                                <span>NFT Fiyatı:</span>
+                                <span>€100</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Aylık Gelir/NFT:</span>
+                                <span>€0.60</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Min. Yatırım:</span>
+                                <span>€100</span>
+                            </div>
+                        </div>
+                        
+                        <div class="property-actions">
+                            <a href="property-detail.html" class="btn-view">Detayları Gör</a>
+                            <button class="btn-invest">Şimdi Yatırım Yap</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 2 - Amsterdam Apartments -->
+                <div class="property-card fade-in">
+                    <div class="property-image img-apartment-amsterdam">
+                        <div class="property-badge">Konut</div>
+                        <div class="property-status">
+                            <span class="status-available">Hızla Satıyor</span>
+                        </div>
+                        <div class="property-overlay">
+                            <h3>Lüks Apartman Kompleksi</h3>
+                            <p>📍 Amsterdam, Hollanda</p>
+                        </div>
+                    </div>
+                    <div class="property-info">
+                        <div class="property-stats">
+                            <div class="stat">
+                                <span class="stat-value">€1.2M</span>
+                                <span class="stat-name">Toplam Değer</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">6.8%</span>
+                                <span class="stat-name">Yıllık Getiri</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">3,547</span>
+                                <span class="stat-name">Mevcut</span>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-summary">
+                            <div class="summary-row">
+                                <span>NFT Fiyatı:</span>
+                                <span>€100</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Aylık Gelir/NFT:</span>
+                                <span>€0.57</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Min. Yatırım:</span>
+                                <span>€100</span>
+                            </div>
+                        </div>
+                        
+                        <div class="property-actions">
+                            <a href="property-detail.html" class="btn-view">Detayları Gör</a>
+                            <button class="btn-invest">Şimdi Yatırım Yap</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 3 - Vienna Shopping Center -->
+                <div class="property-card fade-in">
+                    <div class="property-image img-shopping-vienna">
+                        <div class="property-badge">Ticari</div>
+                        <div class="property-status">
+                            <span class="status-sold">Tükendi</span>
+                        </div>
+                        <div class="property-overlay">
+                            <h3>Ticari Alışveriş Merkezi</h3>
+                            <p>📍 Viyana, Avusturya</p>
+                        </div>
+                    </div>
+                    <div class="property-info">
+                        <div class="property-stats">
+                            <div class="stat">
+                                <span class="stat-value">€2.1M</span>
+                                <span class="stat-name">Toplam Değer</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">8.5%</span>
+                                <span class="stat-name">Yıllık Getiri</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" style="color: #ef4444;">0</span>
+                                <span class="stat-name">Mevcut</span>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-summary">
+                            <div class="summary-row">
+                                <span>NFT Fiyatı:</span>
+                                <span>€100</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Aylık Gelir/NFT:</span>
+                                <span>€0.71</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Durum:</span>
+                                <span style="color: #ef4444;">Tükendi</span>
+                            </div>
+                        </div>
+                        
+                        <div class="property-actions">
+                            <a href="property-detail.html" class="btn-view">Detayları Gör</a>
+                            <button class="btn-invest" disabled>Tükendi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn disabled" id="prevPage">‹ Önceki</button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn" id="nextPage">Sonraki ›</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Properties page functionality with proper padding implementation
+        
+        // Initialize properties
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏢 Properties page loaded with proper padding and dynamic investment messages');
+            
+            // Check if admin content updates exist
+            loadAdminContent();
+            
+            // Setup filtering
+            setupFiltering();
+            
+            // Setup view toggle
+            setupViewToggle();
+            
+            // Setup search
+            setupSearch();
+            
+            // Initialize fade-in animations
+            initializeFadeAnimations();
+            
+            // Welcome message
+            setTimeout(() => {
+                showNotification('🎉 Emlak sayfasına hoş geldiniz! Yatırım yapmak için "Şimdi Yatırım Yap" butonuna tıklayın.', 'success');
+            }, 1000);
+            
+            // Debugging info
+            console.log('✅ Özellikler:');
+            console.log('   📱 Responsive padding (2rem → 1.5rem → 1rem)');
+            console.log('   🔍 Dinamik arama ve filtreleme');
+            console.log('   💰 Dinamik yatırım mesajları');
+            console.log('   📊 Property verilerini localStorage\'a kaydetme');
+            console.log('   🎨 Gelişmiş notification sistemi');
+            console.log('   ⚡ Smooth animasyonlar');
+        });
+
+        // Load admin-saved content
+        function loadAdminContent() {
+            const logoText = localStorage.getItem('logoText');
+            const menuHome = localStorage.getItem('menuHome');
+            const menuProperties = localStorage.getItem('menuProperties');
+            
+            // Update logo if saved
+            if (logoText && document.querySelector('.logo')) {
+                document.querySelector('.logo').innerHTML = '🏗️ ' + logoText;
+            }
+            
+            // Update menu items if saved
+            if (menuHome) {
+                const homeLink = document.querySelector('a[href="index.html"]');
+                if (homeLink) homeLink.textContent = menuHome;
+            }
+            
+            if (menuProperties) {
+                const propertiesLink = document.querySelector('a[href="properties.html"]');
+                if (propertiesLink) propertiesLink.textContent = menuProperties;
+            }
+        }
+
+        // Setup filtering functionality
+        function setupFiltering() {
+            const searchInput = document.getElementById('searchInput');
+            const locationFilter = document.getElementById('locationFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const clearButton = document.getElementById('clearFilters');
+
+            // Search functionality
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    filterProperties();
+                });
+            }
+
+            // Filter dropdowns
+            [locationFilter, typeFilter, statusFilter].forEach(filter => {
+                if (filter) {
+                    filter.addEventListener('change', filterProperties);
+                }
+            });
+
+            // Clear filters
+            if (clearButton) {
+                clearButton.addEventListener('click', function() {
+                    if (searchInput) searchInput.value = '';
+                    if (locationFilter) locationFilter.value = '';
+                    if (typeFilter) typeFilter.value = '';
+                    if (statusFilter) statusFilter.value = '';
+                    filterProperties();
+                });
+            }
+        }
+
+        // Filter properties based on search and filters
+        function filterProperties() {
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const locationValue = document.getElementById('locationFilter')?.value || '';
+            const typeValue = document.getElementById('typeFilter')?.value || '';
+            const statusValue = document.getElementById('statusFilter')?.value || '';
+
+            const propertyCards = document.querySelectorAll('.property-card');
+            let visibleCount = 0;
+
+            propertyCards.forEach(card => {
+                const title = card.querySelector('.property-overlay h3')?.textContent.toLowerCase() || '';
+                const location = card.querySelector('.property-overlay p')?.textContent.toLowerCase() || '';
+                const badge = card.querySelector('.property-badge')?.textContent.toLowerCase() || '';
+                const status = card.querySelector('.property-status span')?.textContent.toLowerCase() || '';
+
+                const matchesSearch = title.includes(searchTerm) || location.includes(searchTerm) || badge.includes(searchTerm);
+                const matchesLocation = !locationValue || location.includes(getLocationText(locationValue));
+                const matchesType = !typeValue || badge.includes(getTypeText(typeValue));
+                const matchesStatus = !statusValue || status.includes(getStatusText(statusValue));
+
+                const shouldShow = matchesSearch && matchesLocation && matchesType && matchesStatus;
+                
+                if (shouldShow) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update results count
+            const resultsCount = document.getElementById('resultsCount');
+            if (resultsCount) {
+                resultsCount.textContent = visibleCount;
+            }
+
+            // Show/hide no results message
+            const noResults = document.getElementById('noResults');
+            const propertiesGrid = document.getElementById('propertiesGrid');
+            
+            if (visibleCount === 0) {
+                if (noResults) noResults.style.display = 'block';
+                if (propertiesGrid) propertiesGrid.style.display = 'none';
+            } else {
+                if (noResults) noResults.style.display = 'none';
+                if (propertiesGrid) propertiesGrid.style.display = 'grid';
+            }
+        }
+
+        // Helper functions for filtering
+        function getLocationText(value) {
+            const locationMap = {
+                'germany': 'almanya',
+                'netherlands': 'hollanda',
+                'austria': 'avusturya'
+            };
+            return locationMap[value] || '';
+        }
+
+        function getTypeText(value) {
+            const typeMap = {
+                'office': 'ofis',
+                'residential': 'konut',
+                'retail': 'ticari'
+            };
+            return typeMap[value] || '';
+        }
+
+        function getStatusText(value) {
+            const statusMap = {
+                'available': 'mevcut',
+                'selling': 'hızla',
+                'sold': 'tükendi'
+            };
+            return statusMap[value] || '';
+        }
+
+        // Setup view toggle (grid/list)
+        function setupViewToggle() {
+            const gridViewBtn = document.getElementById('gridView');
+            const listViewBtn = document.getElementById('listView');
+            
+            if (gridViewBtn) {
+                gridViewBtn.addEventListener('click', function() {
+                    gridViewBtn.classList.add('active');
+                    listViewBtn?.classList.remove('active');
+                    // Grid view is default, no additional changes needed
+                    showNotification('Izgara görünümü aktif');
+                });
+            }
+            
+            if (listViewBtn) {
+                listViewBtn.addEventListener('click', function() {
+                    listViewBtn.classList.add('active');
+                    gridViewBtn?.classList.remove('active');
+                    // List view functionality can be added here
+                    showNotification('Liste görünümü yakında eklenecek');
+                });
+            }
+        }
+
+        // Setup search functionality with debouncing
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        filterProperties();
+                    }, 300); // 300ms delay for better performance
+                });
+            }
+        }
+
+        // Initialize fade-in animations
+        function initializeFadeAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all fade-in elements
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.8s ease';
+                observer.observe(el);
+            });
+        }
+
+        // Gelişmiş notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            // Type'a göre renk ve icon belirle
+            let bgColor, borderColor, icon;
+            switch(type) {
+                case 'success':
+                    bgColor = 'rgba(16, 185, 129, 0.9)';
+                    borderColor = '#10b981';
+                    icon = '✅';
+                    break;
+                case 'warning':
+                    bgColor = 'rgba(245, 158, 11, 0.9)';
+                    borderColor = '#f59e0b';
+                    icon = '⚠️';
+                    break;
+                case 'error':
+                    bgColor = 'rgba(239, 68, 68, 0.9)';
+                    borderColor = '#ef4444';
+                    icon = '❌';
+                    break;
+                default:
+                    bgColor = 'rgba(102, 126, 234, 0.9)';
+                    borderColor = '#667eea';
+                    icon = 'ℹ️';
+            }
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${bgColor};
+                border: 1px solid ${borderColor};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                z-index: 10000;
+                font-weight: 600;
+                max-width: 350px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                animation: slideInRight 0.4s ease;
+                line-height: 1.4;
+            `;
+            
+            notification.innerHTML = `<span style="margin-right: 8px;">${icon}</span>${message}`;
+            document.body.appendChild(notification);
+            
+            // Auto remove
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    notification.style.animation = 'slideOutRight 0.4s ease';
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 400);
+                }
+            }, type === 'error' ? 5000 : 3500);
+        }
+
+        // "Detayları Gör" butonu functionality 
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-view')) {
+                e.preventDefault();
+                
+                const propertyCard = e.target.closest('.property-card');
+                const propertyName = propertyCard.querySelector('.property-overlay h3').textContent;
+                
+                // Property verilerini topla
+                const incomeText = propertyCard.querySelector('.summary-row:nth-child(2) span:last-child')?.textContent || "€?";
+                const minInvestText = propertyCard.querySelector('.summary-row:nth-child(3) span:last-child')?.textContent || "€?";
+                const nftPriceText = propertyCard.querySelector('.summary-row:nth-child(1) span:last-child')?.textContent || "€?";
+                const totalValueText = propertyCard.querySelector('.stat:nth-child(1) .stat-value')?.textContent || "€?";
+                const yieldText = propertyCard.querySelector('.stat:nth-child(2) .stat-value')?.textContent || "?%";
+                const availableNFTs = propertyCard.querySelector('.stat:nth-child(3) .stat-value')?.textContent || "?";
+                const location = propertyCard.querySelector('.property-overlay p')?.textContent || "Konum belirtilmemiş";
+                const propertyType = propertyCard.querySelector('.property-badge')?.textContent || "Bilinmiyor";
+                const status = propertyCard.querySelector('.property-status span')?.textContent || "Bilinmiyor";
+                
+                // Seçilen property verilerini kaydet
+                const selectedPropertyData = {
+                    name: propertyName,
+                    location: location,
+                    type: propertyType,
+                    status: status,
+                    totalValue: totalValueText,
+                    yield: yieldText,
+                    availableNFTs: availableNFTs,
+                    nftPrice: nftPriceText,
+                    monthlyIncome: incomeText,
+                    minInvestment: minInvestText,
+                    timestamp: new Date().toISOString(),
+                    viewMode: 'details' // Bu detay görüntüleme için
+                };
+                
+                localStorage.setItem('selectedProperty', JSON.stringify(selectedPropertyData));
+                
+                // Bilgilendirme mesajı
+                showNotification(`📋 ${propertyName} detayları yükleniyor...`, 'info');
+                
+                // Property detail sayfasına yönlendir
+                setTimeout(() => {
+                    window.location.href = 'property-detail.html';
+                }, 1000);
+            }
+        });
+
+        // Investment button functionality - DİNAMİK YATIRIM MESAJI
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-invest') && !e.target.disabled) {
+                const propertyCard = e.target.closest('.property-card');
+                const propertyName = propertyCard.querySelector('.property-overlay h3').textContent;
+                
+                // Dinamik olarak değerleri çek
+                const incomeText = propertyCard.querySelector('.summary-row:nth-child(2) span:last-child')?.textContent || "€?";
+                const minInvestText = propertyCard.querySelector('.summary-row:nth-child(3) span:last-child')?.textContent || "€?";
+                const nftPriceText = propertyCard.querySelector('.summary-row:nth-child(1) span:last-child')?.textContent || "€?";
+                
+                // Emlak değerini ve getiri oranını da al
+                const totalValueText = propertyCard.querySelector('.stat:nth-child(1) .stat-value')?.textContent || "€?";
+                const yieldText = propertyCard.querySelector('.stat:nth-child(2) .stat-value')?.textContent || "?%";
+                const availableNFTs = propertyCard.querySelector('.stat:nth-child(3) .stat-value')?.textContent || "?";
+                
+                // Durumu kontrol et
+                const statusElement = propertyCard.querySelector('.property-status span');
+                const status = statusElement?.textContent || "Bilinmiyor";
+                
+                if (status.includes('Tükendi') || status.includes('Sold')) {
+                    showNotification('⚠️ Bu emlak için NFT satışı tamamlanmıştır!', 'warning');
+                    return;
+                }
+                
+                // Detaylı yatırım mesajı
+                const confirmMsg = `🏗️ ${propertyName} - Yatırım Onayı
+                
+📊 EMLAK BİLGİLERİ:
+• Toplam Değer: ${totalValueText}
+• Yıllık Getiri: ${yieldText}
+• Mevcut NFT: ${availableNFTs} adet
+• Durum: ${status}
+
+💰 YATIRIM DETAYLARI:
+• NFT Fiyatı: ${nftPriceText}
+• Minimum Yatırım: ${minInvestText}
+• Beklenen Aylık Getiri: ${incomeText} / NFT
+
+🔒 YASAL HAKLAR:
+✅ Mülkiyet hakkı
+✅ Aylık kira geliri
+✅ Oy kullanma hakkı  
+✅ İstediğin zaman satabilme
+
+Yatırıma devam etmek istiyor musunuz?`;
+                
+                if (confirm(confirmMsg)) {
+                    // Loading mesajı göster
+                    const loadingMsg = `🔄 ${propertyName} için yatırım sayfası hazırlanıyor...`;
+                    showNotification(loadingMsg, 'info');
+                    
+                    // Yatırım verilerini localStorage'a kaydet (property-detail.html için)
+                    const investmentData = {
+                        propertyName: propertyName,
+                        nftPrice: nftPriceText,
+                        monthlyIncome: incomeText,
+                        minInvestment: minInvestText,
+                        totalValue: totalValueText,
+                        yield: yieldText,
+                        availableNFTs: availableNFTs,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('selectedProperty', JSON.stringify(investmentData));
+                    
+                    setTimeout(() => {
+                        window.location.href = 'property-detail.html';
+                    }, 1500);
+                }
+            }
+        });
+
+        // Sorting functionality
+        const sortSelect = document.getElementById('sortSelect');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function(e) {
+                const sortBy = e.target.value;
+                sortProperties(sortBy);
+                showNotification(`Emlaklar ${getSortText(sortBy)} göre sıralandı`);
+            });
+        }
+
+        function sortProperties(sortBy) {
+            const grid = document.getElementById('propertiesGrid');
+            const cards = Array.from(grid.querySelectorAll('.property-card'));
+            
+            cards.sort((a, b) => {
+                switch(sortBy) {
+                    case 'price-low':
+                        return getPropertyPrice(a) - getPropertyPrice(b);
+                    case 'price-high':
+                        return getPropertyPrice(b) - getPropertyPrice(a);
+                    case 'yield-high':
+                        return getPropertyYield(b) - getPropertyYield(a);
+                    default:
+                        return 0;
+                }
+            });
+            
+            cards.forEach(card => grid.appendChild(card));
+        }
+
+        function getPropertyPrice(card) {
+            const priceText = card.querySelector('.stat-value').textContent;
+            const price = priceText.replace(/[€K]/g, '');
+            return parseFloat(price) * (priceText.includes('K') ? 1000 : 1);
+        }
+
+        function getPropertyYield(card) {
+            const yieldText = card.querySelectorAll('.stat-value')[1].textContent;
+            return parseFloat(yieldText.replace('%', ''));
+        }
+
+        function getSortText(sortBy) {
+            const sortTexts = {
+                'newest': 'yeniliğe',
+                'price-low': 'düşük fiyata',
+                'price-high': 'yüksek fiyata',
+                'yield-high': 'yüksek getiriye'
+            };
+            return sortTexts[sortBy] || 'varsayılan';
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            
+            .fade-in {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.8s ease;
+            }
+            
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('✅ Properties page with proper padding initialized successfully!');
+    </script>
+</body>
+</html>
