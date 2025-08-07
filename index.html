@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARSA Token - Real Estate NFT Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Invest in real estate through NFTs. Buy fractionalized NFTs backed by real properties and earn monthly rental income.">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ARSA Token - Real Estate NFT Platform">
+    <meta property="og:description" content="Democratizing real estate investment through blockchain technology">
+    <meta property="og:image" content="https://arsatoken.com/og-image.jpg">
+    <meta property="og:url" content="https://arsatoken.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ARSA Token - Real Estate NFT Platform">
+    <meta name="twitter:description" content="Invest in real estate through NFTs">
+    <meta name="twitter:image" content="https://arsatoken.com/twitter-image.jpg">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">ARSA Token</div>
+            
+            <!-- Mobile hamburger button -->
+            <button class="mobile-menu-btn" aria-label="Toggle mobile menu">☰</button>
+            
+            <ul class="nav-links">
+                <li><a href="#home" data-translate="nav.home">Home</a></li>
+                <li><a href="properties.html" data-translate="nav.properties">Properties</a></li>
+                <li><a href="dashboard.html" data-translate="nav.dashboard">Dashboard</a></li>
+                <li><a href="#about" data-translate="nav.about">About</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="language-selector">
+                    <select id="languageSelect" class="language-dropdown" aria-label="Select language">
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="tr">🇹🇷 TR</option>
+                        <option value="ar">🇸🇦 AR</option>
+                    </select>
+                </div>
+                <button class="connect-wallet" id="connectWalletBtn" data-translate="nav.connect">Connect Wallet</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1 data-translate="hero.title">Invest in Real Estate<br>Through NFTs</h1>
+                <p data-translate="hero.subtitle">Democratizing real estate investment through blockchain technology. Buy fractionalized NFTs backed by real properties and earn monthly rental income.</p>
+                
+                <div class="cta-buttons">
+                    <a href="properties.html" class="btn-primary" data-translate="hero.start">Start Investing</a>
+                    <button class="btn-secondary" data-translate="hero.learn" onclick="scrollToSection('about')">Learn More</button>
+                </div>
+
+                <div class="stats" id="stats">
+                    <div class="stat-card fade-in">
+                        <div class="stat-number" data-animate="2400000">€0</div>
+                        <div class="stat-label" data-translate="stats.tvl">Total Value Locked</div>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <div class="stat-number" data-animate="1247">0</div>
+                        <div class="stat-label" data-translate="stats.investors">Active Investors</div>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <div class="stat-number" data-animate="18">0</div>
+                        <div class="stat-label" data-translate="stats.properties">Properties</div>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <div class="stat-number" data-animate="47000">€0</div>
+                        <div class="stat-label" data-translate="stats.monthly">Monthly Distributions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-translate="features.title">Why Choose ARSA Token?</h2>
+                <p data-translate="features.subtitle">Experience the future of real estate investment</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Fractional Ownership</h3>
+                    <p>Own a piece of premium real estate starting from just €100. No need for huge capital requirements or complex paperwork.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💰</div>
+                    <h3>Monthly Rental Income</h3>
+                    <p>Receive your share of rental income automatically distributed to your wallet every month in ARSA Tokens.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Blockchain Security</h3>
+                    <p>All transactions are secured on the blockchain. Complete transparency and immutable ownership records.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📈</div>
+                    <h3>Capital Appreciation</h3>
+                    <p>Benefit from property value increases over time. Your NFTs represent real assets that can appreciate.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Global Access</h3>
+                    <p>Invest in prime real estate worldwide from anywhere. No geographical restrictions or complex processes.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Liquidity</h3>
+                    <p>Trade your property NFTs anytime on secondary markets. No lengthy selling processes like traditional real estate.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Properties Section -->
+    <section class="properties" id="properties">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-translate="properties.title">Featured Properties</h2>
+                <p data-translate="properties.subtitle">Premium real estate opportunities</p>
+            </div>
+
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Properties will be loaded here -->
+                <div class="property-card skeleton" style="height: 400px;"></div>
+                <div class="property-card skeleton" style="height: 400px;"></div>
+                <div class="property-card skeleton" style="height: 400px;"></div>
+            </div>
+
+            <div class="view-all-properties fade-in">
+                <a href="properties.html" class="btn-view-all" data-translate="properties.view.all">
+                    🏢 View All Properties (24 Available)
+                </a>
+                <p style="color: rgba(255,255,255,0.6); margin-top: 1rem; font-size: 0.9rem;" data-translate="properties.view.all.subtitle">
+                    Explore our complete portfolio of premium real estate investments
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div>
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">
+                        <span style="background: linear-gradient(135deg, #ffffff 0%, #667eea 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.5rem; font-weight: 700;">About ARSA Token</span>
+                    </h2>
+                    <div class="about-text">
+                        <p style="margin-bottom: 1.5rem;">
+                            ARSA Token is revolutionizing real estate investment by making premium properties accessible to everyone through blockchain technology. Our platform allows you to own fractions of high-value real estate starting from just €100.
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            Built on the Arbitrum network, we ensure low transaction costs and fast processing while maintaining the security and transparency that blockchain technology provides. Every property is carefully vetted and tokenized into NFTs, giving you verifiable ownership.
+                        </p>
+                        <p>
+                            Join thousands of investors who are already earning passive income through our innovative real estate NFT platform. The future of real estate investment is here.
+                        </p>
+                    </div>
+                </div>
+                <div class="about-image fade-in" style="width: 100%; height: 400px; border-radius: 20px; background: url('https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2 style="color: #ffffff; margin-bottom: 1rem;">Stay Updated</h2>
+                <p style="color: rgba(255,255,255,0.8);">Get the latest news about new properties, investment opportunities, and platform updates.</p>
+                
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-section">
+                <h3 class="social-title" data-translate="footer.follow">Follow ARSA Token</h3>
+                <div class="social-links">
+                    <a href="https://twitter.com/arsatoken" class="social-link twitter" target="_blank" rel="noopener noreferrer" title="Twitter">
+                        <i>𝕏</i>
+                    </a>
+                    <a href="https://linkedin.com/company/arsatoken" class="social-link linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                        <i>in</i>
+                    </a>
+                    <a href="https://t.me/arsatoken" class="social-link telegram" target="_blank" rel="noopener noreferrer" title="Telegram">
+                        <i>✈</i>
+                    </a>
+                    <a href="https://discord.gg/arsatoken" class="social-link discord" target="_blank" rel="noopener noreferrer" title="Discord">
+                        <i>⚔</i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <a href="properties.html">Properties</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="#marketplace">Marketplace</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <a href="#about">About Us</a>
+                    <a href="#team">Team</a>
+                    <a href="#careers">Careers</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="#docs">Documentation</a>
+                    <a href="#whitepaper">Whitepaper</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#support">Support</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <a href="#terms">Terms of Service</a>
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#compliance">Compliance</a>
+                    <a href="login.html" style="color: rgba(255,255,255,0.3); font-size: 0.8rem;">Admin</a>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; color: rgba(255,255,255,0.6);">
+                <p>&copy; 2025 ARSA Token. All rights reserved. Built on Arbitrum Network.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Add newsletter form styling
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Newsletter section enhancement */
+            .newsletter-section {
+                padding: 80px 0;
+                background: rgba(102, 126, 234, 0.1);
+                border-top: 1px solid rgba(102, 126, 234, 0.2);
+                border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            }
+
+            .newsletter-content {
+                text-align: center;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .newsletter-form {
+                display: flex;
+                gap: 1rem;
+                margin-top: 2rem;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .newsletter-input {
+                flex: 1;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 25px;
+                padding: 1rem 1.5rem;
+                color: white;
+                outline: none;
+            }
+
+            .newsletter-input::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .newsletter-btn {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 25px;
+                color: white;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+
+            
