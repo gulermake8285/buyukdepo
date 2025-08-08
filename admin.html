@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARSA Token - Modern Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --background-primary: #0f0f23;
+            --background-secondary: #1a1a3e;
+            --surface: rgba(255, 255, 255, 0.05);
+            --surface-hover: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --border-radius: 20px;
+            --spacing-unit: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Modern Loading Spinner */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modern-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Login Screen */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .auth-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing-unit) * 6);
+            width: 450px;
+            box-shadow: var(--shadow);
+            animation: slideInUp 0.8s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: calc(var(--spacing-unit) * 4);
+        }
+
+        .auth-logo {
+            font-size: 3rem;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing-unit) * 1);
+        }
+
+        .auth-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: calc(var(--spacing-unit) * 3);
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: calc(var(--spacing-unit) * 1);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: calc(var(--spacing-unit) * 2);
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: calc(var(--spacing-unit) * 2);
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: calc(var(--spacing-unit) * 2);
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Modern Alert System */
+        .alert {
+            position: fixed;
+            top: calc(var(--spacing-unit) * 3);
+            right: calc(var(--spacing-unit) * 3);
+            max-width: 400px;
+            padding: calc(var(--spacing-unit) * 2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            z-index: 10001;
+            animation: slideInRight 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing-unit) * 2);
+        }
+
+        .alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .alert.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .admin-dashboard.active {
+            display: block;
+        }
+
+        .admin-navbar {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing-unit) * 2);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing-unit) * 2);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .admin-main {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        .admin-sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: calc(var(--spacing-unit) * 3) 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: calc(var(--spacing-unit) * 1);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing-unit) * 2);
+            padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+            border-left-color: #667eea;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            padding: calc(var(--spacing-unit) * 4);
+            overflow-y: auto;
+        }
+
+        .page-header {
+            margin-bottom: calc(var(--spacing-unit) * 4);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: calc(var(--spacing-unit) * 1);
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: calc(var(--spacing-unit) * 3);
+            margin-bottom: calc(var(--spacing-unit) * 4);
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing-unit) * 3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: calc(var(--spacing-unit) * 1);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            margin-top: calc(var(--spacing-unit) * 1);
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--error);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing-unit) * 3);
+            margin-bottom: calc(var(--spacing-unit) * 3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: calc(var(--spacing-unit) * 3);
+            padding-bottom: calc(var(--spacing-unit) * 2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .btn {
+            padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error) 0%, #dc2626 100%);
+            color: white;
+        }
+
+        /* Modern Table */
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modern-table th,
+        .modern-table td {
+            padding: calc(var(--spacing-unit) * 2);
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modern-table th {
+            background: var(--surface-hover);
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modern-table tbody tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .admin-main {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-sidebar {
+                position: fixed;
+                top: 80px;
+                left: -280px;
+                height: calc(100vh - 80px);
+                width: 280px;
+                z-index: 200;
+                transition: left 0.3s ease;
+            }
+            
+            .admin-sidebar.open {
+                left: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .auth-card {
+                width: 90%;
+                max-width: 380px;
+                padding: calc(var(--spacing-unit) * 4);
+            }
+            
+            .admin-content {
+                padding: calc(var(--spacing-unit) * 2);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Dark theme support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-primary: #000000;
+                --background-secondary: #111111;
+            }
+        }
+
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus styles for keyboard navigation */
+        .form-input:focus,
+        .btn:focus,
+        .nav-link:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="modern-spinner"></div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+
+    <!-- Authentication Screen -->
+    <div class="auth-container" id="authScreen">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🏗️</div>
+                <h1 class="auth-title">ARSA Admin</h1>
+                <p class="auth-subtitle">Güvenli Yönetim Paneli</p>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="username" class="form-label">Kullanıcı Adı</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="form-input"
+                            placeholder="Kullanıcı adınızı girin"
+                            required
+                            autocomplete="username"
+                            aria-describedby="username-error"
+                        >
+                        <span class="input-icon">👤</span>
+                    </div>
+                    <div id="username-error" class="error-message" style="display: none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Şifre</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input"
+                            placeholder="Şifrenizi girin"
+                            required
+                            autocomplete="current-password"
+                            aria-describedby="password-error"
+                        >
+                        <span class="input-icon">🔒</span>
+                    </div>
+                    <div id="password-error" class="error-message" style="display: none;"></div>
+                </div>
+
+                <button type="submit" class="auth-button" id="loginButton">
+                    <span id="loginButtonText">Giriş Yap</span>
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="index.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;">
+                    ← Ana siteye dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <!-- Navigation Bar -->
+        <nav class="admin-navbar">
+            <div class="navbar-brand">
+                <span>🏗️</span>
+                <span>ARSA Admin</span>
+            </div>
+            <div class="navbar-actions">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span id="userWelcome">Hoşgeldiniz, <strong id="currentUser">Admin</strong></span>
+                    <div class="user-avatar" id="userAvatar">A</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    🚪 Çıkış
+                </button>
+            </div>
+        </nav>
+
+        <div class="admin-main">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar" id="adminSidebar">
+                <nav>
+                    <ul class="sidebar-nav">
+                        <li class="nav-item">
+                            <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                                <span class="nav-icon">📊</span>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#properties" class="nav-link" data-section="properties">
+                                <span class="nav-icon">🏢</span>
+                                <span>Emlak Yönetimi</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#analytics" class="nav-link" data-section="analytics">
+                                <span class="nav-icon">📈</span>
+                                <span>Analitik</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#transactions" class="nav-link" data-section="transactions">
+                                <span class="nav-icon">💰</span>
+                                <span>İşlemler</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#users" class="nav-link" data-section="users">
+                                <span class="nav-icon">👥</span>
+                                <span>Kullanıcılar</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#settings" class="nav-link" data-section="settings">
+                                <span class="nav-icon">⚙️</span>
+                                <span>Ayarlar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="admin-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="page-header">
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-subtitle">Platform performansının genel görünümü</p>
+                    </div>
+
+                    <!-- Statistics Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🏢</div>
+                            <div class="stat-value" id="totalProperties">24</div>
+                            <div class="stat-label">Toplam Emlak</div>
+                            <div class="stat-change positive">+2 bu ay</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-value" id="totalUsers">1,247</div>
+                            <div class="stat-label">Aktif Kullanıcı</div>
+                            <div class="stat-change positive">+15.3%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value" id="totalVolume">€2.4M</div>
+                            <div class="stat-label">Toplam Hacim</div>
+                            <div class="stat-change positive">+22.1%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-value" id="totalRevenue">€47K</div>
+                            <div class="stat-label">Aylık Gelir</div>
+                            <div class="stat-change positive">+8.7%</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Son Aktiviteler</h3>
+                            <button class="btn btn-primary">Tümünü Gör</button>
+                        </div>
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Zaman</th>
+                                    <th>Etkinlik</th>
+                                    <th>Kullanıcı</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5 dk önce</td>
+                                    <td>NFT Satın Alındı</td>
+                                    <td>0x1234...5678</td>
+                                    <td><span style="color: var(--success);">✅ Başarılı</span></td>
+                                    <td>
+                                        <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detay</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>12 dk önce</td>
+                                    <td>Kira Dağıtımı</td>
+                                    <td>System</td>
+                                    <td><span style="color: var(--success);">✅ Tamamlandı</span></td>
+                                    <td>
+                                        <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detay</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1 saat önce</td>
+                                    <td>Yeni Emlak Eklendi</td>
+                                    <td>admin</td>
+                                    <td><span style="color: var(--success);">✅ Aktif</span></td>
+                                    <td>
+                                        <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detay</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Properties Section -->
+                <section id="properties" class="content-section" style="display: none;">
+                    <div class="page-header">
+                        <h1 class="page-title">Emlak Yönetimi</h1>
+                        <p class="page-subtitle">Emlak portföyünüzü yönetin</p>
+                    </div>
+
+                    <!-- Add Property Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Yeni Emlak Ekle</h3>
+                        </div>
+                        <form id="addPropertyForm">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <div class="form-group">
+                                    <label for="propertyName" class="form-label">Emlak Adı</label>
+                                    <input type="text" id="propertyName" class="form-input" placeholder="Örn: Berlin Ofis Kompleksi" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="propertyLocation" class="form-label">Konum</label>
+                                    <input type="text" id="propertyLocation" class="form-input" placeholder="Şehir, Ülke" required>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <div class="form-group">
+                                    <label for="propertyValue" class="form-label">Toplam Değer (€)</label>
+                                    <input type="number" id="propertyValue" class="form-input" placeholder="850000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="propertyYield" class="form-label">Yıllık Getiri (%)</label>
+                                    <input type="number" id="propertyYield" class="form-input" placeholder="7.2" step="0.1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nftSupply" class="form-label">NFT Sayısı</label>
+                                    <input type="number" id="nftSupply" class="form-input" placeholder="8500" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="propertyDescription" class="form-label">Açıklama</label>
+                                <textarea id="propertyDescription" class="form-input" rows="3" placeholder="Emlak hakkında detaylı açıklama..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">🏢 Emlak Ekle</button>
+                        </form>
+                    </div>
+
+                    <!-- Properties List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Mevcut Emlaklar</h3>
+                            <button class="btn btn-primary">📊 Toplu İşlemler</button>
+                        </div>
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Emlak</th>
+                                    <th>Konum</th>
+                                    <th>Değer</th>
+                                    <th>Getiri</th>
+                                    <th>NFT Durumu</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="propertiesTableBody">
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div style="width: 50px; height: 50px; border-radius: 8px; background: var(--primary-gradient);"></div>
+                                            <div>
+                                                <div style="font-weight: 600;">Berlin Ofis Kompleksi</div>
+                                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Ticari</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Berlin, Almanya</td>
+                                    <td>€850,000</td>
+                                    <td>7.2%</td>
+                                    <td>
+                                        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                            <div style="font-size: 0.8rem;">2,295 / 8,500</div>
+                                            <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                                                <div style="width: 73%; height: 100%; background: var(--success); border-radius: 2px;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <button class="btn btn-success" style="padding: 0.5rem; font-size: 0.8rem;">✏️</button>
+                                            <button class="btn btn-danger" style="padding: 0.5rem; font-size: 0.8rem;">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Other sections would be added here -->
+                <section id="analytics" class="content-section" style="display: none;">
+                    <div class="page-header">
+                        <h1 class="page-title">Analitik</h1>
+                        <p class="page-subtitle">Detaylı performans analizi</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📈 Gelişmiş analitik özellikleri burada olacak</div>
+                    </div>
+                </section>
+
+                <section id="transactions" class="content-section" style="display: none;">
+                    <div class="page-header">
+                        <h1 class="page-title">İşlemler</h1>
+                        <p class="page-subtitle">Tüm finansal işlemleri takip edin</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💰 İşlem geçmişi ve raporlar</div>
+                    </div>
+                </section>
+
+                <section id="users" class="content-section" style="display: none;">
+                    <div class="page-header">
+                        <h1 class="page-title">Kullanıcı Yönetimi</h1>
+                        <p class="page-subtitle">Kullanıcıları ve yetkileri yönetin</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">👥 Kullanıcı yönetim özellikleri</div>
+                    </div>
+                </section>
+
+                <section id="settings" class="content-section" style="display: none;">
+                    <div class="page-header">
+                        <h1 class="page-title">Sistem Ayarları</h1>
+                        <p class="page-subtitle">Platform yapılandırması</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚙️ Sistem ayarları ve yapılandırma</div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Modern Admin Panel JavaScript
+        class ModernAdminPanel {
+            constructor() {
+                this.currentUser = null;
+                this.isAuthenticated = false;
+                this.currentSection = 'dashboard';
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.checkAuthStatus();
+                this.loadTheme();
+            }
+
+            setupEventListeners() {
+                // Login form
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                }
+
+                // Navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => this.handleNavigation(e));
+                });
+
+                // Property form
+                const propertyForm = document.getElementById('addPropertyForm');
+                if (propertyForm) {
+                    propertyForm.addEventListener('submit', (e) => this.handleAddProperty(e));
+                }
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const loginButton = document.getElementById('loginButton');
+                const buttonText = document.getElementById('loginButtonText');
+
+                // Clear previous errors
+                this.clearErrors();
+
+                // Validation
+                if (!this.validateLoginInputs(username, password)) {
+                    return;
+                }
+
+                // Show loading
+                this.showLoading();
+                loginButton.disabled = true;
+                buttonText.textContent = 'Giriş yapılıyor...';
+
+                try {
+                    // Simulate API call
+                    const success = await this.authenticateUser(username, password);
+                    
+                    if (success) {
+                        this.isAuthenticated = true;
+                        this.currentUser = { username, role: 'admin' };
+                        
+                        // Store session (use secure httpOnly cookies in production)
+                        sessionStorage.setItem('adminAuth', JSON.stringify({
+                            user: this.currentUser,
+                            timestamp: Date.now()
+                        }));
+
+                        this.showDashboard();
+                        this.showAlert('✅ Başarıyla giriş yapıldı!', 'success');
+                    } else {
+                        this.showAlert('❌ Kullanıcı adı veya şifre hatalı!', 'error');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.showAlert('❌ Giriş sırasında bir hata oluştu!', 'error');
+                } finally {
+                    this.hideLoading();
+                    loginButton.disabled = false;
+                    buttonText.textContent = 'Giriş Yap';
+                }
+            }
+
+            validateLoginInputs(username, password) {
+                let isValid = true;
+
+                if (!username) {
+                    this.showFieldError('username', 'Kullanıcı adı gereklidir');
+                    isValid = false;
+                }
+
+                if (!password) {
+                    this.showFieldError('password', 'Şifre gereklidir');
+                    isValid = false;
+                } else if (password.length < 6) {
+                    this.showFieldError('password', 'Şifre en az 6 karakter olmalıdır');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            async authenticateUser(username, password) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // In production, this would be a secure API call
+                const validCredentials = [
+                    { username: 'admin', password: 'arsa123' },
+                    { username: 'manager', password: 'arsamgr' }
+                ];
+
+                return validCredentials.some(cred => 
+                    cred.username === username && cred.password === password
+                );
+            }
+
+            showFieldError(fieldId, message) {
+                const errorElement = document.getElementById(`${fieldId}-error`);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    errorElement.style.color = 'var(--error)';
+                    errorElement.style.fontSize = '0.8rem';
+                    errorElement.style.marginTop = '0.5rem';
+                }
+
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.style.borderColor = 'var(--error)';
+                    field.addEventListener('input', () => {
+                        field.style.borderColor = '';
+                        errorElement.style.display = 'none';
+                    }, { once: true });
+                }
+            }
+
+            clearErrors() {
+                document.querySelectorAll('.error-message').forEach(error => {
+                    error.style.display = 'none';
+                });
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.style.borderColor = '';
+                });
+            }
+
+            showLoading() {
+                const overlay = document.getElementById('loadingOverlay');
+                if (overlay) {
+                    overlay.classList.add('active');
+                }
+            }
+
+            hideLoading() {
+                const overlay = document.getElementById('loadingOverlay');
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+            }
+
+            showDashboard() {
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('adminDashboard').classList.add('active');
+                
+                // Update user info
+                const currentUserElement = document.getElementById('currentUser');
+                const userAvatar = document.getElementById('userAvatar');
+                
+                if (currentUserElement && this.currentUser) {
+                    currentUserElement.textContent = this.currentUser.username;
+                }
+                
+                if (userAvatar && this.currentUser) {
+                    userAvatar.textContent = this.currentUser.username.charAt(0).toUpperCase();
+                }
+
+                // Load dashboard data
+                this.loadDashboardData();
+            }
+
+            handleNavigation(e) {
+                e.preventDefault();
+                const section = e.currentTarget.getAttribute('data-section');
+                
+                if (section) {
+                    this.showSection(section);
+                }
+            }
+
+            showSection(sectionName) {
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Remove active from nav links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Show selected section
+                const targetSection = document.getElementById(sectionName);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                }
+
+                // Add active to clicked nav link
+                const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+
+                this.currentSection = sectionName;
+
+                // Load section-specific data
+                this.loadSectionData(sectionName);
+            }
+
+            async handleAddProperty(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    name: document.getElementById('propertyName').value.trim(),
+                    location: document.getElementById('propertyLocation').value.trim(),
+                    value: parseFloat(document.getElementById('propertyValue').value),
+                    yield: parseFloat(document.getElementById('propertyYield').value),
+                    nftSupply: parseInt(document.getElementById('nftSupply').value),
+                    description: document.getElementById('propertyDescription').value.trim()
+                };
+
+                // Validation
+                if (!this.validatePropertyData(formData)) {
+                    return;
+                }
+
+                this.showLoading();
+                
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    // Add property to list (in production, this would update the database)
+                    this.addPropertyToTable(formData);
+                    
+                    // Clear form
+                    document.getElementById('addPropertyForm').reset();
+                    
+                    this.showAlert('✅ Emlak başarıyla eklendi!', 'success');
+                    
+                    // Update stats
+                    this.updateStats();
+                    
+                } catch (error) {
+                    console.error('Add property error:', error);
+                    this.showAlert('❌ Emlak eklenirken hata oluştu!', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            validatePropertyData(data) {
+                if (!data.name) {
+                    this.showAlert('Emlak adı gereklidir', 'error');
+                    return false;
+                }
+                if (!data.location) {
+                    this.showAlert('Konum gereklidir', 'error');
+                    return false;
+                }
+                if (!data.value || data.value <= 0) {
+                    this.showAlert('Geçerli bir değer giriniz', 'error');
+                    return false;
+                }
+                if (!data.yield || data.yield <= 0) {
+                    this.showAlert('Geçerli bir getiri oranı giriniz', 'error');
+                    return false;
+                }
+                if (!data.nftSupply || data.nftSupply <= 0) {
+                    this.showAlert('Geçerli bir NFT sayısı giriniz', 'error');
+                    return false;
+                }
+                return true;
+            }
+
+            addPropertyToTable(property) {
+                const tableBody = document.getElementById('propertiesTableBody');
+                if (!tableBody) return;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 50px; height: 50px; border-radius: 8px; background: var(--primary-gradient);"></div>
+                            <div>
+                                <div style="font-weight: 600;">${this.escapeHtml(property.name)}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Yeni</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${this.escapeHtml(property.location)}</td>
+                    <td>€${property.value.toLocaleString()}</td>
+                    <td>${property.yield}%</td>
+                    <td>
+                        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                            <div style="font-size: 0.8rem;">0 / ${property.nftSupply.toLocaleString()}</div>
+                            <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                                <div style="width: 0%; height: 100%; background: var(--success); border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-success" style="padding: 0.5rem; font-size: 0.8rem;">✏️</button>
+                            <button class="btn btn-danger" style="padding: 0.5rem; font-size: 0.8rem;">🗑️</button>
+                        </div>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            }
+
+            showAlert(message, type = 'info') {
+                const alertContainer = document.getElementById('alertContainer');
+                if (!alertContainer) return;
+
+                const alert = document.createElement('div');
+                alert.className = `alert ${type}`;
+                
+                const icon = type === 'success' ? '✅' : 
+                           type === 'error' ? '❌' : 
+                           type === 'warning' ? '⚠️' : 'ℹ️';
+                
+                alert.innerHTML = `
+                    <span>${icon}</span>
+                    <span>${this.escapeHtml(message)}</span>
+                `;
+                
+                alertContainer.appendChild(alert);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.style.animation = 'slideOutRight 0.4s ease';
+                        setTimeout(() => {
+                            if (alert.parentNode) {
+                                alert.parentNode.removeChild(alert);
+                            }
+                        }, 400);
+                    }
+                }, 5000);
+            }
+
+            checkAuthStatus() {
+                const authData = sessionStorage.getItem('adminAuth');
+                if (authData) {
+                    try {
+                        const { user, timestamp } = JSON.parse(authData);
+                        
+                        // Check if session is still valid (24 hours)
+                        if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
+                            this.currentUser = user;
+                            this.isAuthenticated = true;
+                            this.showDashboard();
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('Auth check error:', error);
+                    }
+                }
+                
+                // Clear invalid session
+                sessionStorage.removeItem('adminAuth');
+                this.showAuthScreen();
+            }
+
+            showAuthScreen() {
+                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('adminDashboard').classList.remove('active');
+            }
+
+            logout() {
+                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                    sessionStorage.removeItem('adminAuth');
+                    this.currentUser = null;
+                    this.isAuthenticated = false;
+                    this.showAuthScreen();
+                    this.showAlert('👋 Başarıyla çıkış yapıldı!', 'success');
+                }
+            }
+
+            loadDashboardData() {
+                // Simulate loading dashboard statistics
+                this.animateCounters();
+                this.loadRecentActivity();
+            }
+
+            animateCounters() {
+                const counters = [
+                    { element: 'totalProperties', target: 24, suffix: '' },
+                    { element: 'totalUsers', target: 1247, suffix: '' },
+                    { element: 'totalVolume', target: 2.4, suffix: 'M', prefix: '€' },
+                    { element: 'totalRevenue', target: 47, suffix: 'K', prefix: '€' }
+                ];
+
+                counters.forEach(counter => {
+                    const element = document.getElementById(counter.element);
+                    if (element) {
+                        this.animateValue(element, 0, counter.target, 2000, counter.prefix, counter.suffix);
+                    }
+                });
+            }
+
+            animateValue(element, start, end, duration, prefix = '', suffix = '') {
+                const startTimestamp = Date.now();
+                const step = (timestamp) => {
+                    const elapsed = timestamp - startTimestamp;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const current = start + (end - start) * this.easeOutCubic(progress);
+                    
+                    element.textContent = prefix + (current < 10 ? current.toFixed(1) : Math.floor(current).toLocaleString()) + suffix;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                };
+                requestAnimationFrame(step);
+            }
+
+            easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+
+            loadRecentActivity() {
+                // In production, this would fetch real data from API
+                console.log('Loading recent activity...');
+            }
+
+            loadSectionData(sectionName) {
+                switch (sectionName) {
+                    case 'properties':
+                        this.loadPropertiesData();
+                        break;
+                    case 'analytics':
+                        this.loadAnalyticsData();
+                        break;
+                    case 'transactions':
+                        this.loadTransactionsData();
+                        break;
+                    case 'users':
+                        this.loadUsersData();
+                        break;
+                    case 'settings':
+                        this.loadSettingsData();
+                        break;
+                }
+            }
+
+            loadPropertiesData() {
+                console.log('Loading properties data...');
+                // Load properties from API
+            }
+
+            loadAnalyticsData() {
+                console.log('Loading analytics data...');
+                // Load analytics charts and data
+            }
+
+            loadTransactionsData() {
+                console.log('Loading transactions data...');
+                // Load transaction history
+            }
+
+            loadUsersData() {
+                console.log('Loading users data...');
+                // Load user management data
+            }
+
+            loadSettingsData() {
+                console.log('Loading settings data...');
+                // Load system settings
+            }
+
+            updateStats() {
+                // Update dashboard statistics after operations
+                const currentValue = parseInt(document.getElementById('totalProperties').textContent);
+                this.animateValue(document.getElementById('totalProperties'), currentValue, currentValue + 1, 1000);
+            }
+
+            handleKeyboard(e) {
+                // Keyboard shortcuts
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key) {
+                        case '1':
+                            e.preventDefault();
+                            this.showSection('dashboard');
+                            break;
+                        case '2':
+                            e.preventDefault();
+                            this.showSection('properties');
+                            break;
+                        case '3':
+                            e.preventDefault();
+                            this.showSection('analytics');
+                            break;
+                        case 'Escape':
+                            // Close modals or return to dashboard
+                            this.showSection('dashboard');
+                            break;
+                    }
+                }
+            }
+
+            loadTheme() {
+                // Load user's preferred theme
+                const savedTheme = localStorage.getItem('adminTheme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // Utility method for secure random ID generation
+            generateId() {
+                return Math.random().toString(36).substring(2) + Date.now().toString(36);
+            }
+
+            // Method to handle errors globally
+            handleError(error, context = 'Unknown') {
+                console.error(`Error in ${context}:`, error);
+                this.showAlert(`Bir hata oluştu: ${context}`, 'error');
+                
+                // In production, send error to monitoring service
+                // ErrorTracker.log(error, context);
+            }
+        }
+
+        // Global logout function for navbar button
+        function logout() {
+            if (window.adminPanel) {
+                window.adminPanel.logout();
+            }
+        }
+
+        // Initialize admin panel when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.adminPanel = new ModernAdminPanel();
+            
+            // Add performance monitoring
+            if ('PerformanceObserver' in window) {
+                const observer = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.duration > 100) {
+                            console.warn(`Slow operation detected: ${entry.name} took ${entry.duration}ms`);
+                        }
+                    }
+                });
+                observer.observe({ entryTypes: ['measure', 'navigation'] });
+            }
+
+            // Add error boundary
+            window.addEventListener('unhandledrejection', (event) => {
+                console.error('Unhandled promise rejection:', event.reason);
+                if (window.adminPanel) {
+                    window.adminPanel.showAlert('Beklenmeyen bir hata oluştu', 'error');
+                }
+            });
+
+            // Add online/offline detection
+            window.addEventListener('online', () => {
+                if (window.adminPanel) {
+                    window.adminPanel.showAlert('🌐 İnternet bağlantısı geri geldi', 'success');
+                }
+            });
+
+            window.addEventListener('offline', () => {
+                if (window.adminPanel) {
+                    window.adminPanel.showAlert('📡 İnternet bağlantısı kesildi', 'warning');
+                }
+            });
+
+            console.log('🚀 Modern ARSA Token Admin Panel initialized successfully!');
+        });
+
+        // Service Worker registration for PWA capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Add CSS animations for slideOutRight
+        const additionalStyles = `
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+
+            .error-message {
+                display: none;
+                color: var(--error);
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+                padding: 0.5rem;
+                background: rgba(239, 68, 68, 0.1);
+                border: 1px solid rgba(239, 68, 68, 0.3);
+                border-radius: 4px;
+            }
+
+            /* High contrast mode support */
+            @media (prefers-contrast: high) {
+                :root {
+                    --border: rgba(255, 255, 255, 0.3);
+                    --surface: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            /* Print styles */
+            @media print {
+                .admin-sidebar,
+                .admin-navbar,
+                .btn {
+                    display: none !important;
+                }
+                
+                .admin-content {
+                    padding: 0 !important;
+                }
+            }
+        `;
+
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = additionalStyles;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
+            
