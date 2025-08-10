@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="admin.login.title">Admin Giriş - ARSA Token</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+      color: white;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Animated Background */
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: hidden;
+    }
+
+    .background::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      animation: float 20s linear infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-50px, -50px) rotate(360deg); }
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: floatUp 15s linear infinite;
+    }
+
+    .shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      width: 120px;
+      height: 120px;
+      left: 20%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      width: 60px;
+      height: 60px;
+      left: 70%;
+      animation-delay: 4s;
+    }
+
+    .shape:nth-child(4) {
+      width: 100px;
+      height: 100px;
+      left: 80%;
+      animation-delay: 6s;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Login Container */
+    .login-container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .login-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3rem;
+      border-radius: 25px;
+      width: 450px;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+      animation: slideInUp 0.8s ease;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .login-logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .login-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 1.2rem 1rem;
+      border: none;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 15px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .login-btn:hover::before {
+      left: 100%;
+    }
+    
+    .login-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .back-btn {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-btn:hover {
+      color: white;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .security-info {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .security-info p {
+      color: #10b981;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* Language selector */
+    .language-selector {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+
+    .language-dropdown {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      color: white;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .language-dropdown:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .language-dropdown option {
+      background: #1a1a3e;
+      color: white;
+    }
+
+    /* RTL Support */
+    [dir="rtl"] .login-box {
+      text-align: right;
+    }
+    
+    [dir="rtl"] .input-icon {
+      right: auto;
+      left: 1rem;
+    }
+
+    [dir="rtl"] .back-btn {
+      flex-direction: row-reverse;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 500px) {
+      .login-box {
+        width: 100%;
+        max-width: 380px;
+        padding: 2rem;
+        margin: 1rem;
+      }
+
+      .login-title {
+        font-size: 1.8rem;
+      }
+
+      .login-logo {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="background">
+    <div class="floating-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+  </div>
+
+  <!-- Language Selector -->
+  <div class="language-selector">
+    <select id="languageSelect" class="language-dropdown">
+      <option value="tr">🇹🇷 Türkçe</option>
+      <option value="en">🇺🇸 English</option>
+      <option value="ar">🇸🇦 العربية</option>
+    </select>
+  </div>
+
+  <!-- Login Container -->
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="login-logo">🏢</div>
+        <h1 class="login-title" data-i18n="admin.login.title">ARSA Admin</h1>
+        <p class="login-subtitle" data-i18n="admin.login.subtitle">Güvenli alan - Yönetici kimlik bilgileri gerekli</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username" data-i18n="admin.login.username">Kullanıcı Adı</label>
+          <input type="text" id="username" placeholder="Kullanıcı adınızı girin" required autocomplete="username">
+          <div class="input-icon">👤</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password" data-i18n="admin.login.password">Şifre</label>
+          <input type="password" id="password" placeholder="Şifrenizi girin" required autocomplete="current-password">
+          <div class="input-icon">🔒</div>
+        </div>
+        
+        <button type="submit" class="login-btn" id="loginButton">
+          <span class="loading-spinner" id="loadingSpinner"></span>
+          <span id="buttonText" data-i18n="admin.login.button">Admin Paneline Giriş</span>
+        </button>
+      </form>
+
+      <div class="error" id="loginError"></div>
+
+      <div class="security-info">
+        <p data-i18n="admin.security.indicator">🛡️ Güvenli bağlantı - SSL ile şifrelenmiş</p>
+      </div>
+
+      <div class="back-link">
+        <a href="index.html" class="back-btn" data-i18n="admin.login.back">
+          ← Ana siteye geri dön
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Session Management System
+    class AdminSessionManager {
+      constructor() {
+        this.sessionKey = 'arsa_admin_session';
+        this.sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+      }
+
+      createSession(username, role = 'admin') {
+        const session = {
+          isAdmin: true,
+          username: username,
+          role: role,
+          loginTime: Date.now(),
+          expiresAt: Date.now() + this.sessionDuration
+        };
+        
+        localStorage.setItem(this.sessionKey, JSON.stringify(session));
+        return session;
+      }
+
+      getSession() {
+        try {
+          const sessionData = localStorage.getItem(this.sessionKey);
+          if (!sessionData) return null;
+          
+          const session = JSON.parse(sessionData);
+          
+          // Check if session expired
+          if (Date.now() > session.expiresAt) {
+            this.clearSession();
+            return null;
+          }
+          
+          return session;
+        } catch (error) {
+          console.error('Session retrieval error:', error);
+          this.clearSession();
+          return null;
+        }
+      }
+
+      isValidSession() {
+        const session = this.getSession();
+        return session && session.isAdmin === true;
+      }
+
+      clearSession() {
+        localStorage.removeItem(this.sessionKey);
+      }
+
+      extendSession() {
+        const session = this.getSession();
+        if (session) {
+          session.expiresAt = Date.now() + this.sessionDuration;
+          localStorage.setItem(this.sessionKey, JSON.stringify(session));
+        }
+      }
+    }
+
+    // Initialize session manager
+    const sessionManager = new AdminSessionManager();
+
+    // User database
+    const users = [
+      { username: 'admin', password: 'arsa123', role: 'superadmin' },
+      { username: 'editor', password: 'arsaedit', role: 'editor' },
+      { username: 'manager', password: 'arsamgr', role: 'manager' }
+    ];
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if already logged in
+      if (sessionManager.isValidSession()) {
+        redirectToAdmin();
+        return;
+      }
+
+      // Initialize translation system
+      initializeTranslations();
+      
+      // Setup form handlers
+      setupLoginForm();
+      
+      // Focus first input
+      document.getElementById('username').focus();
+    });
+
+    function initializeTranslations() {
+      // Wait for translation system to load
+      if (window.arsaTranslator) {
+        const savedLanguage = localStorage.getItem('selectedLanguage') || 'tr';
+        document.getElementById('languageSelect').value = savedLanguage;
+        window.arsaTranslator.translatePage(savedLanguage);
+        updatePlaceholders(savedLanguage);
+      } else {
+        // Fallback initialization
+        setTimeout(initializeTranslations, 100);
+      }
+
+      // Language selector
+      document.getElementById('languageSelect').addEventListener('change', function(e) {
+        const language = e.target.value;
+        localStorage.setItem('selectedLanguage', language);
+        
+        if (window.arsaTranslator) {
+          window.arsaTranslator.changeLanguage(language);
+        }
+        
+        updatePlaceholders(language);
+        updatePageDirection(language);
+      });
+    }
+
+    function updatePlaceholders(language) {
+      const placeholders = {
+        tr: {
+          username: 'Kullanıcı adınızı girin',
+          password: 'Şifrenizi girin'
+        },
+        en: {
+          username: 'Enter your username',
+          password: 'Enter your password'
+        },
+        ar: {
+          username: 'أدخل اسم المستخدم',
+          password: 'أدخل كلمة المرور'
+        }
+      };
+
+      const lang = placeholders[language] || placeholders.tr;
+      document.getElementById('username').placeholder = lang.username;
+      document.getElementById('password').placeholder = lang.password;
+    }
+
+    function updatePageDirection(language) {
+      if (language === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+      }
+    }
+
+    function setupLoginForm() {
+      const loginForm = document.getElementById('loginForm');
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+      });
+
+      // Enter key support
+      document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          handleLogin();
+        }
+      });
+    }
+
+    function handleLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      
+      // Clear previous errors
+      hideError();
+
+      // Validation
+      if (!username || !password) {
+        showError(getErrorMessage('empty_fields'));
+        return;
+      }
+
+      // Show loading state
+      setLoadingState(true);
+
+      // Simulate authentication delay
+      setTimeout(() => {
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+          // Create session
+          sessionManager.createSession(user.username, user.role);
+          
+          // Success state
+          setSuccessState();
+          
+          // Redirect after short delay
+          setTimeout(() => {
+            redirectToAdmin();
+          }, 1500);
+          
+        } else {
+          // Error state
+          showError(getErrorMessage('invalid_credentials'));
+          setLoadingState(false);
+        }
+      }, 2000);
+    }
+
+    function setLoadingState(loading) {
+      const loginButton = document.getElementById('loginButton');
+      const buttonText = document.getElementById('buttonText');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+
+      loginButton.disabled = loading;
+      loadingSpinner.style.display = loading ? 'inline-block' : 'none';
+      
+      if (loading) {
+        buttonText.textContent = getLoadingMessage();
+      } else {
+        buttonText.setAttribute('data-i18n', 'admin.login.button');
+        if (window.arsaTranslator) {
+          const currentLang = window.arsaTranslator.getCurrentLanguage();
+          buttonText.textContent = window.arsaTranslator.getTranslation('admin.login.button', currentLang);
+        }
+      }
+    }
+
+    function setSuccessState() {
+      const loginButton = document.getElementById('loginButton');
+      const buttonText = document.getElementById('buttonText');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+
+      loadingSpinner.style.display = 'none';
+      loginButton.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+      buttonText.textContent = getSuccessMessage();
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function hideError() {
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.style.display = 'none';
+    }
+
+    function redirectToAdmin() {
+      window.location.href = 'admin.html';
+    }
+
+    function getErrorMessage(type) {
+      const currentLang = localStorage.getItem('selectedLanguage') || 'tr';
+      const messages = {
+        tr: {
+          empty_fields: 'Lütfen tüm alanları doldurun!',
+          invalid_credentials: 'Kullanıcı adı veya şifre hatalı!'
+        },
+        en: {
+          empty_fields: 'Please fill in all fields!',
+          invalid_credentials: 'Invalid username or password!'
+        },
+        ar: {
+          empty_fields: 'يرجى ملء جميع الحقول!',
+          invalid_credentials: 'اسم المستخدم أو كلمة المرور غير صحيحة!'
+        }
+      };
+      
+      return messages[currentLang][type] || messages.tr[type];
+    }
+
+    function getLoadingMessage() {
+      const currentLang = localStorage.getItem('selectedLanguage') || 'tr';
+      const messages = {
+        tr: 'Giriş yapılıyor...',
+        en: 'Logging in...',
+        ar: 'جاري تسجيل الدخول...'
+      };
+      
+      return messages[currentLang] || messages.tr;
+    }
+
+    function getSuccessMessage() {
+      const currentLang = localStorage.getItem('selectedLanguage') || 'tr';
+      const messages = {
+        tr: '✅ Giriş başarılı! Yönlendiriliyor...',
+        en: '✅ Login successful! Redirecting...',
+        ar: '✅ تم تسجيل الدخول بنجاح! جاري التوجيه...'
+      };
+      
+      return messages[currentLang] || messages.tr;
+    }
+
+    // Security: Clear sensitive data on page unload
+    window.addEventListener('beforeunload', function() {
+      document.getElementById('password').value = '';
+    });
+
+    // Prevent right-click and basic developer tools (for demo purposes)
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+  </script>
+</body>
+</html>
