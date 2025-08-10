@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARSA Token — Admin Panel</title>
+  <style>
+    :root{
+      --bg:#0f1024;
+      --bg2:#16183a;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.12);
+      --primary1:#667eea;
+      --primary2:#764ba2;
+      --success:#10b981;
+      --warn:#f59e0b;
+      --error:#ef4444;
+      --text:#fff;
+      --muted:rgba(255,255,255,.7);
+      --radius:16px;
+      --shadow:0 20px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer}
+    .gradient{background:linear-gradient(135deg,var(--primary1) 0%,var(--primary2) 100%)}
+    .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .7rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid var(--border);font-size:.85rem}
+    .container{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    header.nav{position:sticky;top:0;z-index:5;grid-column:1/3;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(15,16,36,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem}
+    .brand-logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;box-shadow:var(--shadow)}
+    .brand img{width:36px;height:36px;border-radius:10px;object-fit:cover;border:1px solid var(--border)}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .logout{border:1px solid var(--error);color:var(--error);background:rgba(239,68,68,.1);padding:.5rem .8rem;border-radius:10px}
+    aside.sidebar{border-right:1px solid var(--border);background:rgba(255,255,255,.03);padding:18px;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto}
+    .menu{display:flex;flex-direction:column;gap:8px}
+    .menu a{padding:.75rem .85rem;border-radius:12px;color:var(--muted);display:flex;align-items:center;gap:.7rem;border:1px solid transparent}
+    .menu a.active,.menu a:hover{color:var(--text);background:var(--card2);border-color:var(--border)}
+    main{padding:26px}
+    .grid{display:grid;gap:18px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width: 1200px){.grid.cols-3{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 900px){.container{grid-template-columns:1fr}aside.sidebar{position:static;height:auto}header.nav{grid-column:1/2}}
+    @media (max-width: 700px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 10px;font-size:1.05rem}
+    .muted{color:var(--muted);font-size:.95rem}
+    .stat{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+    .stat .val{font-size:1.4rem;font-weight:800;color:#aab4ff}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .btn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);padding:.6rem .9rem;border-radius:12px;color:#fff;font-weight:600}
+    .btn.primary{border-color:transparent;background:linear-gradient(135deg,var(--primary1),var(--primary2))}
+    .btn.danger{border-color:var(--error);color:#fff;background:rgba(239,68,68,.18)}
+    .btn.success{border-color:var(--success);background:rgba(16,185,129,.18)}
+    .btn.icon{display:inline-flex;align-items:center;gap:.5rem}
+    input,select,textarea{width:100%;padding:.7rem .8rem;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--border);color:#fff;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:#8ea2ff;box-shadow:0 0 0 4px rgba(102,126,234,.2)}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th,td{text-align:left;padding:12px;background:rgba(255,255,255,.04);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    th{background:rgba(255,255,255,.06);font-size:.9rem;color:#d9ddff}
+    tr{border-radius:12px}
+    tr td:first-child, tr th:first-child{border-left:1px solid var(--border);border-top-left-radius:12px;border-bottom-left-radius:12px}
+    tr td:last-child, tr th:last-child{border-right:1px solid var(--border);border-top-right-radius:12px;border-bottom-right-radius:12px}
+    .hidden{display:none !important}
+    .pill{padding:.25rem .6rem;border-radius:999px;border:1px solid var(--border);font-size:.8rem}
+    .pill.ok{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.5);color:#b7f8df}
+    .pill.warn{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.5);color:#ffe1ae}
+    .pill.bad{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.5);color:#ffc2c2}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row > *{flex:1 1 240px}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .section-title h2{margin:0}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;background:rgba(255,255,255,.08);border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+    .hr{height:1px;background:var(--border);margin:14px 0}
+    .img-preview{width:120px;height:120px;border-radius:16px;border:1px solid var(--border);background:rgba(255,255,255,.06);display:grid;place-items:center;overflow:hidden}
+    .img-preview img{max-width:100%;max-height:100%}
+    .tag{display:inline-block;padding:.25rem .5rem;border:1px dashed var(--border);border-radius:8px;font-size:.8rem;color:#d0d4ff}
+    .note{font-size:.9rem;color:#cbd0ff}
+    .right{display:flex;gap:8px;align-items:center}
+    .table-actions{display:flex;gap:6px}
+    .help{color:#bdc3ff}
+    .small{font-size:.85rem}
+    .danger-zone{border:1px dashed rgba(239,68,68,.5);background:rgba(239,68,68,.06);padding:12px;border-radius:14px}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">
+      <div class="brand-logo gradient" id="brandLogoBox">🏗️</div>
+      <span>ARSA Token — <strong>Admin</strong></span>
+      <span class="chip" id="envChip">Local</span>
+    </div>
+    <div class="nav-right">
+      <span class="muted small">👤 <span id="adminUser">admin</span></span>
+      <button class="btn logout" id="btnLogout">Çıkış</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <nav class="menu" id="sideMenu">
+        <a href="#" data-section="dashboard" class="active">📊 Genel Bakış</a>
+        <a href="#" data-section="properties">🏢 Emlaklar</a>
+        <a href="#" data-section="payouts">💸 Kira Dağıtımı</a>
+        <a href="#" data-section="users">🧑‍💼 Kullanıcılar</a>
+        <a href="#" data-section="site">⚙️ Site Ayarları</a>
+        <a href="#" data-section="seo">🔎 SEO</a>
+        <a href="#" data-section="backup">🗄️ Yedekle/İçe Aktar</a>
+        <a href="#" data-section="security">🔐 Güvenlik</a>
+      </nav>
+      <div class="hr"></div>
+      <div class="small help">💡 Menüdeki her bölüm yerel depoda (LocalStorage) saklanır. Backend ekleyene kadar gerçek veritabanı yerine geçer.</div>
+    </aside>
+
+    <main id="main">
+      <!-- Dashboard -->
+      <section id="dashboard" class="section">
+        <div class="section-title">
+          <h2>Genel Bakış</h2>
+          <div class="right">
+            <button class="btn success" id="btnQuickSave">Hızlı Kaydet</button>
+            <button class="btn" id="btnRefresh">Yenile</button>
+          </div>
+        </div>
+        <div class="grid cols-3">
+          <div class="card stat">
+            <div>
+              <div class="muted">Toplam Emlak</div>
+              <div class="val" id="statProperties">0</div>
+            </div>
+            <span class="pill ok">+Yükseliyor</span>
+          </div>
+          <div class="card stat">
+            <div>
+              <div class="muted">Kayıtlı Kullanıcı</div>
+              <div class="val" id="statUsers">0</div>
+            </div>
+            <span class="pill">Stabil</span>
+          </div>
+          <div class="card stat">
+            <div>
+              <div class="muted">Son Dağıtım</div>
+              <div class="val" id="statLastPayout">—</div>
+            </div>
+            <span class="pill warn">Bekliyor</span>
+          </div>
+        </div>
+
+        <div class="grid cols-2" style="margin-top:18px">
+          <div class="card">
+            <h3>Hızlı Emlak Ekle</h3>
+            <div class="row">
+              <div><label>Ad</label><input id="q_name" placeholder="Örn. Berlin Ofis"></div>
+              <div><label>Şehir</label><input id="q_city" placeholder="Berlin"></div>
+              <div><label>Fiyat (€)</label><input type="number" id="q_price" min="0" step="0.01"></div>
+              <div><label>Aylık Kira (€)</label><input type="number" id="q_rent" min="0" step="0.01"></div>
+            </div>
+            <div class="row">
+              <div><label>Toplam NFT (pay)</label><input type="number" id="q_shares" min="1" step="1" value="1000"></div>
+              <div><label>Durum</label>
+                <select id="q_status">
+                  <option value="aktif">Aktif</option>
+                  <option value="beklemede">Beklemede</option>
+                  <option value="tamamlandı">Tamamlandı</option>
+                </select>
+              </div>
+            </div>
+            <div class="right" style="margin-top:10px">
+              <button class="btn primary" id="q_add">Ekle</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Son Kira Dağıtımları</h3>
+            <div id="recentPayouts" class="small muted">Kayıt yok.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Properties -->
+      <section id="properties" class="section hidden">
+        <div class="section-title">
+          <h2>Emlaklar</h2>
+          <div class="right">
+            <button class="btn primary" id="btnOpenAddProperty">Yeni Emlak</button>
+            <button class="btn" id="btnExportProperties">CSV Dışa Aktar</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="toolbar">
+            <div class="row" style="flex:1">
+              <div style="flex:2"><input id="propSearch" placeholder="Ad/şehir ile ara…"></div>
+              <div><select id="propFilterStatus"><option value="">Durum (hepsi)</option><option>aktif</option><option>beklemede</option><option>tamamlandı</option></select></div>
+              <div><select id="propSort"><option value="name">Ada göre</option><option value="price">Fiyata göre</option><option value="rent">Kira</option></select></div>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Ad</th><th>Şehir</th><th>Fiyat</th><th>Aylık Kira</th><th>NFT (pay)</th><th>Durum</th><th style="width:180px">İşlemler</th></tr></thead>
+            <tbody id="propertiesTbody"></tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Emlak Formu</h3>
+          <div class="row">
+            <div><label>ID</label><input id="p_id" placeholder="otomatik" disabled></div>
+            <div><label>Ad</label><input id="p_name" required></div>
+            <div><label>Şehir</label><input id="p_city" required></div>
+            <div><label>Durum</label>
+              <select id="p_status">
+                <option>aktif</option><option>beklemede</option><option>tamamlandı</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div><label>Fiyat (€)</label><input type="number" id="p_price" step="0.01" min="0" required></div>
+            <div><label>Aylık Kira (€)</label><input type="number" id="p_rent" step="0.01" min="0" required></div>
+            <div><label>Toplam NFT (pay)</label><input type="number" id="p_shares" step="1" min="1" required></div>
+          </div>
+          <div class="row">
+            <div style="flex:2"><label>Görsel URL</label><input id="p_image" placeholder="https://…"></div>
+            <div><label>ROI % (opsiyonel)</label><input type="number" id="p_roi" step="0.01" min="0"></div>
+          </div>
+          <div class="right" style="margin-top:10px">
+            <button class="btn success" id="btnSaveProperty">Kaydet</button>
+            <button class="btn" id="btnResetProperty">Formu Temizle</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payouts -->
+      <section id="payouts" class="section hidden">
+        <div class="section-title">
+          <h2>Kira Dağıtımı</h2>
+          <div class="right">
+            <span class="tag">Manuel Dağıtım</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div><label>Emlak</label><select id="pay_property"></select></div>
+            <div><label>Toplam Tutar (€)</label><input type="number" id="pay_total" min="0" step="0.01"></div>
+            <div><label>Açıklama</label><input id="pay_note" placeholder="Temmuz 2025 dağıtımı"></div>
+          </div>
+          <div class="hr"></div>
+          <div class="section-title"><h3>Alıcılar</h3><div class="right"><button class="btn" id="btnFillProRata">NFT Oranına Göre Doldur</button></div></div>
+          <div class="card" style="background:rgba(255,255,255,.03)">
+            <table>
+              <thead><tr><th>Kullanıcı</th><th>Cüzdan</th><th>NFT Payı</th><th>Tutar (€)</th></tr></thead>
+              <tbody id="pay_recipients"></tbody>
+            </table>
+          </div>
+          <div class="right" style="margin-top:10px">
+            <div class="muted">Toplam Girilen: <span class="kbd" id="pay_sum">€0,00</span></div>
+            <button class="btn primary" id="btnDistribute">Dağıt</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Dağıtım Geçmişi</h3>
+          <table>
+            <thead><tr><th>Tarih</th><th>Emlak</th><th>Tutar</th><th>Alıcı Sayısı</th><th>Açıklama</th></tr></thead>
+            <tbody id="payoutsTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Users -->
+      <section id="users" class="section hidden">
+        <div class="section-title">
+          <h2>Kullanıcılar</h2>
+          <div class="right">
+            <button class="btn" id="btnSeedUsers">Örnek Doldur</button>
+            <button class="btn primary" id="btnAddUser">Yeni Kullanıcı</button>
+          </div>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Ad</th><th>E-posta</th><th>Cüzdan</th><th>NFT Payı</th><th style="width:160px">İşlemler</th></tr></thead>
+            <tbody id="usersTbody"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Kullanıcı Formu</h3>
+          <div class="row">
+            <div><label>ID</label><input id="u_id" disabled></div>
+            <div><label>Ad</label><input id="u_name"></div>
+            <div><label>E-posta</label><input id="u_email" type="email"></div>
+            <div><label>Cüzdan</label><input id="u_wallet" placeholder="0x…"></div>
+            <div><label>NFT Payı</label><input id="u_shares" type="number" min="0" step="1" value="0"></div>
+          </div>
+          <div class="right" style="margin-top:10px">
+            <button class="btn success" id="btnSaveUser">Kaydet</button>
+            <button class="btn" id="btnResetUser">Temizle</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Site Settings -->
+      <section id="site" class="section hidden">
+        <div class="section-title">
+          <h2>Site Ayarları</h2>
+          <div class="right"><span class="tag">Sadece LocalStorage</span></div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Logo</h3>
+            <div class="row">
+              <div class="img-preview" id="logoPreview">🏗️</div>
+              <div style="flex:2">
+                <input type="file" id="logoInput" accept="image/*">
+                <div class="note">Yüklediğiniz logo Base64 olarak saklanır ve sitede kullanılabilir.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Sosyal Medya</h3>
+            <div class="row">
+              <div><label>Twitter/X</label><input id="sm_twitter" placeholder="https://x.com/…"></div>
+              <div><label>Telegram</label><input id="sm_telegram" placeholder="https://t.me/…"></div>
+              <div><label>Discord</label><input id="sm_discord" placeholder="https://discord.gg/…"></div>
+              <div><label>Instagram</label><input id="sm_instagram" placeholder="https://instagram.com/…"></div>
+              <div><label>LinkedIn</label><input id="sm_linkedin" placeholder="https://linkedin.com/company/…"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Navbar Menüsü</h3>
+            <div id="menuList"></div>
+            <div class="hr"></div>
+            <div class="row">
+              <div><label>Metin</label><input id="m_text" placeholder="Örn. Ana Sayfa"></div>
+              <div><label>URL</label><input id="m_url" placeholder="/index.html"></div>
+              <div><label>Aktif?</label><select id="m_enabled"><option value="true">Evet</option><option value="false">Hayır</option></select></div>
+            </div>
+            <div class="right" style="margin-top:10px">
+              <button class="btn success" id="btnAddMenu">Ekle</button>
+              <button class="btn" id="btnResetMenu">Temizle</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Diğer</h3>
+            <div class="row">
+              <div><label>İletişim E-posta</label><input id="site_email" placeholder="hello@arsa.xxx"></div>
+              <div><label>Destek Linki</label><input id="site_support" placeholder="https://…"></div>
+            </div>
+            <div class="right" style="margin-top:10px">
+              <button class="btn primary" id="btnSaveSettings">Ayarları Kaydet</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO -->
+      <section id="seo" class="section hidden">
+        <div class="section-title"><h2>SEO Ayarları</h2></div>
+        <div class="card">
+          <div class="row">
+            <div><label>Site Başlığı</label><input id="seo_title" placeholder="ARSA Token — NFT ile Gayrimenkul"></div>
+            <div><label>Meta Açıklama</label><input id="seo_desc" placeholder="Gayrimenkul NFT yatırımı…"></div>
+          </div>
+          <div class="row">
+            <div style="flex:2"><label>OG Görsel URL</label><input id="seo_og" placeholder="https://…/og.jpg"></div>
+            <div><label>Robots</label>
+              <select id="seo_robots"><option value="index,follow">index,follow</option><option value="noindex,nofollow">noindex,nofollow</option></select>
+            </div>
+          </div>
+          <div class="right" style="margin-top:10px">
+            <button class="btn primary" id="btnSaveSEO">Kaydet</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Backup -->
+      <section id="backup" class="section hidden">
+        <div class="section-title"><h2>Yedekleme / İçe Aktar</h2></div>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>JSON Dışa Aktar</h3>
+            <p class="muted">Tüm verileri (ayarlar, kullanıcılar, emlaklar, dağıtımlar) tek JSON dosyası olarak indir.</p>
+            <button class="btn primary" id="btnExport">Dışa Aktar</button>
+          </div>
+          <div class="card">
+            <h3>JSON İçe Aktar</h3>
+            <input type="file" id="importFile" accept="application/json">
+            <p class="muted">Dosyayı seçtiğinizde içerik doğrulanır ve yerel depoya yazılır.</p>
+          </div>
+          <div class="card danger-zone">
+            <h3>⚠️ Tüm Verileri Sil</h3>
+            <p class="muted">Bu işlem geri alınamaz.</p>
+            <button class="btn danger" id="btnNuke">Her Şeyi Sil</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Security -->
+      <section id="security" class="section hidden">
+        <div class="section-title"><h2>Güvenlik</h2></div>
+        <div class="card">
+          <h3>Yönetici Parolası</h3>
+          <div class="row">
+            <div><label>Mevcut Parola</label><input type="password" id="sec_old"></div>
+            <div><label>Yeni Parola</label><input type="password" id="sec_new"></div>
+            <div><label>Yeni Parola (tekrar)</label><input type="password" id="sec_new2"></div>
+          </div>
+          <div class="right" style="margin-top:10px">
+            <button class="btn primary" id="btnChangePass">Parolayı Değiştir</button>
+          </div>
+          <p class="small help">Parola SHA-256 özet olarak LocalStorage içinde saklanır. Gerçek üretimde sunucu tarafı gereklidir.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+  // ===== Utilities =====
+  const store = {
+    get(key, def=null){
+      try{ return JSON.parse(localStorage.getItem(key)) ?? def }catch(e){ return def }
+    },
+    set(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+  };
+  const fmtEUR = (v)=> new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'}).format(Number(v||0));
+  const id = ()=> Math.random().toString(36).slice(2,9);
+
+  // ===== Session Guard =====
+  (function guard(){
+    const s = store.get('arsa.session', {});
+    if(!(s && s.isAdmin)){
+      // initialize a default session for demo if not present
+      // In production, redirect to login.html
+      // location.href='login.html';
+      // For convenience here:
+      store.set('arsa.session', {isAdmin:true, user:'admin'});
+    }
+    document.getElementById('adminUser').textContent = (s && s.user) || 'admin';
+  })();
+
+  // ===== State =====
+  const state = {
+    properties: store.get('arsa.properties', []),
+    users: store.get('arsa.users', []),
+    payouts: store.get('arsa.payouts', []),
+    settings: store.get('arsa.settings', { logo:null, socials:{}, email:'', support:'', menu:[
+      {text:'Ana Sayfa', url:'/index.html', enabled:true},
+      {text:'Emlaklar', url:'/properties.html', enabled:true},
+      {text:'Dashboard', url:'/dashboard.html', enabled:true},
+      {text:'Hakkımızda', url:'/index.html#about', enabled:true},
+      {text:'İletişim', url:'/index.html#contact', enabled:true},
+    ] }),
+    seo: store.get('arsa.seo', { title:'ARSA Token — NFT ile Gayrimenkul', desc:'Gerçek gayrimenkul destekli NFT yatırım platformu.', og:'', robots:'index,follow' }),
+    selection: { property:null, user:null }
+  };
+
+  function persistAll(){
+    store.set('arsa.properties', state.properties);
+    store.set('arsa.users', state.users);
+    store.set('arsa.payouts', state.payouts);
+    store.set('arsa.settings', state.settings);
+    store.set('arsa.seo', state.seo);
+  }
+
+  // ===== Navigation =====
+  const sections = Array.from(document.querySelectorAll('.section'));
+  const links = Array.from(document.querySelectorAll('.menu a'));
+  function showSection(name){
+    sections.forEach(s=> s.id===name ? s.classList.remove('hidden') : s.classList.add('hidden'));
+    links.forEach(a=> a.dataset.section===name ? a.classList.add('active') : a.classList.remove('active'));
+    if(name==='properties') renderProperties();
+    if(name==='users') renderUsers();
+    if(name==='payouts') { renderPayPropertyList(); renderRecipients(); renderPayoutsHistory(); }
+    if(name==='site') renderSettings();
+    if(name==='seo') renderSEO();
+    if(name==='dashboard') renderDashboard();
+  }
+  links.forEach(a=> a.addEventListener('click', (e)=>{ e.preventDefault(); showSection(a.dataset.section) }));
+  showSection('dashboard');
+
+  // ===== Dashboard =====
+  function renderDashboard(){
+    document.getElementById('statProperties').textContent = state.properties.length;
+    document.getElementById('statUsers').textContent = state.users.length;
+    const lp = state.payouts.at(-1);
+    document.getElementById('statLastPayout').textContent = lp ? fmtEUR(lp.total) : '—';
+
+    const wrap = document.getElementById('recentPayouts');
+    if(!state.payouts.length){ wrap.textContent = 'Kayıt yok.'; return; }
+    wrap.innerHTML = state.payouts.slice(-5).reverse().map(p=>{
+      const pr = state.properties.find(x=>x.id===p.propertyId);
+      return `<div class="row" style="align-items:center;margin-bottom:8px">
+        <span class="pill">${new Date(p.date).toLocaleString()}</span>
+        <strong>${pr?pr.name:'(silinmiş emlak)'}</strong>
+        <span>${fmtEUR(p.total)}</span>
+        <span class="muted small">${p.note||''}</span>
+      </div>`
+    }).join('');
+  }
+  document.getElementById('btnQuickSave').onclick = persistAll;
+  document.getElementById('btnRefresh').onclick = ()=>location.reload();
+  document.getElementById('btnLogout').onclick = ()=>{ localStorage.removeItem('arsa.session'); location.href='login.html' };
+
+  // Quick add property
+  document.getElementById('q_add').onclick = ()=>{
+    const item = {
+      id:id(),
+      name:document.getElementById('q_name').value.trim(),
+      city:document.getElementById('q_city').value.trim(),
+      price:Number(document.getElementById('q_price').value||0),
+      rent:Number(document.getElementById('q_rent').value||0),
+      shares:Number(document.getElementById('q_shares').value||0),
+      status:document.getElementById('q_status').value,
+      image:'',
+      roi:0
+    };
+    if(!item.name){ alert('Ad gerekli'); return; }
+    state.properties.push(item); persistAll(); renderProperties(); renderDashboard();
+    document.getElementById('q_name').value=''; document.getElementById('q_city').value=''; document.getElementById('q_price').value=''; document.getElementById('q_rent').value='';
+  };
+
+  // ===== Properties =====
+  const tbodyProps = document.getElementById('propertiesTbody');
+  const formFields = ['p_id','p_name','p_city','p_status','p_price','p_rent','p_shares','p_image','p_roi'].reduce((acc,idv)=> (acc[idv]=document.getElementById(idv),acc),{});
+
+  function renderProperties(){
+    const q = document.getElementById('propSearch').value?.toLowerCase()||'';
+    const st = document.getElementById('propFilterStatus').value||'';
+    const sort = document.getElementById('propSort').value||'name';
+    let arr = [...state.properties];
+    if(q) arr = arr.filter(x=> (x.name+x.city).toLowerCase().includes(q));
+    if(st) arr = arr.filter(x=> x.status===st);
+    arr.sort((a,b)=> sort==='name' ? a.name.localeCompare(b.name) : (sort==='price' ? a.price-b.price : a.rent-b.rent) );
+    tbodyProps.innerHTML = arr.map(x=>`<tr>
+      <td>${x.name}</td><td>${x.city}</td><td>${fmtEUR(x.price)}</td><td>${fmtEUR(x.rent)}</td>
+      <td>${x.shares}</td>
+      <td><span class="pill ${x.status==='aktif'?'ok':x.status==='beklemede'?'warn':'bad'}">${x.status}</span></td>
+      <td class="table-actions">
+        <button class="btn small" data-act="edit" data-id="${x.id}">Düzenle</button>
+        <button class="btn danger small" data-act="del" data-id="${x.id}">Sil</button>
+      </td>
+    </tr>`).join('');
+  }
+  document.getElementById('propSearch').oninput = renderProperties;
+  document.getElementById('propFilterStatus').onchange = renderProperties;
+  document.getElementById('propSort').onchange = renderProperties;
+  document.getElementById('btnExportProperties').onclick = ()=>{
+    const hdr = ['id','name','city','price','rent','shares','status','image','roi'];
+    const rows = [hdr.join(',')].concat(state.properties.map(p=> hdr.map(k=> JSON.stringify(p[k]??'')).join(',')));
+    const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8'});
+    const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='properties.csv'; a.click();
+  };
+  document.getElementById('btnOpenAddProperty').onclick = ()=>{
+    ['p_id','p_name','p_city','p_price','p_rent','p_shares','p_image','p_roi'].forEach(k=> formFields[k].value = '');
+    formFields['p_status'].value='aktif';
+    state.selection.property=null;
+    window.scrollTo({top:document.getElementById('properties').offsetTop-20, behavior:'smooth'});
+  };
+
+  tbodyProps.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    const idv = btn.dataset.id;
+    if(btn.dataset.act==='edit'){
+      const p = state.properties.find(x=>x.id===idv); if(!p) return;
+      formFields.p_id.value = p.id;
+      formFields.p_name.value = p.name;
+      formFields.p_city.value = p.city;
+      formFields.p_status.value = p.status;
+      formFields.p_price.value = p.price;
+      formFields.p_rent.value = p.rent;
+      formFields.p_shares.value = p.shares;
+      formFields.p_image.value = p.image||'';
+      formFields.p_roi.value = p.roi||'';
+      state.selection.property = p.id;
+      window.scrollTo({top:document.getElementById('properties').offsetTop-20, behavior:'smooth'});
+    } else if(btn.dataset.act==='del'){
+      if(confirm('Silinsin mi?')){
+        state.properties = state.properties.filter(x=>x.id!==idv);
+        persistAll(); renderProperties(); renderPayPropertyList(); renderDashboard();
+      }
+    }
+  });
+
+  document.getElementById('btnSaveProperty').onclick = ()=>{
+    const data = {
+      id: formFields.p_id.value || id(),
+      name: formFields.p_name.value.trim(),
+      city: formFields.p_city.value.trim(),
+      status: formFields.p_status.value,
+      price: Number(formFields.p_price.value||0),
+      rent: Number(formFields.p_rent.value||0),
+      shares: Number(formFields.p_shares.value||0),
+      image: formFields.p_image.value.trim(),
+      roi: Number(formFields.p_roi.value||0)
+    };
+    if(!data.name){ alert('Ad gerekli'); return; }
+    const idx = state.properties.findIndex(x=>x.id===data.id);
+    if(idx>-1) state.properties[idx]=data; else state.properties.push(data);
+    persistAll(); renderProperties(); renderPayPropertyList(); renderDashboard();
+    alert('Kaydedildi');
+  };
+  document.getElementById('btnResetProperty').onclick = ()=>{
+    ['p_id','p_name','p_city','p_price','p_rent','p_shares','p_image','p_roi'].forEach(k=> formFields[k].value = '');
+    formFields.p_status.value='aktif';
+    state.selection.property=null;
+  };
+
+  // ===== Users =====
+  const usersTbody = document.getElementById('usersTbody');
+  const u = ['u_id','u_name','u_email','u_wallet','u_shares'].reduce((a,k)=>(a[k]=document.getElementById(k),a),{});
+
+  function renderUsers(){
+    usersTbody.innerHTML = state.users.map(x=>`<tr>
+      <td>${x.name}</td><td>${x.email}</td><td><span class="kbd">${x.wallet}</span></td><td>${x.shares}</td>
+      <td class="table-actions">
+        <button class="btn small" data-act="edit" data-id="${x.id}">Düzenle</button>
+        <button class="btn danger small" data-act="del" data-id="${x.id}">Sil</button>
+      </td>
+    </tr>`).join('');
+  }
+  usersTbody.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    const idv = btn.dataset.id;
+    if(btn.dataset.act==='edit'){
+      const x = state.users.find(y=>y.id===idv);
+      if(!x) return;
+      u.u_id.value=x.id; u.u_name.value=x.name; u.u_email.value=x.email; u.u_wallet.value=x.wallet; u.u_shares.value=x.shares;
+    } else if(btn.dataset.act==='del'){
+      if(confirm('Kullanıcı silinsin mi?')){
+        state.users = state.users.filter(y=>y.id!==idv);
+        persistAll(); renderUsers(); renderRecipients(); renderDashboard();
+      }
+    }
+  });
+  document.getElementById('btnSaveUser').onclick = ()=>{
+    const data = {
+      id: u.u_id.value || id(),
+      name: (u.u_name.value||'').trim(),
+      email: (u.u_email.value||'').trim(),
+      wallet: (u.u_wallet.value||'').trim(),
+      shares: Number(u.u_shares.value||0)
+    };
+    if(!data.name){ alert('Ad gerekli'); return; }
+    const idx = state.users.findIndex(x=>x.id===data.id);
+    if(idx>-1) state.users[idx]=data; else state.users.push(data);
+    persistAll(); renderUsers(); renderRecipients(); alert('Kullanıcı kaydedildi');
+  };
+  document.getElementById('btnResetUser').onclick = ()=>{ u.u_id.value=u.u_name.value=u.u_email.value=u.u_wallet.value=''; u.u_shares.value=0; };
+  document.getElementById('btnAddUser').onclick = ()=>{ u.u_id.value=u.u_name.value=u.u_email.value=u.u_wallet.value=''; u.u_shares.value=0; };
+  document.getElementById('btnSeedUsers').onclick = ()=>{
+    if(!confirm('Örnek 3 kullanıcı eklensin mi?')) return;
+    const demo=[
+      {name:'Ayşe Demir', email:'ayse@example.com', wallet:'0xA1a1...111', shares:120},
+      {name:'Mehmet Yılmaz', email:'mehmet@example.com', wallet:'0xB2b2...222', shares:80},
+      {name:'Sven de Vries', email:'sven@example.com', wallet:'0xC3c3...333', shares:50},
+    ].map(x=>({...x,id:id()}));
+    state.users.push(...demo); persistAll(); renderUsers(); renderRecipients(); renderDashboard();
+  };
+
+  // ===== Payouts =====
+  function renderPayPropertyList(){
+    const sel = document.getElementById('pay_property'); sel.innerHTML='';
+    state.properties.forEach(p=>{
+      const o=document.createElement('option'); o.value=p.id; o.textContent=`${p.name} — ${p.city}`; sel.appendChild(o);
+    });
+  }
+  function renderRecipients(){
+    const tb = document.getElementById('pay_recipients');
+    if(!state.users.length){ tb.innerHTML = '<tr><td colspan="4" class="muted">Kullanıcı yok. Önce kullanıcı ekleyin.</td></tr>'; return; }
+    tb.innerHTML = state.users.map(u=>`<tr>
+      <td>${u.name}</td><td><span class="kbd">${u.wallet}</span></td><td>${u.shares}</td>
+      <td><input type="number" class="pay_amount" data-id="${u.id}" min="0" step="0.01" value="0"></td>
+    </tr>`).join('');
+    updatePaySum();
+    tb.addEventListener('input', updatePaySum, {once:true});
+  }
+  function updatePaySum(){
+    const els = document.querySelectorAll('.pay_amount');
+    let sum = 0; els.forEach(e=> sum += Number(e.value||0));
+    document.getElementById('pay_sum').textContent = fmtEUR(sum);
+  }
+  document.getElementById('btnFillProRata').onclick = ()=>{
+    const total = Number(document.getElementById('pay_total').value||0);
+    if(total<=0){ alert('Önce toplam tutarı girin'); return; }
+    const totalShares = state.users.reduce((a,b)=>a+Number(b.shares||0),0) || 1;
+    document.querySelectorAll('.pay_amount').forEach(inp=>{
+      const u = state.users.find(x=>x.id===inp.dataset.id);
+      inp.value = (total * (Number(u.shares||0)/totalShares)).toFixed(2);
+    });
+    updatePaySum();
+  };
+  document.getElementById('btnDistribute').onclick = ()=>{
+    const propertyId = document.getElementById('pay_property').value;
+    const total = Number(document.getElementById('pay_total').value||0);
+    const note = document.getElementById('pay_note').value||'';
+    const recipients = Array.from(document.querySelectorAll('.pay_amount')).map(inp=>({ id:inp.dataset.id, amount:Number(inp.value||0) })).filter(x=>x.amount>0);
+    const sum = recipients.reduce((a,b)=>a+b.amount,0);
+    if(!propertyId){ alert('Emlak seçin'); return; }
+    if(total<=0){ alert('Toplam tutar girin'); return; }
+    if(Math.abs(sum-total) > 0.01){ alert('Girilen tutarların toplamı, toplam tutar ile eşleşmiyor'); return; }
+    const payload = { id:id(), date: Date.now(), propertyId, total, note, recipients };
+    state.payouts.push(payload); persistAll(); renderPayoutsHistory(); renderDashboard();
+    alert('Dağıtım kaydedildi (simülasyon).');
+  };
+  function renderPayoutsHistory(){
+    const tb = document.getElementById('payoutsTbody');
+    if(!state.payouts.length){ tb.innerHTML='<tr><td colspan="5" class="muted">Kayıt yok.</td></tr>'; return; }
+    tb.innerHTML = state.payouts.slice().reverse().map(p=>{
+      const pr = state.properties.find(x=>x.id===p.propertyId);
+      return `<tr>
+        <td>${new Date(p.date).toLocaleString()}</td>
+        <td>${pr?pr.name:'(silinmiş)'}</td>
+        <td>${fmtEUR(p.total)}</td>
+        <td>${p.recipients.length}</td>
+        <td>${p.note||''}</td>
+      </tr>`
+    }).join('');
+  }
+
+  // ===== Site Settings =====
+  function renderSettings(){
+    const s = state.settings;
+    // logo
+    const box = document.getElementById('brandLogoBox');
+    const prev = document.getElementById('logoPreview');
+    prev.innerHTML = s.logo ? `<img src="${s.logo}" alt="logo">` : '🏗️';
+    if(s.logo){ box.innerHTML = `<img src="${s.logo}" alt="logo">`; }
+    // socials
+    document.getElementById('sm_twitter').value = s.socials.twitter||'';
+    document.getElementById('sm_telegram').value = s.socials.telegram||'';
+    document.getElementById('sm_discord').value = s.socials.discord||'';
+    document.getElementById('sm_instagram').value = s.socials.instagram||'';
+    document.getElementById('sm_linkedin').value = s.socials.linkedin||'';
+    // others
+    document.getElementById('site_email').value = s.email||'';
+    document.getElementById('site_support').value = s.support||'';
+    // menu
+    renderMenuList();
+  }
+  document.getElementById('logoInput').addEventListener('change', (e)=>{
+    const file = e.target.files[0]; if(!file) return;
+    const fr = new FileReader();
+    fr.onload = ()=>{
+      state.settings.logo = fr.result;
+      persistAll(); renderSettings();
+      alert('Logo güncellendi');
+    };
+    fr.readAsDataURL(file);
+  });
+
+  function renderMenuList(){
+    const wrap = document.getElementById('menuList');
+    const arr = state.settings.menu;
+    wrap.innerHTML = arr.map((m,i)=>`<div class="stat" data-i="${i}">
+      <div><strong>${m.text}</strong> <span class="muted small">(${m.url})</span> ${m.enabled?'<span class="pill ok">aktif</span>':'<span class="pill bad">pasif</span>'}</div>
+      <div class="table-actions">
+        <button class="btn small" data-act="up" data-i="${i}">↑</button>
+        <button class="btn small" data-act="down" data-i="${i}">↓</button>
+        <button class="btn small" data-act="edit" data-i="${i}">Düzenle</button>
+        <button class="btn danger small" data-act="del" data-i="${i}">Sil</button>
+      </div>
+    </div>`).join('');
+    wrap.onclick = (e)=>{
+      const btn = e.target.closest('button'); if(!btn) return;
+      const i = Number(btn.dataset.i);
+      if(btn.dataset.act==='up' && i>0){ [arr[i-1],arr[i]]=[arr[i],arr[i-1]]; }
+      if(btn.dataset.act==='down' && i<arr.length-1){ [arr[i+1],arr[i]]=[arr[i],arr[i+1]]; }
+      if(btn.dataset.act==='del'){ arr.splice(i,1); }
+      if(btn.dataset.act==='edit'){
+        const m = arr[i];
+        document.getElementById('m_text').value=m.text;
+        document.getElementById('m_url').value=m.url;
+        document.getElementById('m_enabled').value=String(m.enabled);
+        state.selection.menuIndex=i;
+        return;
+      }
+      persistAll(); renderMenuList();
+    };
+  }
+  document.getElementById('btnAddMenu').onclick = ()=>{
+    const item = {
+      text: document.getElementById('m_text').value.trim(),
+      url: document.getElementById('m_url').value.trim(),
+      enabled: document.getElementById('m_enabled').value==='true'
+    };
+    if(!item.text || !item.url){ alert('Metin ve URL gerekli'); return; }
+    const idx = state.selection.menuIndex;
+    if(Number.isInteger(idx)){ state.settings.menu[idx]=item; state.selection.menuIndex=null; }
+    else state.settings.menu.push(item);
+    persistAll(); renderMenuList(); document.getElementById('m_text').value=''; document.getElementById('m_url').value=''; document.getElementById('m_enabled').value='true';
+  };
+  document.getElementById('btnResetMenu').onclick = ()=>{ document.getElementById('m_text').value=''; document.getElementById('m_url').value=''; document.getElementById('m_enabled').value='true'; state.selection.menuIndex=null; };
+
+  document.getElementById('btnSaveSettings').onclick = ()=>{
+    state.settings.socials = {
+      twitter: document.getElementById('sm_twitter').value.trim(),
+      telegram: document.getElementById('sm_telegram').value.trim(),
+      discord: document.getElementById('sm_discord').value.trim(),
+      instagram: document.getElementById('sm_instagram').value.trim(),
+      linkedin: document.getElementById('sm_linkedin').value.trim(),
+    };
+    state.settings.email = document.getElementById('site_email').value.trim();
+    state.settings.support = document.getElementById('site_support').value.trim();
+    persistAll(); alert('Ayarlar kaydedildi');
+  };
+
+  // ===== SEO =====
+  function renderSEO(){
+    const s = state.seo;
+    document.getElementById('seo_title').value = s.title||'';
+    document.getElementById('seo_desc').value = s.desc||'';
+    document.getElementById('seo_og').value = s.og||'';
+    document.getElementById('seo_robots').value = s.robots||'index,follow';
+  }
+  document.getElementById('btnSaveSEO').onclick = ()=>{
+    state.seo = {
+      title: document.getElementById('seo_title').value.trim(),
+      desc: document.getElementById('seo_desc').value.trim(),
+      og: document.getElementById('seo_og').value.trim(),
+      robots: document.getElementById('seo_robots').value
+    };
+    persistAll(); alert('SEO ayarları kaydedildi');
+  };
+
+  // ===== Backup =====
+  document.getElementById('btnExport').onclick = ()=>{
+    const data = {
+      exportedAt: new Date().toISOString(),
+      properties: state.properties,
+      users: state.users,
+      payouts: state.payouts,
+      settings: state.settings,
+      seo: state.seo
+    };
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='arsa-admin-backup.json'; a.click();
+  };
+  document.getElementById('importFile').addEventListener('change', (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    const fr = new FileReader();
+    fr.onload = ()=>{
+      try{
+        const data = JSON.parse(fr.result);
+        if(!data) throw new Error('Geçersiz dosya');
+        state.properties = data.properties||[];
+        state.users = data.users||[];
+        state.payouts = data.payouts||[];
+        state.settings = data.settings||state.settings;
+        state.seo = data.seo||state.seo;
+        persistAll();
+        renderProperties(); renderUsers(); renderPayPropertyList(); renderPayoutsHistory(); renderSettings(); renderSEO(); renderDashboard();
+        alert('İçe aktarıldı');
+      }catch(err){ alert('Hata: '+err.message); }
+    };
+    fr.readAsText(f);
+  });
+  document.getElementById('btnNuke').onclick = ()=>{
+    if(confirm('Tüm veriler silinsin mi?')){
+      ['arsa.properties','arsa.users','arsa.payouts','arsa.settings','arsa.seo'].forEach(k=> localStorage.removeItem(k));
+      state.properties=[]; state.users=[]; state.payouts=[];
+      state.settings.logo=null; state.settings.menu=[]; state.settings.socials={};
+      renderProperties(); renderUsers(); renderPayoutsHistory(); renderSettings(); renderSEO(); renderDashboard();
+    }
+  };
+
+  // ===== Security =====
+  async function sha256(t){ const e = new TextEncoder().encode(t); const h = await crypto.subtle.digest('SHA-256', e); return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+  document.getElementById('btnChangePass').onclick = async ()=>{
+    const old = document.getElementById('sec_old').value;
+    const nw = document.getElementById('sec_new').value;
+    const nw2 = document.getElementById('sec_new2').value;
+    if(nw!==nw2){ alert('Yeni parolalar eşleşmiyor'); return; }
+    const sec = store.get('arsa.sec', {pass:null});
+    if(sec.pass && (await sha256(old))!==sec.pass){ alert('Mevcut parola hatalı'); return; }
+    store.set('arsa.sec', {pass: await sha256(nw)});
+    alert('Parola güncellendi');
+    document.getElementById('sec_old').value=document.getElementById('sec_new').value=document.getElementById('sec_new2').value='';
+  };
+
+  // ===== Init with some demo data if empty =====
+  (function bootstrap(){
+    if(state.properties.length===0){
+      state.properties.push(
+        {id:id(), name:'Berlin Ofis', city:'Berlin', price: 1200000, rent: 8200, shares: 1000, status:'aktif', image:'', roi:7.2},
+        {id:id(), name:'Amsterdam Apartman', city:'Amsterdam', price: 850000, rent: 5400, shares: 800, status:'beklemede', image:'', roi:6.3}
+      );
+    }
+    if(state.users.length===0){
+      state.users.push(
+        {id:id(), name:'Ayşe Demir', email:'ayse@example.com', wallet:'0xA1a1...111', shares:120},
+        {id:id(), name:'Mehmet Yılmaz', email:'mehmet@example.com', wallet:'0xB2b2...222', shares:80}
+      );
+    }
+    persistAll();
+    renderDashboard(); renderProperties(); renderUsers(); renderPayPropertyList(); renderPayoutsHistory(); renderSettings(); renderSEO();
+  })();
+  </script>
+</body>
+</html>
