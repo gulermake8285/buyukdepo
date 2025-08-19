@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emlaklar - RealEstate NFT</title>
+    <meta name="description" content="Yüksek getirili emlak NFT projelerimizi keşfedin. Gerçek mülklerle desteklenen NFT'lerle pasif gelir elde edin.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>">
+    
+    <style>
+        /* Import styles from index.html */
+        :root {
+            --primary-100: #667eea;
+            --primary-200: #764ba2;
+            --secondary-100: #f093fb;
+            --secondary-200: #f5576c;
+            --success-100: #10b981;
+            --success-200: #059669;
+            --warning-100: #f59e0b;
+            --error-100: #ef4444;
+            
+            --dark-100: #0a0a0f;
+            --dark-200: #0f0f23;
+            --dark-300: #1a1a3e;
+            --dark-400: #2d2d5f;
+            
+            --light-100: #ffffff;
+            --light-200: rgba(255, 255, 255, 0.9);
+            --light-300: rgba(255, 255, 255, 0.8);
+            --light-400: rgba(255, 255, 255, 0.6);
+            --light-500: rgba(255, 255, 255, 0.4);
+            --light-600: rgba(255, 255, 255, 0.2);
+            --light-700: rgba(255, 255, 255, 0.1);
+            
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-hover: rgba(255, 255, 255, 0.15);
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.25);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --radius-full: 50px;
+            
+            --blur-sm: blur(8px);
+            --blur-md: blur(12px);
+            --blur-lg: blur(16px);
+            --blur-xl: blur(24px);
+            
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            --gradient-primary: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-100) 0%, var(--secondary-200) 100%);
+            --gradient-success: linear-gradient(135deg, var(--success-100) 0%, var(--success-200) 100%);
+            --gradient-bg: linear-gradient(135deg, var(--dark-100) 0%, var(--dark-200) 50%, var(--dark-300) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gradient-bg);
+            color: var(--light-100);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: var(--blur-lg);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-container {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--light-100);
+            transition: transform var(--transition-fast);
+        }
+
+        .nav-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .brand-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--light-300);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-normal);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--light-100);
+            background: var(--glass-bg);
+            transform: translateY(-1px);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            color: var(--light-100);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .language-btn:hover {
+            background: var(--glass-hover);
+            border-color: var(--primary-100);
+            transform: translateY(-1px);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: var(--blur-lg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            z-index: 1000;
+            min-width: 120px;
+        }
+
+        .language-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--light-300);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: var(--glass-bg);
+            color: var(--light-100);
+        }
+
+        .language-option.active {
+            background: var(--primary-100);
+            color: var(--light-100);
+        }
+
+        .connect-wallet-btn {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: var(--radius-full);
+            color: var(--light-100);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .connect-wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: var(--gradient-secondary);
+        }
+
+        .connect-wallet-btn.connected {
+            background: var(--gradient-success);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 90px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            padding: 4rem 0 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--light-300);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Properties Section */
+        .properties-section {
+            padding: 4rem 0;
+        }
+
+        .properties-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-select {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--light-100);
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .filter-select:hover {
+            background: var(--glass-hover);
+            border-color: var(--primary-100);
+        }
+
+        .search-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--light-100);
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            width: 250px;
+            transition: all var(--transition-normal);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-100);
+            background: var(--glass-hover);
+        }
+
+        .search-box::placeholder {
+            color: var(--light-400);
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .property-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            backdrop-filter: var(--blur-sm);
+        }
+
+        .property-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-100);
+        }
+
+        .property-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-normal);
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--gradient-success);
+            color: var(--light-100);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .property-status {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .property-status.active {
+            background: var(--gradient-success);
+            color: var(--light-100);
+        }
+
+        .property-status.pending {
+            background: var(--gradient-secondary);
+            color: var(--light-100);
+        }
+
+        .property-content {
+            padding: 1.5rem;
+        }
+
+        .property-content h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light-100);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-location {
+            color: var(--light-300);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .property-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-100);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--light-400);
+            margin-top: 0.25rem;
+        }
+
+        .property-progress {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--light-300);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width var(--transition-normal);
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-secondary,
+        .btn-primary {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            color: var(--light-300);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-100);
+            color: var(--primary-100);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            color: var(--light-100);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: var(--gradient-secondary);
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: var(--light-100);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform var(--transition-normal);
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--gradient-success);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, var(--error-100), #dc2626);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-actions {
+                gap: 0.5rem;
+            }
+
+            .language-btn,
+            .connect-wallet-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .properties-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                justify-content: space-between;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .property-stats {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .property-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .property-content {
+                padding: 1.25rem;
+            }
+        }
+
+        /* RTL Support */
+        .rtl {
+            direction: rtl;
+        }
+
+        .rtl .property-location {
+            flex-direction: row-reverse;
+        }
+
+        /* Focus States */
+        .nav-link:focus,
+        .connect-wallet-btn:focus,
+        .language-btn:focus,
+        .filter-select:focus,
+        .search-box:focus,
+        button:focus {
+            outline: 2px solid var(--primary-100);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - Navigation -->
+    <nav class="header">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-building"></i>
+                </div>
+                <span class="brand-text">RealEstate NFT</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+                <a href="index.html#features" class="nav-link" data-i18n="nav.features">Özellikler</a>
+                <a href="properties.html" class="nav-link active" data-i18n="nav.properties">Emlaklar</a>
+                <a href="index.html#how-it-works" class="nav-link" data-i18n="nav.how">Nasıl Çalışır</a>
+            </div>
+            
+            <!-- Navigation Actions -->
+            <div class="nav-actions">
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <button class="language-btn" type="button" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span data-current-lang>TR</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="language-dropdown" id="languageDropdown">
+                        <div class="language-option active" data-lang="tr">
+                            <span class="flag">🇹🇷</span>
+                            <span>Türkçe</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span class="flag">🇺🇸</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="ar">
+                            <span class="flag">🇸🇦</span>
+                            <span>العربية</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Connect Wallet -->
+                <button class="connect-wallet-btn" type="button">
+                    <i class="fas fa-wallet"></i>
+                    <span data-i18n="nav.connect">Cüzdan Bağla</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title" data-i18n="properties.title">Emlak Projeleri</h1>
+                <p class="page-subtitle" data-i18n="properties.subtitle">
+                    Yüksek getirili emlak NFT projelerimizi keşfedin ve pasif gelir elde etmeye başlayın
+                </p>
+            </div>
+        </section>
+
+        <!-- Properties Section -->
+        <section class="properties-section">
+            <div class="container">
+                <!-- Filters -->
+                <div class="properties-filters">
+                    <div class="filter-group">
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all" data-i18n="filters.all_status">Tüm Durumlar</option>
+                            <option value="active" data-i18n="filters.active">Aktif</option>
+                            <option value="pending" data-i18n="filters.pending">Beklemede</option>
+                            <option value="sold_out" data-i18n="filters.sold_out">Tükendi</option>
+                        </select>
+                        
+                        <select class="filter-select" id="locationFilter">
+                            <option value="all" data-i18n="filters.all_locations">Tüm Şehirler</option>
+                            <option value="istanbul">İstanbul</option>
+                            <option value="ankara">Ankara</option>
+                            <option value="izmir">İzmir</option>
+                            <option value="bodrum">Bodrum</option>
+                        </select>
+                        
+                        <select class="filter-select" id="yieldFilter">
+                            <option value="all" data-i18n="filters.all_yields">Tüm Getiriler</option>
+                            <option value="high">%8+ Yüksek Getiri</option>
+                            <option value="medium">%5-8 Orta Getiri</option>
+                            <option value="low">%5- Düşük Getiri</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <input 
+                            type="text" 
+                            class="search-box" 
+                            id="searchBox"
+                            placeholder="Emlak ara..."
+                            data-i18n-placeholder="search.placeholder"
+                        >
+                    </div>
+                </div>
+
+                <!-- Properties Grid -->
+                <div class="properties-grid" id="propertiesGrid">
+                    <!-- Properties will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        class PropertiesPage {
+            constructor() {
+                this.currentLanguage = localStorage.getItem('selectedLanguage') || 'tr';
+                this.isWalletConnected = localStorage.getItem('walletConnected') === 'true';
+                this.properties = window.propertiesData || [
+                    {
+                        id: 1,
+                        propertyName: 'Luxury Apartment Complex - Beşiktaş',
+                        address: 'Beşiktaş, İstanbul',
+                        image: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=400',
+                        totalValue: 2500000,
+                        monthlyRent: 15000,
+                        nftShares: 1000,
+                        soldShares: 850,
+                        status: 'active',
+                        nextPayment: '2025-02-01',
+                        yieldRate: 7.2
+                    },
+                    {
+                        id: 2,
+                        propertyName: 'Commercial Office Building - Levent',
+                        address: 'Levent, İstanbul',
+                        image: 'https://images.pexels.com/photos/2462015/pexels-photo-2462015.jpeg?auto=compress&cs=tinysrgb&w=400',
+                        totalValue: 5000000,
+                        monthlyRent: 35000,
+                        nftShares: 2000,
+                        soldShares: 1200,
+                        status: 'active',
+                        nextPayment: '2025-02-01',
+                        yieldRate: 8.4
+                    },
+                    {
+                        id: 3,
+                        propertyName: 'Seaside Villa - Bodrum',
+                        address: 'Bodrum, Muğla',
+                        image: 'https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=400',
+                        totalValue: 1800000,
+                        monthlyRent: 8000,
+                        nftShares: 500,
+                        soldShares: 0,
+                        status: 'pending',
+                        nextPayment: '2025-03-01',
+                        yieldRate: 5.3
+                    },
+                    {
+                        id: 4,
+                        propertyName: 'Modern Shopping Center - Ankara',
+                        address: 'Çankaya, Ankara',
+                        image: 'https://images.pexels.com/photos/2467558/pexels-photo-2467558.jpeg?auto=compress&cs=tinysrgb&w=400',
+                        totalValue: 3200000,
+                        monthlyRent: 22000,
+                        nftShares: 1600,
+                        soldShares: 1600,
+                        status: 'sold_out',
+                        nextPayment: '2025-02-01',
+                        yieldRate: 8.25
+                    },
+                    {
+                        id: 5,
+                        propertyName: 'Luxury Hotel - Antalya',
+                        address: 'Konyaaltı, Antalya',
+                        image: 'https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=400',
+                        totalValue: 8500000,
+                        monthlyRent: 65000,
+                        nftShares: 4250,
+                        soldShares: 2975,
+                        status: 'active',
+                        nextPayment: '2025-02-01',
+                        yieldRate: 9.2
+                    },
+                    {
+                        id: 6,
+                        propertyName: 'Industrial Warehouse - İzmir',
+                        address: 'Alsancak, İzmir',
+                        image: 'https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=400',
+                        totalValue: 4200000,
+                        monthlyRent: 28000,
+                        nftShares: 2100,
+                        soldShares: 1470,
+                        status: 'active',
+                        nextPayment: '2025-02-01',
+                        yieldRate: 8.0
+                    }
+                ];
+                this.filteredProperties = [...this.properties];
+                this.translations = {
+                    tr: {
+                        'nav.home': 'Ana Sayfa',
+                        'nav.features': 'Özellikler',
+                        'nav.properties': 'Emlaklar',
+                        'nav.how': 'Nasıl Çalışır',
+                        'nav.connect': 'Cüzdan Bağla',
+                        'properties.title': 'Emlak Projeleri',
+                        'properties.subtitle': 'Yüksek getirili emlak NFT projelerimizi keşfedin ve pasif gelir elde etmeye başlayın',
+                        'filters.all_status': 'Tüm Durumlar',
+                        'filters.active': 'Aktif',
+                        'filters.pending': 'Beklemede',
+                        'filters.sold_out': 'Tükendi',
+                        'filters.all_locations': 'Tüm Şehirler',
+                        'filters.all_yields': 'Tüm Getiriler',
+                        'search.placeholder': 'Emlak ara...',
+                        'property.view_details': 'Detayları Gör',
+                        'property.invest': 'Yatırım Yap',
+                        'property.sold_out': 'Tükendi',
+                        'property.funding': 'Fonlama',
+                        'property.total_value': 'Toplam Değer',
+                        'property.nft_count': 'NFT Adedi',
+                        'property.nft_price': 'NFT Fiyatı',
+                        'property.yield': 'Getiri'
+                    },
+                    en: {
+                        'nav.home': 'Home',
+                        'nav.features': 'Features',
+                        'nav.properties': 'Properties',
+                        'nav.how': 'How It Works',
+                        'nav.connect': 'Connect Wallet',
+                        'properties.title': 'Real Estate Projects',
+                        'properties.subtitle': 'Discover our high-yield real estate NFT projects and start earning passive income',
+                        'filters.all_status': 'All Status',
+                        'filters.active': 'Active',
+                        'filters.pending': 'Pending',
+                        'filters.sold_out': 'Sold Out',
+                        'filters.all_locations': 'All Cities',
+                        'filters.all_yields': 'All Yields',
+                        'search.placeholder': 'Search properties...',
+                        'property.view_details': 'View Details',
+                        'property.invest': 'Invest Now',
+                        'property.sold_out': 'Sold Out',
+                        'property.funding': 'Funding',
+                        'property.total_value': 'Total Value',
+                        'property.nft_count': 'NFT Count',
+                        'property.nft_price': 'NFT Price',
+                        'property.yield': 'Yield'
+                    },
+                    ar: {
+                        'nav.home': 'الرئيسية',
+                        'nav.features': 'المميزات',
+                        'nav.properties': 'العقارات',
+                        'nav.how': 'كيف يعمل',
+                        'nav.connect': 'ربط المحفظة',
+                        'properties.title': 'مشاريع العقارات',
+                        'properties.subtitle': 'اكتشف مشاريع العقارات NFT عالية العائد وابدأ في كسب دخل سلبي',
+                        'filters.all_status': 'جميع الحالات',
+                        'filters.active': 'نشط',
+                        'filters.pending': 'في الانتظار',
+                        'filters.sold_out': 'نفد',
+                        'filters.all_locations': 'جميع المدن',
+                        'filters.all_yields': 'جميع العوائد',
+                        'search.placeholder': 'البحث عن العقارات...',
+                        'property.view_details': 'عرض التفاصيل',
+                        'property.invest': 'استثمر الآن',
+                        'property.sold_out': 'نفد',
+                        'property.funding': 'التمويل',
+                        'property.total_value': 'القيمة الإجمالية',
+                        'property.nft_count': 'عدد NFT',
+                        'property.nft_price': 'سعر NFT',
+                        'property.yield': 'العائد'
+                    }
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadTranslations();
+                this.updateWalletStatus();
+                this.setupLanguageSelector();
+                this.setupFilters();
+                this.loadProperties();
+                console.log('🏢 Properties Page initialized');
+            }
+
+            setupEventListeners() {
+                // Wallet connection
+                document.querySelectorAll('.connect-wallet-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (!btn.disabled) {
+                            this.connectWallet();
+                        }
+                    });
+                });
+            }
+
+            setupLanguageSelector() {
+                const languageBtn = document.getElementById('languageBtn');
+                const languageDropdown = document.getElementById('languageDropdown');
+                const languageOptions = document.querySelectorAll('.language-option');
+
+                if (languageBtn) {
+                    languageBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        languageDropdown.classList.toggle('active');
+                    });
+                }
+
+                languageOptions.forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const selectedLang = option.getAttribute('data-lang');
+                        this.changeLanguage(selectedLang);
+                        languageDropdown.classList.remove('active');
+                    });
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!languageBtn.contains(e.target)) {
+                        languageDropdown.classList.remove('active');
+                    }
+                });
+
+                this.updateLanguageDropdown();
+            }
+
+            setupFilters() {
+                const statusFilter = document.getElementById('statusFilter');
+                const locationFilter = document.getElementById('locationFilter');
+                const yieldFilter = document.getElementById('yieldFilter');
+                const searchBox = document.getElementById('searchBox');
+
+                [statusFilter, locationFilter, yieldFilter].forEach(filter => {
+                    if (filter) {
+                        filter.addEventListener('change', () => this.applyFilters());
+                    }
+                });
+
+                if (searchBox) {
+                    searchBox.addEventListener('input', () => this.applyFilters());
+                }
+            }
+
+            applyFilters() {
+                const statusFilter = document.getElementById('statusFilter').value;
+                const locationFilter = document.getElementById('locationFilter').value;
+                const yieldFilter = document.getElementById('yieldFilter').value;
+                const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+
+                this.filteredProperties = this.properties.filter(property => {
+                    // Status filter
+                    if (statusFilter !== 'all' && property.status !== statusFilter) {
+                        return false;
+                    }
+
+                    // Location filter
+                    if (locationFilter !== 'all') {
+                        const propertyLocation = property.address.toLowerCase();
+                        if (!propertyLocation.includes(locationFilter)) {
+                            return false;
+                        }
+                    }
+
+                    // Yield filter
+                    if (yieldFilter !== 'all') {
+                        if (yieldFilter === 'high' && property.yieldRate < 8) return false;
+                        if (yieldFilter === 'medium' && (property.yieldRate < 5 || property.yieldRate >= 8)) return false;
+                        if (yieldFilter === 'low' && property.yieldRate >= 5) return false;
+                    }
+
+                    // Search filter
+                    if (searchTerm) {
+                        const searchableText = `${property.propertyName} ${property.address}`.toLowerCase();
+                        if (!searchableText.includes(searchTerm)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
+
+                this.loadProperties();
+            }
+
+            changeLanguage(language) {
+                this.currentLanguage = language;
+                localStorage.setItem('selectedLanguage', language);
+                this.loadTranslations();
+                this.updateLanguageDropdown();
+                this.showNotification(`🌍 Language changed to ${language.toUpperCase()}`, 'success');
+            }
+
+            updateLanguageDropdown() {
+                const options = document.querySelectorAll('.language-option');
+                options.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.getAttribute('data-lang') === this.currentLanguage) {
+                        option.classList.add('active');
+                    }
+                });
+                this.updateLanguageDisplay();
+            }
+
+            updateLanguageDisplay() {
+                const langDisplays = document.querySelectorAll('[data-current-lang]');
+                const langMap = {
+                    'tr': 'TR',
+                    'en': 'EN',
+                    'ar': 'AR'
+                };
+                
+                langDisplays.forEach(display => {
+                    display.textContent = langMap[this.currentLanguage];
+                });
+
+                document.documentElement.setAttribute('dir', this.currentLanguage === 'ar' ? 'rtl' : 'ltr');
+                document.documentElement.setAttribute('lang', this.currentLanguage);
+                
+                if (this.currentLanguage === 'ar') {
+                    document.documentElement.classList.add('rtl');
+                    document.body.style.fontFamily = "'Cairo', 'Noto Sans Arabic', Arial, sans-serif";
+                } else {
+                    document.documentElement.classList.remove('rtl');
+                    document.body.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+                }
+            }
+
+            loadTranslations() {
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = this.translations[this.currentLanguage] && this.translations[this.currentLanguage][key];
+                    
+                    if (translation) {
+                        if (translation.includes('<br>')) {
+                            element.innerHTML = translation;
+                        } else {
+                            element.textContent = translation;
+                        }
+                    }
+                });
+
+                // Update placeholder
+                const searchBox = document.getElementById('searchBox');
+                if (searchBox) {
+                    const placeholders = {
+                        tr: 'Emlak ara...',
+                        en: 'Search properties...',
+                        ar: 'البحث عن العقارات...'
+                    };
+                    searchBox.placeholder = placeholders[this.currentLanguage] || placeholders.tr;
+                }
+
+                this.updateLanguageDisplay();
+            }
+
+            loadProperties() {
+                const propertiesGrid = document.getElementById('propertiesGrid');
+                if (!propertiesGrid) return;
+
+                propertiesGrid.innerHTML = '';
+                
+                if (this.filteredProperties.length === 0) {
+                    propertiesGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--light-300);">
+                            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <h3>Arama kriterlerinize uygun emlak bulunamadı</h3>
+                            <p>Filtreleri değiştirerek tekrar deneyin</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                this.filteredProperties.forEach(property => {
+                    const propertyCard = this.createPropertyCard(property);
+                    propertiesGrid.appendChild(propertyCard);
+                });
+            }
+
+            createPropertyCard(property) {
+                const card = document.createElement('div');
+                card.className = 'property-card';
+                
+                const progressPercentage = Math.round((property.soldShares / property.nftShares) * 100);
+                const statusText = {
+                    'active': 'Aktif',
+                    'pending': 'Beklemede',
+                    'sold_out': 'Tükendi'
+                };
+                
+                card.innerHTML = `
+                    <div class="property-image">
+                        <img src="${property.image}" alt="${property.propertyName}" />
+                        <div class="property-badge">%${property.yieldRate} Getiri</div>
+                        <div class="property-status ${property.status}">${statusText[property.status]}</div>
+                    </div>
+                    <div class="property-content">
+                        <h3>${property.propertyName}</h3>
+                        <p class="property-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${property.address}
+                        </p>
+                        <div class="property-stats">
+                            <div class="stat">
+                                <span class="stat-value">₺${property.totalValue.toLocaleString()}</span>
+                                <span class="stat-label">Toplam Değer</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">${property.nftShares}</span>
+                                <span class="stat-label">NFT Adedi</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₺${Math.round(property.totalValue / property.nftShares).toLocaleString()}</span>
+                                <span class="stat-label">NFT Fiyatı</span>
+                            </div>
+                        </div>
+                        <div class="property-progress">
+                            <div class="progress-info">
+                                <span>Fonlama: ${progressPercentage}%</span>
+                                <span>${property.soldShares}/${property.nftShares} NFT</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progressPercentage}%"></div>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn-secondary" onclick="window.PropertiesApp.viewPropertyDetails(${property.id})">
+                                <span>Detayları Gör</span>
+                            </button>
+                            <button class="btn-primary ${property.status === 'sold_out' ? 'disabled' : ''}" 
+                                    onclick="window.PropertiesApp.investInProperty(${property.id})"
+                                    ${property.status === 'sold_out' ? 'disabled' : ''}>
+                                <span>${property.status === 'sold_out' ? 'Tükendi' : 'Yatırım Yap'}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                return card;
+            }
+
+            viewPropertyDetails(propertyId) {
+                const property = this.properties.find(p => p.id === propertyId);
+                if (property) {
+                    this.showNotification(`${property.propertyName} detay sayfasına yönlendiriliyorsunuz...`, 'success');
+                    // Here you would navigate to property detail page
+                    setTimeout(() => {
+                        console.log(`Navigate to property detail: ${propertyId}`);
+                    }, 1500);
+                }
+            }
+
+            investInProperty(propertyId) {
+                if (!this.isWalletConnected) {
+                    this.showNotification('Yatırım yapmak için önce cüzdanınızı bağlayın', 'error');
+                    return;
+                }
+                
+                const property = this.properties.find(p => p.id === propertyId);
+                if (property && property.status !== 'sold_out') {
+                    this.showNotification(`${property.propertyName} projesine yatırım işlemi başlatılıyor...`, 'success');
+                    // Here you would handle the investment process
+                    setTimeout(() => {
+                        console.log(`Invest in property: ${propertyId}`);
+                    }, 1500);
+                }
+            }
+
+            async connectWallet() {
+                const buttons = document.querySelectorAll('.connect-wallet-btn');
+                if (this.isWalletConnected) return;
+
+                buttons.forEach(button => {
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Bağlanıyor...';
+                    button.disabled = true;
+                });
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    this.isWalletConnected = true;
+                    localStorage.setItem('walletConnected', 'true');
+                    this.updateWalletStatus();
+                    
+                    this.showNotification('🎉 Cüzdan başarıyla bağlandı!', 'success');
+                    
+                } catch (error) {
+                    buttons.forEach(button => {
+                        button.innerHTML = '<i class="fas fa-wallet"></i> Cüzdan Bağla';
+                        button.disabled = false;
+                    });
+                    this.showNotification('❌ Cüzdan bağlanırken hata oluştu', 'error');
+                }
+            }
+
+            updateWalletStatus() {
+                const buttons = document.querySelectorAll('.connect-wallet-btn');
+                
+                if (this.isWalletConnected) {
+                    const address = '0x' + Math.random().toString(16).substr(2, 40);
+                    const shortAddress = address.substring(0, 6) + '...' + address.substring(38);
+                    
+                    buttons.forEach(button => {
+                        button.innerHTML = `<i class="fas fa-check"></i> ${shortAddress}`;
+                        button.classList.add('connected');
+                        button.disabled = true;
+                    });
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        // Initialize application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.PropertiesApp = new PropertiesPage();
+        });
+    </script>
+</body>
+</html>

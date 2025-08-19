@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - RealEstate NFT</title>
+    <meta name="description" content="RealEstate NFT Admin Panel - Emlak NFT ve kira token yönetim sistemi">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-100: #667eea;
+            --primary-200: #764ba2;
+            --secondary-100: #f093fb;
+            --secondary-200: #f5576c;
+            --success-100: #10b981;
+            --success-200: #059669;
+            --warning-100: #f59e0b;
+            --error-100: #ef4444;
+            
+            --dark-100: #0a0a0f;
+            --dark-200: #0f0f23;
+            --dark-300: #1a1a3e;
+            --dark-400: #2d2d5f;
+            
+            --light-100: #ffffff;
+            --light-200: rgba(255, 255, 255, 0.9);
+            --light-300: rgba(255, 255, 255, 0.8);
+            --light-400: rgba(255, 255, 255, 0.6);
+            
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-hover: rgba(255, 255, 255, 0.15);
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.25);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --radius-full: 50px;
+            
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            --gradient-primary: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-100) 0%, var(--secondary-200) 100%);
+            --gradient-success: linear-gradient(135deg, var(--success-100) 0%, var(--success-200) 100%);
+            --gradient-bg: linear-gradient(135deg, var(--dark-100) 0%, var(--dark-200) 50%, var(--dark-300) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gradient-bg);
+            color: var(--light-100);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.03"><circle cx="30" cy="30" r="2"/></g></svg>');
+            z-index: 1;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-subtitle {
+            color: var(--light-300);
+            font-size: 0.95rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--light-200);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            color: var(--light-100);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-100);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--light-400);
+        }
+
+        .login-button {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--light-100);
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-md);
+            margin-top: 1rem;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: var(--gradient-secondary);
+        }
+
+        .login-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-to-site {
+            color: var(--light-300);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--transition-normal);
+        }
+
+        .back-to-site:hover {
+            color: var(--primary-100);
+        }
+
+        /* Admin Dashboard - Hidden by default */
+        .admin-dashboard {
+            display: none;
+        }
+
+        /* Error message */
+        .error-message {
+            background: linear-gradient(135deg, var(--error-100), #dc2626);
+            color: var(--light-100);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+
+            .login-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid var(--light-100);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h1 class="login-title">Admin Panel</h1>
+                <p class="login-subtitle">RealEstate NFT Yönetim Sistemi</p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Kullanıcı Adı</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        class="form-input" 
+                        placeholder="Kullanıcı adınızı girin"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Şifre</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="Şifrenizi girin"
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <button type="submit" class="login-button" id="loginButton">
+                    <span class="button-text">Giriş Yap</span>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <a href="index.html" class="back-to-site">
+                    <i class="fas fa-arrow-left"></i>
+                    Ana Siteye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (will be loaded from App.tsx content) -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <!-- Dashboard content will be loaded here -->
+    </div>
+
+    <script>
+        class AdminLogin {
+            constructor() {
+                this.credentials = {
+                    username: 'admin',
+                    password: 'admin123'
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.checkExistingSession();
+                console.log('🔐 Admin Login initialized');
+                console.log('Demo credentials: admin / admin123');
+            }
+
+            setupEventListeners() {
+                const loginForm = document.getElementById('loginForm');
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleLogin();
+                    });
+                }
+
+                // Enter key handling
+                [usernameInput, passwordInput].forEach(input => {
+                    if (input) {
+                        input.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                this.handleLogin();
+                            }
+                        });
+                    }
+                });
+
+                // Clear error on input
+                [usernameInput, passwordInput].forEach(input => {
+                    if (input) {
+                        input.addEventListener('input', () => {
+                            this.hideError();
+                        });
+                    }
+                });
+            }
+
+            checkExistingSession() {
+                const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+                if (isLoggedIn) {
+                    this.showDashboard();
+                }
+            }
+
+            async handleLogin() {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const loginButton = document.getElementById('loginButton');
+
+                if (!username || !password) {
+                    this.showError('Lütfen kullanıcı adı ve şifre girin');
+                    return;
+                }
+
+                // Show loading state
+                this.setLoadingState(true);
+
+                try {
+                    // Simulate API call delay
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+
+                    if (username === this.credentials.username && password === this.credentials.password) {
+                        // Successful login
+                        localStorage.setItem('adminLoggedIn', 'true');
+                        localStorage.setItem('adminLoginTime', new Date().toISOString());
+                        
+                        this.showSuccess();
+                        setTimeout(() => {
+                            this.showDashboard();
+                        }, 1000);
+                    } else {
+                        this.showError('Geçersiz kullanıcı adı veya şifre');
+                    }
+                } catch (error) {
+                    this.showError('Giriş yapılırken bir hata oluştu');
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            setLoadingState(loading) {
+                const loginButton = document.getElementById('loginButton');
+                const buttonText = loginButton.querySelector('.button-text');
+
+                if (loading) {
+                    loginButton.disabled = true;
+                    buttonText.innerHTML = '<div class="loading"><div class="spinner"></div>Giriş yapılıyor...</div>';
+                } else {
+                    loginButton.disabled = false;
+                    buttonText.textContent = 'Giriş Yap';
+                }
+            }
+
+            showError(message) {
+                const errorElement = document.getElementById('errorMessage');
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
+
+            hideError() {
+                const errorElement = document.getElementById('errorMessage');
+                errorElement.classList.remove('show');
+            }
+
+            showSuccess() {
+                const errorElement = document.getElementById('errorMessage');
+                errorElement.style.background = 'linear-gradient(135deg, var(--success-100), var(--success-200))';
+                errorElement.textContent = '✅ Giriş başarılı! Yönlendiriliyorsunuz...';
+                errorElement.classList.add('show');
+            }
+
+            showDashboard() {
+                // Hide login screen
+                document.getElementById('loginScreen').style.display = 'none';
+                
+                // Load and show admin dashboard
+                this.loadAdminDashboard();
+            }
+
+            loadAdminDashboard() {
+                const dashboardContainer = document.getElementById('adminDashboard');
+                
+                // Load the admin dashboard HTML structure
+                dashboardContainer.innerHTML = `
+                    <div class="min-h-screen bg-gray-900">
+                        <!-- Sidebar -->
+                        <div class="fixed inset-y-0 left-0 w-64 bg-gray-800 border-r border-gray-700">
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-8">
+                                    <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-building w-5 h-5 text-white"></i>
+                                    </div>
+                                    <h1 class="text-xl font-bold text-white">RealEstate NFT</h1>
+                                </div>
+                                
+                                <nav class="space-y-2">
+                                    <button class="nav-item active w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all bg-gradient-to-r from-green-500 to-blue-600 text-white">
+                                        <i class="fas fa-chart-line w-5 h-5"></i>
+                                        Dashboard
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-building w-5 h-5"></i>
+                                        Emlak Yönetimi
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-coins w-5 h-5"></i>
+                                        Kira Token Yönetimi
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-dollar-sign w-5 h-5"></i>
+                                        Kira Ödemeleri
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-users w-5 h-5"></i>
+                                        NFT Sahipleri
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-chart-bar w-5 h-5"></i>
+                                        Analitikler
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-file-text w-5 h-5"></i>
+                                        Belgeler & Tapular
+                                    </button>
+                                    <button class="nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-gray-300 hover:bg-gray-700 hover:text-white">
+                                        <i class="fas fa-cog w-5 h-5"></i>
+                                        Ayarlar
+                                    </button>
+                                </nav>
+
+                                <div class="mt-8 pt-8 border-t border-gray-700">
+                                    <button onclick="window.AdminApp.logout()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-red-400 hover:bg-red-900 hover:text-red-300">
+                                        <i class="fas fa-sign-out-alt w-5 h-5"></i>
+                                        Çıkış Yap
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div class="ml-64 min-h-screen">
+                            <div class="p-8">
+                                <div id="dashboardContent">
+                                    <!-- Dashboard content will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Add Tailwind CSS
+                const tailwindLink = document.createElement('link');
+                tailwindLink.href = 'https://cdn.tailwindcss.com';
+                tailwindLink.rel = 'stylesheet';
+                document.head.appendChild(tailwindLink);
+
+                // Show dashboard
+                dashboardContainer.style.display = 'block';
+
+                // Initialize admin dashboard functionality
+                this.initAdminDashboard();
+            }
+
+            initAdminDashboard() {
+                // Load dashboard content
+                this.loadDashboardContent();
+
+                // Setup navigation
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        // Remove active class from all items
+                        document.querySelectorAll('.nav-item').forEach(nav => {
+                            nav.classList.remove('active', 'bg-gradient-to-r', 'from-green-500', 'to-blue-600', 'text-white');
+                            nav.classList.add('text-gray-300', 'hover:bg-gray-700', 'hover:text-white');
+                        });
+
+                        // Add active class to clicked item
+                        item.classList.add('active', 'bg-gradient-to-r', 'from-green-500', 'to-blue-600', 'text-white');
+                        item.classList.remove('text-gray-300', 'hover:bg-gray-700', 'hover:text-white');
+
+                        // Load corresponding content
+                        const itemText = item.textContent.trim();
+                        this.loadSectionContent(itemText);
+                    });
+                });
+
+                // Create global admin app object
+                window.AdminApp = {
+                    logout: () => this.logout()
+                };
+            }
+
+            loadDashboardContent() {
+                const content = document.getElementById('dashboardContent');
+                content.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h1 class="text-3xl font-bold text-white">Emlak NFT Dashboard</h1>
+                                <p class="text-gray-400 mt-1">Emlak tokenizasyonu ve kira dağıtım sistemi</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <button class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
+                                    <i class="fas fa-building w-4 h-4"></i>
+                                    Yeni Emlak Ekle
+                                </button>
+                                <button class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
+                                    <i class="fas fa-dollar-sign w-4 h-4"></i>
+                                    Kira Dağıt
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-gradient-to-br from-green-900 to-green-800 p-6 rounded-xl border border-green-700">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-green-200 text-sm">Toplam Emlak Değeri</p>
+                                        <p class="text-2xl font-bold text-white">₺9.3M</p>
+                                        <p class="text-green-400 text-sm">3 aktif emlak</p>
+                                    </div>
+                                    <i class="fas fa-building text-green-400 text-3xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-blue-900 to-blue-800 p-6 rounded-xl border border-blue-700">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-blue-200 text-sm">Aylık Kira Geliri</p>
+                                        <p class="text-2xl font-bold text-white">₺58,000</p>
+                                        <p class="text-green-400 text-sm">%12.5 artış</p>
+                                    </div>
+                                    <i class="fas fa-dollar-sign text-blue-400 text-3xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-purple-900 to-purple-800 p-6 rounded-xl border border-purple-700">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-purple-200 text-sm">NFT Sahipleri</p>
+                                        <p class="text-2xl font-bold text-white">2,050</p>
+                                        <p class="text-green-400 text-sm">+156 bu ay</p>
+                                    </div>
+                                    <i class="fas fa-users text-purple-400 text-3xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-orange-900 to-orange-800 p-6 rounded-xl border border-orange-700">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-orange-200 text-sm">Ortalama Getiri</p>
+                                        <p class="text-2xl font-bold text-white">%7.8</p>
+                                        <p class="text-green-400 text-sm">Yıllık bazda</p>
+                                    </div>
+                                    <i class="fas fa-chart-line text-orange-400 text-3xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                                <h3 class="text-xl font-semibold text-white mb-4">Son Kira Ödemeleri</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-4 p-3 bg-gray-700 rounded-lg">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-home text-white"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-white text-sm">Luxury Apartment Complex - Beşiktaş</p>
+                                            <p class="text-xs text-gray-400">850 NFT sahibine dağıtıldı</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-semibold text-white">₺15,000</p>
+                                            <p class="text-xs text-blue-400">100,000 RENT</p>
+                                            <span class="text-xs px-2 py-1 rounded-full bg-green-900 text-green-200">Tamamlandı</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4 p-3 bg-gray-700 rounded-lg">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-building text-white"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-white text-sm">Commercial Office Building - Levent</p>
+                                            <p class="text-xs text-gray-400">1200 NFT sahibine dağıtıldı</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-semibold text-white">₺35,000</p>
+                                            <p class="text-xs text-blue-400">233,333 RENT</p>
+                                            <span class="text-xs px-2 py-1 rounded-full bg-green-900 text-green-200">Tamamlandı</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                                <h3 class="text-xl font-semibold text-white mb-4">Emlak Portföyü</h3>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-gray-700 rounded-lg">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <p class="font-semibold text-white text-sm">Luxury Apartment Complex - Beşiktaş</p>
+                                                <p class="text-xs text-gray-400 flex items-center gap-1">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    Beşiktaş, İstanbul
+                                                </p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold text-white">%7.2</p>
+                                                <p class="text-xs text-green-400">Yıllık getiri</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between text-xs text-gray-400">
+                                            <span>Değer: ₺2,500,000</span>
+                                            <span>NFT: 850/1000</span>
+                                        </div>
+                                        <div class="mt-2 bg-gray-600 rounded-full h-2">
+                                            <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-gray-700 rounded-lg">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <p class="font-semibold text-white text-sm">Commercial Office Building - Levent</p>
+                                                <p class="text-xs text-gray-400 flex items-center gap-1">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    Levent, İstanbul
+                                                </p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold text-white">%8.4</p>
+                                                <p class="text-xs text-green-400">Yıllık getiri</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between text-xs text-gray-400">
+                                            <span>Değer: ₺5,000,000</span>
+                                            <span>NFT: 1200/2000</span>
+                                        </div>
+                                        <div class="mt-2 bg-gray-600 rounded-full h-2">
+                                            <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                            <h3 class="text-xl font-semibold text-white mb-4">Otomatik Kira Dağıtım Sistemi</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="p-4 bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg">
+                                    <i class="fas fa-clock text-blue-400 text-3xl mb-3"></i>
+                                    <h4 class="text-white font-semibold mb-2">Sonraki Ödeme</h4>
+                                    <p class="text-blue-200 text-sm">1 Şubat 2025</p>
+                                    <p class="text-blue-300 text-xs">₺58,000 dağıtılacak</p>
+                                </div>
+                                <div class="p-4 bg-gradient-to-br from-green-900 to-green-800 rounded-lg">
+                                    <i class="fas fa-shield-alt text-green-400 text-3xl mb-3"></i>
+                                    <h4 class="text-white font-semibold mb-2">Akıllı Kontrat</h4>
+                                    <p class="text-green-200 text-sm">Aktif</p>
+                                    <p class="text-green-300 text-xs">Otomatik dağıtım açık</p>
+                                </div>
+                                <div class="p-4 bg-gradient-to-br from-purple-900 to-purple-800 rounded-lg">
+                                    <i class="fas fa-coins text-purple-400 text-3xl mb-3"></i>
+                                    <h4 class="text-white font-semibold mb-2">Token Rezervi</h4>
+                                    <p class="text-purple-200 text-sm">8.5M RENT</p>
+                                    <p class="text-purple-300 text-xs">6 aylık rezerv</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            loadSectionContent(section) {
+                const content = document.getElementById('dashboardContent');
+                
+                switch(section) {
+                    case 'Dashboard':
+                        this.loadDashboardContent();
+                        break;
+                    case 'Emlak Yönetimi':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-building text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">Emlak Yönetimi</h2>
+                                <p class="text-gray-400">Emlak ekleme ve yönetim paneli geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    case 'Kira Token Yönetimi':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-coins text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">Kira Token Yönetimi</h2>
+                                <p class="text-gray-400">Token yönetim sistemi geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    case 'Kira Ödemeleri':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-dollar-sign text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">Kira Ödemeleri</h2>
+                                <p class="text-gray-400">Ödeme yönetim sistemi geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    case 'NFT Sahipleri':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-users text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">NFT Sahipleri</h2>
+                                <p class="text-gray-400">NFT sahipleri yönetim paneli geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    case 'Analitikler':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-chart-bar text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">Detaylı Analitikler</h2>
+                                <p class="text-gray-400">Gelişmiş analitik dashboard geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    case 'Belgeler & Tapular':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-file-text text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">Belgeler & Tapular</h2>
+                                <p class="text-gray-400">Belge yönetim sistemi geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    case 'Ayarlar':
+                        content.innerHTML = `
+                            <div class="text-center text-white py-12">
+                                <i class="fas fa-cog text-6xl mb-4 text-gray-400"></i>
+                                <h2 class="text-2xl font-bold mb-2">Sistem Ayarları</h2>
+                                <p class="text-gray-400">Konfigürasyon seçenekleri geliştiriliyor...</p>
+                            </div>
+                        `;
+                        break;
+                    default:
+                        this.loadDashboardContent();
+                }
+            }
+
+            logout() {
+                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                    localStorage.removeItem('adminLoggedIn');
+                    localStorage.removeItem('adminLoginTime');
+                    window.location.reload();
+                }
+            }
+        }
+
+        // Initialize admin login when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.AdminLogin = new AdminLogin();
+        });
+
+        // Global error handler
+        window.addEventListener('error', (error) => {
+            console.error('Global error:', error);
+        });
+    </script>
+</body>
+</html>
