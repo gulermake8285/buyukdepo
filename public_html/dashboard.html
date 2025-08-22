@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="dashboard.page.title">Dashboard - ARSA Token</title>
-    <meta name="description" content="ARSA Token yatırım dashboard'u - Portföyünüzü yönetin">
+    <title data-i18n="site.title">ARSA Token - Gayrimenkul NFT Platformu</title>
+    <meta name="description" content="Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiren ARSA Token. NFT'ler aracılığıyla premium emlakları parçalı olarak satın alın.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     
     <!-- CSS -->
     <link rel="stylesheet" href="assets/style.css">
@@ -15,575 +18,333 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <style>
-        .dashboard-container {
-            padding: 120px 0 60px;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a3e 100%);
-        }
-        
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .dashboard-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ffffff 0%, #667eea 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .dashboard-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.5rem;
-            color: white;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 500;
-        }
-        
-        .portfolio-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 1.5rem;
-        }
-        
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .portfolio-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .portfolio-item:hover {
-            transform: translateY(-3px);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-        
-        .portfolio-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .property-name {
-            font-weight: 600;
-            color: white;
-        }
-        
-        .nft-count {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        .portfolio-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .portfolio-stat {
-            text-align: center;
-        }
-        
-        .portfolio-stat .value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #10b981;
-            display: block;
-        }
-        
-        .portfolio-stat .label {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .connect-wallet-prompt {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-        }
-        
-        .connect-wallet-prompt h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #667eea;
-        }
-        
-        .connect-wallet-prompt p {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 2rem;
-        }
-        
-        .connect-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .connect-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-        
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .back-btn:hover {
-            background: rgba(102, 126, 234, 0.2);
-            border-color: #667eea;
-        }
-        
-        @media (max-width: 768px) {
-            .dashboard-title {
-                font-size: 2rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ARSA Token - Gayrimenkul NFT Platformu">
+    <meta property="og:description" content="Blockchain ile gayrimenkul yatırımını demokratikleştiriyoruz">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arsatoken.com">
+    <meta property="og:image" content="https://arsatoken.com/assets/og-image.jpg">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
-        <nav class="nav container">
-            <div class="logo">🏗️ ARSA Token</div>
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="nav-logo">
+                    <i class="fas fa-building"></i>
+                    <span>ARSA Token</span>
+                </a>
+            </div>
             
-            <ul class="nav-links">
-                <li><a href="index.html">Ana Sayfa</a></li>
-                <li><a href="properties.html">Emlaklar</a></li>
-                <li><a href="dashboard.html" class="active">Dashboard</a></li>
-                <li><a href="index.html#about">Hakkımızda</a></li>
-            </ul>
+            <div class="nav-links">
+                <a href="#home" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+                <a href="#features" class="nav-link" data-i18n="nav.features">Özellikler</a>
+                <a href="properties.html" class="nav-link" data-i18n="nav.properties">Emlaklar</a>
+                <a href="dashboard.html" class="nav-link" data-i18n="nav.dashboard">Panel</a>
+                <a href="#roadmap" class="nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
+            </div>
             
             <div class="nav-actions">
-                <div class="language-selector">
-                    <select id="languageSelect" class="language-dropdown">
-                        <option value="tr">🇹🇷 TR</option>
-                        <option value="en">🇺🇸 EN</option>
-                        <option value="ar">🇸🇦 AR</option>
-                    </select>
-                </div>
-                <button class="connect-wallet-btn" id="walletBtn">
+                <button class="language-btn" type="button">
+                    <i class="fas fa-globe"></i>
+                    <span data-current-lang>TR</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                
+                <button class="connect-wallet-btn" type="button">
                     <i class="fas fa-wallet"></i>
-                    Cüzdan Bağla
+                    <span data-i18n="nav.connect">Cüzdan Bağla</span>
+                </button>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </nav>
-    </header>
-
-    <!-- Dashboard Container -->
-    <section class="dashboard-container">
-        <div class="container">
-            <a href="index.html" class="back-btn">
-                ← Ana Sayfaya Dön
-            </a>
-            
-            <!-- Dashboard Header -->
-            <div class="dashboard-header">
-                <h1 class="dashboard-title" data-i18n="dashboard.title">Yatırım Dashboard'u</h1>
-                <p class="dashboard-subtitle" data-i18n="dashboard.subtitle">Gayrimenkul NFT portföyünüzü yönetin ve takip edin</p>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav">
+            <div class="mobile-nav-links">
+                <a href="#home" class="mobile-nav-link" data-i18n="nav.home">Ana Sayfa</a>
+                <a href="#features" class="mobile-nav-link" data-i18n="nav.features">Özellikler</a>
+                <a href="properties.html" class="mobile-nav-link" data-i18n="nav.properties">Emlaklar</a>
+                <a href="dashboard.html" class="mobile-nav-link" data-i18n="nav.dashboard">Panel</a>
+                <a href="#roadmap" class="mobile-nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
             </div>
-
-            <!-- Wallet Not Connected State -->
-            <div id="walletPrompt" class="connect-wallet-prompt">
-                <h3 data-i18n="wallet.connect.title">🔗 Cüzdanınızı Bağlayın</h3>
-                <p data-i18n="wallet.connect.description">Dashboard'unuzu görüntülemek için önce MetaMask veya uyumlu bir cüzdan bağlamanız gerekiyor.</p>
-                <button class="connect-btn" onclick="connectWallet()" data-i18n="nav.connect">
+            <div class="mobile-nav-actions">
+                <button class="connect-wallet-btn" type="button">
                     <i class="fas fa-wallet"></i>
-                    Cüzdan Bağla
+                    <span data-i18n="nav.connect">Cüzdan Bağla</span>
                 </button>
             </div>
+        </div>
+    </header>
 
-            <!-- Dashboard Content (Hidden by default) -->
-            <div id="dashboardContent" style="display: none;">
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <div class="stat-number" id="totalProperties">0</div>
-                        <div class="stat-label" data-i18n="dashboard.stats.properties">Sahip Olunan Emlak</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <div class="stat-number" id="totalNFTs">0</div>
-                        <div class="stat-label" data-i18n="dashboard.stats.nfts">Toplam NFT</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <div class="stat-number" id="totalValue">$0</div>
-                        <div class="stat-label" data-i18n="dashboard.stats.value">Portföy Değeri</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="stat-number" id="monthlyIncome">$0</div>
-                        <div class="stat-label" data-i18n="dashboard.stats.income">Aylık Gelir</div>
-                    </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content fade-in">
+                <div class="hero-badge">
+                    <i class="fas fa-circle" style="color: #10b981; font-size: 0.5rem;"></i>
+                    <span data-i18n="hero.badge">Canlı - Gayrimenkul NFT Platformu</span>
                 </div>
-
-                <!-- Portfolio Section -->
-                <div class="portfolio-section">
-                    <h2 class="section-title" data-i18n="dashboard.portfolio.title">📊 Portföyüm</h2>
-                    <div class="portfolio-grid" id="portfolioGrid">
-                        <!-- Portfolio items will be loaded here -->
-                    </div>
+                
+                <h1 class="hero-title" data-i18n="hero.title">NFT ile Gayrimenkule<br>Yatırım Yapın</h1>
+                
+                <p class="hero-subtitle" data-i18n="hero.subtitle">
+                    Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz. 
+                    Gerçek mülklerle desteklenen parçalı NFT'ler satın alın ve aylık kira geliri kazanın.
+                </p>
+                
+                <div class="hero-cta">
+                    <button class="cta-primary">
+                        <i class="fas fa-rocket"></i>
+                        <span data-i18n="hero.cta.primary">Hemen Başla</span>
+                    </button>
+                    <button class="cta-secondary">
+                        <i class="fas fa-play"></i>
+                        <span data-i18n="hero.cta.secondary">Nasıl Çalışır?</span>
+                    </button>
                 </div>
-
-                <!-- Recent Transactions -->
-                <div class="portfolio-section">
-                    <h2 class="section-title" data-i18n="dashboard.transactions.title">📋 Son İşlemler</h2>
-                    <div id="recentTransactions">
-                        <!-- Transactions will be loaded here -->
+                
+                <div class="hero-stats slide-up">
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.properties">12</div>
+                        <div class="stat-label">Aktif Emlak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.investors">1,247</div>
+                        <div class="stat-label">Yatırımcı</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.volume">€2.8M</div>
+                        <div class="stat-label">İşlem Hacmi</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.yield">8.2%</div>
+                        <div class="stat-label">Ortalama Getiri</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="features.title">Neden ARSA Token?</h2>
+                <p class="section-subtitle" data-i18n="features.subtitle">Gayrimenkul yatırımının geleceği burada</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card slide-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 data-i18n="features.real.title">Gerçek Emlak</h3>
+                    <p data-i18n="features.real.desc">Her NFT gerçek bir gayrimenkulle destekleniyor</p>
+                </div>
+                
+                <div class="feature-card slide-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 data-i18n="features.income.title">Pasif Gelir</h3>
+                    <p data-i18n="features.income.desc">Aylık kira ödemelerini otomatik alın</p>
+                </div>
+                
+                <div class="feature-card slide-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 data-i18n="features.fractional.title">Parçalı Sahiplik</h3>
+                    <p data-i18n="features.fractional.desc">Küçük miktarlarla büyük projelere yatırım yapın</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Preview Section -->
+    <section class="properties-preview">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="properties.title">Öne Çıkan Projeler</h2>
+                <p class="section-subtitle" data-i18n="properties.subtitle">Yüksek getirili gayrimenkul fırsatları</p>
+            </div>
+            
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Properties will be loaded here -->
+            </div>
+            
+            <div class="properties-cta fade-in">
+                <a href="properties.html" class="btn-outline">
+                    <i class="fas fa-th-large"></i>
+                    <span>Tüm Emlakları Görüntüle</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="how.title">Nasıl Çalışır?</h2>
+                <p class="section-subtitle" data-i18n="how.subtitle">4 basit adımda gayrimenkul yatırımcısı olun</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step-card slide-in">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 data-i18n="how.step1.title">Cüzdan Bağla</h3>
+                    <p data-i18n="how.step1.desc">MetaMask veya uyumlu bir cüzdan bağlayın</p>
+                </div>
+                
+                <div class="step-card slide-in">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 data-i18n="how.step2.title">Proje Seç</h3>
+                    <p data-i18n="how.step2.desc">Yatırım yapmak istediğiniz emlağı seçin</p>
+                </div>
+                
+                <div class="step-card slide-in">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 data-i18n="how.step3.title">NFT Satın Al</h3>
+                    <p data-i18n="how.step3.desc">İstediğiniz miktarda NFT parçası satın alın</p>
+                </div>
+                
+                <div class="step-card slide-in">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 data-i18n="how.step4.title">Gelir Kazanın</h3>
+                    <p data-i18n="how.step4.desc">Aylık kira ödemelerini otomatik alın</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="roadmap">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="roadmap.title">Yol Haritamız</h2>
+                <p class="section-subtitle" data-i18n="roadmap.subtitle">ARSA Token'ın gelişim süreci ve gelecek planları</p>
+            </div>
+            
+            <div class="roadmap-timeline">
+                <div class="timeline-item completed fade-in">
+                    <div class="timeline-marker"><i class="fas fa-check"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date" data-i18n="roadmap.q1.date">Q1 2024</div>
+                        <h3 data-i18n="roadmap.q1.title">Platform Geliştirme</h3>
+                        <p data-i18n="roadmap.q1.desc">Temel platform altyapısı ve smart contract geliştirme tamamlandı.</p>
+                        <ul>
+                            <li data-i18n="roadmap.q1.item1">✅ Smart contract geliştirme</li>
+                            <li data-i18n="roadmap.q1.item2">✅ Web platform beta</li>
+                            <li data-i18n="roadmap.q1.item3">✅ Güvenlik denetimleri</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content fade-in">
+                <div class="newsletter-text">
+                    <h2 data-i18n="newsletter.title">Güncellemelerden Haberdar Olun</h2>
+                    <p data-i18n="newsletter.subtitle">Yeni projeler ve önemli güncellemeler hakkında ilk siz haberdar olun</p>
+                </div>
+                
+                <form class="newsletter-form">
+                    <div class="newsletter-input-group">
+                        <input type="email" class="newsletter-input" data-i18n-placeholder="newsletter.placeholder" placeholder="E-posta adresinizi girin" required>
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span data-i18n="newsletter.subscribe">Abone Ol</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <i class="fas fa-building footer-logo"></i>
+                        <span class="footer-brand-text">ARSA Token</span>
+                    </div>
+                    <p data-i18n="footer.description">Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.links">Bağlantılar</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" data-i18n="nav.home">Ana Sayfa</a></li>
+                        <li><a href="properties.html">Emlaklar</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="#roadmap" data-i18n="nav.roadmap">Yol Haritası</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.legal">Yasal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
+                        <li><a href="#" data-i18n="footer.terms">Kullanım Şartları</a></li>
+                        <li><a href="#" data-i18n="footer.risk">Risk Bildirimi</a></li>
+                        <li><a href="#" data-i18n="footer.kvkk">KVKK</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.social">İletişim</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:info@arsatoken.com"><i class="fas fa-envelope"></i> <span data-i18n="contact.email">info@arsatoken.com</span></a></li>
+                        <li><a href="tel:+905551234567"><i class="fas fa-phone"></i> <span data-i18n="contact.phone">+90 555 123 45 67</span></a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> <span data-i18n="contact.address">İstanbul, Türkiye</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p data-i18n="footer.copyright">&copy; 2024 ARSA Token. Tüm hakları saklıdır.</p>
+                    <p data-i18n="footer.tagline">Blockchain ile gayrimenkul yatırımının geleceği</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
     <script src="assets/script.js"></script>
-    <script>
-        // Dashboard functionality
-        let walletConnected = false;
-        let userAddress = null;
-        
-        // Demo portfolio data
-        const demoPortfolio = [
-            {
-                id: 1,
-                name: "Berlin Premium Office Complex",
-                location: "Berlin, Germany",
-                nftCount: 15,
-                totalValue: 1500,
-                monthlyIncome: 9.75,
-                yield: 7.8,
-                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&h=200&fit=crop"
-            },
-            {
-                id: 2,
-                name: "Amsterdam Luxury Apartments",
-                location: "Amsterdam, Netherlands", 
-                nftCount: 8,
-                totalValue: 1200,
-                monthlyIncome: 6.80,
-                yield: 6.8,
-                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=300&h=200&fit=crop"
-            },
-            {
-                id: 3,
-                name: "Hamburg Logistics Center",
-                location: "Hamburg, Germany",
-                nftCount: 25,
-                totalValue: 2000,
-                monthlyIncome: 15.00,
-                yield: 9.0,
-                image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop"
-            }
-        ];
-        
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            checkWalletConnection();
-            setupEventListeners();
-        });
-        
-        function setupEventListeners() {
-            // Wallet button click
-            document.getElementById('walletBtn').addEventListener('click', connectWallet);
-            
-            // Language selector
-            document.getElementById('languageSelect').addEventListener('change', function(e) {
-                const language = e.target.value;
-                localStorage.setItem('selectedLanguage', language);
-                // Apply translations if available
-                if (window.ARSA && window.ARSA.translator) {
-                    window.ARSA.translator.changeLanguage(language);
-                }
-            });
-        }
-        
-        function checkWalletConnection() {
-            // Check if wallet was previously connected
-            const connected = localStorage.getItem('wallet_connected');
-            const address = localStorage.getItem('wallet_address');
-            
-            if (connected && address) {
-                walletConnected = true;
-                userAddress = address;
-                updateWalletButton();
-                showDashboard();
-            }
-        }
-        
-        async function connectWallet() {
-            try {
-                const walletBtn = document.getElementById('walletBtn');
-                walletBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Bağlanıyor...';
-                walletBtn.disabled = true;
-                
-                // Simulate wallet connection
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Generate demo address
-                userAddress = '0x' + Math.random().toString(16).substr(2, 40);
-                walletConnected = true;
-                
-                // Save to localStorage
-                localStorage.setItem('wallet_connected', 'true');
-                localStorage.setItem('wallet_address', userAddress);
-                
-                updateWalletButton();
-                showDashboard();
-                showNotification('🎉 Cüzdan başarıyla bağlandı!', 'success');
-                
-            } catch (error) {
-                console.error('Wallet connection error:', error);
-                showNotification('❌ Cüzdan bağlanırken hata oluştu', 'error');
-                
-                const walletBtn = document.getElementById('walletBtn');
-                walletBtn.innerHTML = '<i class="fas fa-wallet"></i> Cüzdan Bağla';
-                walletBtn.disabled = false;
-            }
-        }
-        
-        function updateWalletButton() {
-            const walletBtn = document.getElementById('walletBtn');
-            if (walletConnected && userAddress) {
-                const shortAddress = userAddress.substring(0, 6) + '...' + userAddress.substring(38);
-                walletBtn.innerHTML = `<i class="fas fa-wallet"></i> ${shortAddress}`;
-                walletBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-            }
-        }
-        
-        function showDashboard() {
-            document.getElementById('walletPrompt').style.display = 'none';
-            document.getElementById('dashboardContent').style.display = 'block';
-            
-            loadPortfolioData();
-        }
-        
-        function loadPortfolioData() {
-            // Calculate totals
-            const totalProperties = demoPortfolio.length;
-            const totalNFTs = demoPortfolio.reduce((sum, item) => sum + item.nftCount, 0);
-            const totalValue = demoPortfolio.reduce((sum, item) => sum + item.totalValue, 0);
-            const monthlyIncome = demoPortfolio.reduce((sum, item) => sum + item.monthlyIncome, 0);
-            
-            // Update stats
-            document.getElementById('totalProperties').textContent = totalProperties;
-            document.getElementById('totalNFTs').textContent = totalNFTs;
-            document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString()}`;
-            document.getElementById('monthlyIncome').textContent = `$${monthlyIncome.toFixed(2)}`;
-            
-            // Load portfolio items
-            const portfolioGrid = document.getElementById('portfolioGrid');
-            portfolioGrid.innerHTML = demoPortfolio.map(item => `
-                <div class="portfolio-item">
-                    <div class="portfolio-header">
-                        <div class="property-name">${item.name}</div>
-                        <div class="nft-count">${item.nftCount} NFT</div>
-                    </div>
-                    <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 1rem;">
-                        📍 ${item.location}
-                    </div>
-                    <div class="portfolio-stats">
-                        <div class="portfolio-stat">
-                            <span class="value">$${item.totalValue.toLocaleString()}</span>
-                            <span class="label">Yatırım Değeri</span>
-                        </div>
-                        <div class="portfolio-stat">
-                            <span class="value">$${item.monthlyIncome}</span>
-                            <span class="label">Aylık Gelir</span>
-                        </div>
-                        <div class="portfolio-stat">
-                            <span class="value">${item.yield}%</span>
-                            <span class="label">Yıllık Getiri</span>
-                        </div>
-                        <div class="portfolio-stat">
-                            <span class="value">${((item.monthlyIncome * 12 / item.totalValue) * 100).toFixed(1)}%</span>
-                            <span class="label">ROI</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Load recent transactions
-            loadRecentTransactions();
-        }
-        
-        function loadRecentTransactions() {
-            const transactions = [
-                { type: 'buy', property: 'Berlin Office Complex', amount: 5, value: 500, date: '2024-01-15' },
-                { type: 'income', property: 'Amsterdam Apartments', amount: 6.80, date: '2024-01-01' },
-                { type: 'buy', property: 'Hamburg Logistics', amount: 10, value: 800, date: '2023-12-20' },
-                { type: 'income', property: 'Berlin Office Complex', amount: 9.75, date: '2023-12-01' }
-            ];
-            
-            const transactionsContainer = document.getElementById('recentTransactions');
-            transactionsContainer.innerHTML = `
-                <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 1.5rem;">
-                    ${transactions.map(tx => `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <div>
-                                <div style="color: white; font-weight: 600;">
-                                    ${tx.type === 'buy' ? '🛒 NFT Satın Alma' : '💰 Kira Geliri'}
-                                </div>
-                                <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">
-                                    ${tx.property}
-                                </div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="color: ${tx.type === 'buy' ? '#ef4444' : '#10b981'}; font-weight: 600;">
-                                    ${tx.type === 'buy' ? '-' : '+'}$${tx.type === 'buy' ? tx.value : tx.amount}
-                                </div>
-                                <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">
-                                    ${new Date(tx.date).toLocaleDateString('tr-TR')}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-        
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed; top: 100px; right: 20px; z-index: 10000;
-                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-                color: white; padding: 1rem 1.5rem; border-radius: 12px;
-                font-weight: 600; max-width: 350px; animation: slideIn 0.3s ease;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => document.body.removeChild(notification), 300);
-            }, 3000);
-        }
-        
-        // CSS animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
 </body>
 </html>
