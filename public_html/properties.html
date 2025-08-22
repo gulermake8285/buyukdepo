@@ -19,7 +19,7 @@
     
     <style>
         /* CSS Variables - Index ile aynı */
-        :root {
+            padding: 120px 2rem 60px;
             --primary-100: #667eea;
             --primary-200: #764ba2;
             --secondary-100: #f093fb;
@@ -652,6 +652,8 @@
             color: #1a1a1a;
         }
 
+            max-width: 1400px;
+            margin: 0 auto;
         .properties-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -845,6 +847,8 @@
         .btn-view:hover {
             border-color: var(--primary-100);
             color: var(--primary-100);
+            min-width: 250px;
+            flex: 1;
             transform: translateY(-2px);
         }
 
@@ -859,6 +863,7 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
+            flex-wrap: wrap;
 
         .btn-invest:disabled {
             background: #e2e8f0;
@@ -869,6 +874,7 @@
         }
 
         /* Loading & States */
+            white-space: nowrap;
         .loading {
             text-align: center;
             padding: 4rem;
@@ -951,6 +957,8 @@
         }
 
         /* Toast Notifications */
+            flex-wrap: wrap;
+            gap: 1rem;
         .notification {
             position: fixed;
             top: 90px;
@@ -1081,6 +1089,78 @@
                 padding: 1rem;
             }
         }
+       /* Mobile Responsive Fixes */
+       @media (max-width: 1024px) {
+           .properties-container {
+               padding: 120px 1.5rem 60px;
+           }
+           
+           .properties-grid {
+               grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+               gap: 1.5rem;
+           }
+       }
+       
+       @media (max-width: 768px) {
+           .properties-container {
+               padding: 120px 1rem 60px;
+           }
+           
+           .properties-title {
+               font-size: 2rem;
+           }
+           
+           .properties-filters {
+               flex-direction: column;
+               align-items: stretch;
+           }
+           
+           .search-input {
+               min-width: auto;
+               width: 100%;
+           }
+           
+           .filter-buttons {
+               justify-content: center;
+           }
+           
+           .properties-grid {
+               grid-template-columns: 1fr;
+               gap: 1.5rem;
+           }
+           
+           .property-stats {
+               grid-template-columns: repeat(2, 1fr);
+           }
+           
+           .property-actions {
+               flex-direction: column;
+           }
+       }
+       
+       @media (max-width: 480px) {
+           .properties-container {
+               padding: 100px 0.5rem 60px;
+           }
+           
+           .properties-title {
+               font-size: 1.8rem;
+           }
+           
+           .filter-btn {
+               padding: 0.5rem 1rem;
+               font-size: 0.9rem;
+           }
+           
+           .property-content {
+               padding: 1rem;
+           }
+           
+           .property-stats {
+               grid-template-columns: 1fr;
+               gap: 0.5rem;
+           }
+       }
     </style>
 </head>
 <body>

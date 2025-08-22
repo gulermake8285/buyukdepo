@@ -1130,6 +1130,15 @@ img {
     .nav-links {
         gap: 1.5rem;
     }
+    
+    .properties-container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    .container {
+        padding: 0 1.5rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1152,12 +1161,50 @@ img {
         min-width: auto;
     }
     
-    .connect-wallet-btn {
-        display: none; /* Mobile'da sadece nav-actions içindeki gösterilecek */
+    .properties-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     
-    .nav-actions .connect-wallet-btn {
-        display: flex;
+    .container {
+        padding: 0 1rem;
+    }
+    
+    /* Properties page specific fixes */
+    .properties-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .property-card {
+        margin: 0;
+    }
+    
+    .property-filters {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    /* Hero section mobile fixes */
+    .hero-cta {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .cta-primary,
+    .cta-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 1.5rem;
     }
 }
 
@@ -1169,15 +1216,54 @@ img {
     
     .mobile-nav {
         top: 60px;
+        max-height: calc(100vh - 60px);
     }
     
-    .brand-text {
-        display: none;
+    .nav-brand span {
+        font-size: 1.2rem;
     }
     
-    .logo {
-        width: 32px;
-        height: 32px;
+    .properties-container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .features-grid,
+    .steps-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .property-stats {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .property-actions {
+        flex-direction: column;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .newsletter-input-group {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    
+    .footer-bottom-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
     }
 }
 
