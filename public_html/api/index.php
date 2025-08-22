@@ -1,13 +1,17 @@
 <?php
 /**
- * ARSA Token API - Main Entry Point
- * Simplified and clean API structure
+ * ARSA Token API - Simplified Main Entry Point
+ * Clean and organized API structure
  */
+
+// Error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
 // CORS Headers
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 // Handle preflight requests
@@ -16,13 +20,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// Database configuration - UPDATE WITH YOUR ACTUAL CREDENTIALS
+// Load environment variables if available
+if (file_exists(__DIR__ . '/../env.sh')) {
+    $envFile = file_get_contents(__DIR__ . '/../env.sh');
+    preg_match_all('/^([A-Z_]+)=(.*)$/m', $envFile, $matches);
+    for ($i = 0; $i < count($matches[1]); $i++) {
+        $_ENV[$matches[1][$i]] = trim($matches[2][$i], '"\'');
+    }
+}
+
+// Database configuration - Unified config
 $DB_CONFIG = [
-    'host' => 'localhost',
-    'name' => 'u2368732_arsanew',
-    'user' => 'u2368732_arsa', 
-    'pass' => 'R0DE034jvc56!!!',
-    'charset' => 'utf8mb4'
+    'host' => $_ENV['DB_HOST'] ?? 'localhost',
+    'name' => $_ENV['DB_NAME'] ?? 'u2368732_arsanew',
+    'user' => $_ENV['DB_USER'] ?? 'u2368732_arsa',
+    'pass' => $_ENV['DB_PASS'] ?? 'R0DE034jvc56!!!',
+    'charset' => $_ENV['DB_CHARSET'] ?? 'utf8mb4'
 ];
 
 // Helper function for JSON responses
@@ -33,28 +46,34 @@ function sendResponse($success, $data = null, $message = '', $status = 200) {
         'data' => $data,
         'message' => $message,
         'timestamp' => date('c'),
-        'api_version' => '1.0.0'
-    ], JSON_UNESCAPED_UNICODE);
+        'api_version' => '2.0.0'
+    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     exit;
 }
 
-// Database connection
+// Database connection with error handling
 function getDatabase() {
     global $DB_CONFIG;
+    static $pdo = null;
     
-    try {
-        $dsn = "mysql:host={$DB_CONFIG['host']};dbname={$DB_CONFIG['name']};charset={$DB_CONFIG['charset']}";
-        $pdo = new PDO($dsn, $DB_CONFIG['user'], $DB_CONFIG['pass'], [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
-        return $pdo;
-    } catch (PDOException $e) {
-        sendResponse(false, null, 'Database connection failed', 500);
+    if ($pdo === null) {
+        try {
+            $dsn = "mysql:host={$DB_CONFIG['host']};dbname={$DB_CONFIG['name']};charset={$DB_CONFIG['charset']}";
+            $pdo = new PDO($dsn, $DB_CONFIG['user'], $DB_CONFIG['pass'], [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false
+            ]);
+        } catch (PDOException $e) {
+            error_log("Database connection error: " . $e->getMessage());
+            sendResponse(false, null, 'Database connection failed', 500);
+        }
     }
+    
+    return $pdo;
 }
 
-// Simple routing
+// Simple routing system
 $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -65,130 +84,311 @@ if ($basePath !== '/') {
     $path = substr($path, strlen($basePath));
 }
 
+// Clean path
+$path = rtrim($path, '/');
+if (empty($path)) {
+    $path = '/';
+}
+
 try {
-    switch ($path) {
-        case '/':
-        case '/health':
-            // Health check
+    switch (true) {
+        // Health check
+        case ($path === '/' || $path === '/health'):
             sendResponse(true, [
-                'status' => 'ok',
-                'message' => 'ARSA API is running',
+                'status' => 'healthy',
+                'message' => 'ARSA Token API v2.0 is running',
+                'database' => testDatabaseConnection(),
                 'endpoints' => [
                     'GET /health' => 'API health check',
                     'GET /properties' => 'Get all properties',
                     'GET /properties/{id}' => 'Get single property',
-                    'POST /properties' => 'Add new property (admin only)'
+                    'POST /properties' => 'Add new property (admin only)',
+                    'GET /admin/dashboard' => 'Admin dashboard stats',
+                    'POST /admin/login' => 'Admin authentication'
                 ]
             ]);
             break;
             
-        case '/properties':
-            if ($method === 'GET') {
-                // Get all properties
-                $db = getDatabase();
-                
-                $sql = "SELECT 
-                            id, name, description, city, country, property_type,
-                            total_value, nft_price, total_nfts, sold_nfts, available_nfts,
-                            monthly_rent, annual_yield, status, main_image, created_at
-                        FROM properties 
-                        WHERE is_active = 1 
-                        ORDER BY created_at DESC";
-                
-                $stmt = $db->prepare($sql);
-                $stmt->execute();
-                $properties = $stmt->fetchAll();
-                
-                // Format properties
-                $formattedProperties = array_map(function($property) {
-                    return [
-                        'id' => (int)$property['id'],
-                        'name' => $property['name'],
-                        'description' => $property['description'] ?? '',
-                        'city' => $property['city'],
-                        'country' => $property['country'] ?? 'Germany',
-                        'property_type' => $property['property_type'],
-                        'total_value' => (float)$property['total_value'],
-                        'nft_price' => (float)$property['nft_price'],
-                        'total_nfts' => (int)$property['total_nfts'],
-                        'sold_nfts' => (int)$property['sold_nfts'],
-                        'available_nfts' => (int)$property['available_nfts'],
-                        'monthly_rent' => (float)$property['monthly_rent'],
-                        'annual_yield' => (float)$property['annual_yield'],
-                        'status' => $property['status'],
-                        'main_image' => $property['main_image'] ?? '',
-                        'created_at' => $property['created_at']
-                    ];
-                }, $properties);
-                
-                sendResponse(true, [
-                    'properties' => $formattedProperties,
-                    'total' => count($formattedProperties)
-                ], 'Properties loaded successfully');
-                
-            } elseif ($method === 'POST') {
-                // Add new property (simplified - no auth check for now)
-                $input = json_decode(file_get_contents('php://input'), true);
-                
-                if (!$input) {
-                    sendResponse(false, null, 'Invalid JSON data', 400);
-                }
-                
-                $db = getDatabase();
-                
-                $sql = "INSERT INTO properties (
-                            name, description, city, country, property_type,
-                            total_value, nft_price, total_nfts, available_nfts,
-                            monthly_rent, annual_yield, status, main_image
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
-                $stmt = $db->prepare($sql);
-                $stmt->execute([
-                    $input['name'] ?? '',
-                    $input['description'] ?? '',
-                    $input['city'] ?? '',
-                    $input['country'] ?? 'Germany',
-                    $input['property_type'] ?? 'Office',
-                    $input['total_value'] ?? 0,
-                    $input['nft_price'] ?? 100,
-                    $input['total_nfts'] ?? 1000,
-                    $input['total_nfts'] ?? 1000, // available_nfts = total_nfts initially
-                    $input['monthly_rent'] ?? 0,
-                    $input['annual_yield'] ?? 0,
-                    $input['status'] ?? 'Available',
-                    $input['main_image'] ?? ''
-                ]);
-                
-                sendResponse(true, [
-                    'id' => $db->lastInsertId()
-                ], 'Property added successfully', 201);
-            }
+        // Properties endpoints
+        case ($path === '/properties'):
+            handlePropertiesEndpoint($method);
             break;
             
+        // Single property endpoint
+        case (preg_match('/^\/properties\/(\d+)$/', $path, $matches)):
+            handleSinglePropertyEndpoint($method, $matches[1]);
+            break;
+            
+        // Admin endpoints
+        case ($path === '/admin/dashboard'):
+            handleAdminDashboard($method);
+            break;
+            
+        case ($path === '/admin/login'):
+            handleAdminLogin($method);
+            break;
+            
+        // 404 - Not found
         default:
-            // Check if it's a property detail request (/properties/123)
-            if (preg_match('/^\/properties\/(\d+)$/', $path, $matches)) {
-                $propertyId = $matches[1];
-                
-                $db = getDatabase();
-                $sql = "SELECT * FROM properties WHERE id = ? AND is_active = 1";
-                $stmt = $db->prepare($sql);
-                $stmt->execute([$propertyId]);
-                $property = $stmt->fetch();
-                
-                if ($property) {
-                    sendResponse(true, $property, 'Property loaded successfully');
-                } else {
-                    sendResponse(false, null, 'Property not found', 404);
-                }
-            } else {
-                sendResponse(false, null, 'Endpoint not found', 404);
-            }
+            sendResponse(false, null, 'Endpoint not found', 404);
             break;
     }
     
 } catch (Exception $e) {
     error_log("API Error: " . $e->getMessage());
     sendResponse(false, null, 'Internal server error', 500);
+}
+
+// Test database connection
+function testDatabaseConnection() {
+    try {
+        $db = getDatabase();
+        $stmt = $db->query('SELECT 1');
+        return 'connected';
+    } catch (Exception $e) {
+        return 'failed';
+    }
+}
+
+// Handle properties endpoint
+function handlePropertiesEndpoint($method) {
+    if ($method === 'GET') {
+        $db = getDatabase();
+        
+        $sql = "SELECT 
+                    p.id, p.name, p.description, p.city, p.country, p.property_type,
+                    p.total_value, p.nft_price, p.total_nfts, p.sold_nfts, p.available_nfts,
+                    p.monthly_rent, p.annual_yield, p.status, p.main_image, p.created_at,
+                    COUNT(pi.id) as image_count
+                FROM properties p
+                LEFT JOIN property_images pi ON p.id = pi.property_id
+                WHERE p.is_active = 1 
+                GROUP BY p.id
+                ORDER BY p.created_at DESC";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $properties = $stmt->fetchAll();
+        
+        // Format properties
+        $formattedProperties = array_map(function($property) {
+            return [
+                'id' => (int)$property['id'],
+                'name' => $property['name'],
+                'description' => $property['description'] ?? '',
+                'city' => $property['city'],
+                'country' => $property['country'] ?? 'Germany',
+                'property_type' => $property['property_type'],
+                'total_value' => (float)$property['total_value'],
+                'nft_price' => (float)$property['nft_price'],
+                'total_nfts' => (int)$property['total_nfts'],
+                'sold_nfts' => (int)$property['sold_nfts'],
+                'available_nfts' => (int)$property['available_nfts'],
+                'monthly_rent' => (float)$property['monthly_rent'],
+                'annual_yield' => (float)$property['annual_yield'],
+                'status' => $property['status'],
+                'main_image' => $property['main_image'] ?? '',
+                'image_count' => (int)$property['image_count'],
+                'progress_percentage' => round(($property['sold_nfts'] / $property['total_nfts']) * 100, 1),
+                'monthly_income_per_nft' => round(($property['monthly_rent'] / $property['total_nfts']), 2),
+                'created_at' => $property['created_at']
+            ];
+        }, $properties);
+        
+        sendResponse(true, [
+            'properties' => $formattedProperties,
+            'total' => count($formattedProperties),
+            'stats' => [
+                'total_value' => array_sum(array_column($formattedProperties, 'total_value')),
+                'total_nfts' => array_sum(array_column($formattedProperties, 'total_nfts')),
+                'sold_nfts' => array_sum(array_column($formattedProperties, 'sold_nfts'))
+            ]
+        ], 'Properties loaded successfully');
+        
+    } elseif ($method === 'POST') {
+        // Add new property (simplified - basic validation)
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        if (!$input || empty($input['name'])) {
+            sendResponse(false, null, 'Property name is required', 400);
+        }
+        
+        $db = getDatabase();
+        
+        $sql = "INSERT INTO properties (
+                    name, description, city, country, property_type,
+                    total_value, nft_price, total_nfts, available_nfts,
+                    monthly_rent, annual_yield, status, main_image
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $totalNfts = (int)($input['total_nfts'] ?? 1000);
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            $input['name'],
+            $input['description'] ?? '',
+            $input['city'] ?? '',
+            $input['country'] ?? 'Germany',
+            $input['property_type'] ?? 'Office',
+            (float)($input['total_value'] ?? 0),
+            (float)($input['nft_price'] ?? 100),
+            $totalNfts,
+            $totalNfts, // available_nfts = total_nfts initially
+            (float)($input['monthly_rent'] ?? 0),
+            (float)($input['annual_yield'] ?? 0),
+            $input['status'] ?? 'Available',
+            $input['main_image'] ?? ''
+        ]);
+        
+        sendResponse(true, [
+            'id' => $db->lastInsertId()
+        ], 'Property added successfully', 201);
+    } else {
+        sendResponse(false, null, 'Method not allowed', 405);
+    }
+}
+
+// Handle single property endpoint
+function handleSinglePropertyEndpoint($method, $propertyId) {
+    if ($method === 'GET') {
+        $db = getDatabase();
+        
+        $sql = "SELECT p.*, 
+                       GROUP_CONCAT(
+                           JSON_OBJECT(
+                               'id', pi.id,
+                               'image_url', pi.image_url,
+                               'image_title', pi.image_title,
+                               'is_main', pi.is_main,
+                               'sort_order', pi.sort_order
+                           )
+                       ) as images
+                FROM properties p
+                LEFT JOIN property_images pi ON p.id = pi.property_id
+                WHERE p.id = ? AND p.is_active = 1
+                GROUP BY p.id";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$propertyId]);
+        $property = $stmt->fetch();
+        
+        if ($property) {
+            // Parse images
+            $images = [];
+            if ($property['images']) {
+                $imageData = explode(',', $property['images']);
+                foreach ($imageData as $img) {
+                    $images[] = json_decode($img, true);
+                }
+            }
+            
+            $formattedProperty = [
+                'id' => (int)$property['id'],
+                'name' => $property['name'],
+                'description' => $property['description'] ?? '',
+                'city' => $property['city'],
+                'country' => $property['country'] ?? 'Germany',
+                'property_type' => $property['property_type'],
+                'total_value' => (float)$property['total_value'],
+                'nft_price' => (float)$property['nft_price'],
+                'total_nfts' => (int)$property['total_nfts'],
+                'sold_nfts' => (int)$property['sold_nfts'],
+                'available_nfts' => (int)$property['available_nfts'],
+                'monthly_rent' => (float)$property['monthly_rent'],
+                'annual_yield' => (float)$property['annual_yield'],
+                'status' => $property['status'],
+                'main_image' => $property['main_image'] ?? '',
+                'progress_percentage' => round(($property['sold_nfts'] / $property['total_nfts']) * 100, 1),
+                'monthly_income_per_nft' => round(($property['monthly_rent'] / $property['total_nfts']), 2),
+                'images' => $images,
+                'created_at' => $property['created_at']
+            ];
+            
+            sendResponse(true, $formattedProperty, 'Property loaded successfully');
+        } else {
+            sendResponse(false, null, 'Property not found', 404);
+        }
+    } else {
+        sendResponse(false, null, 'Method not allowed', 405);
+    }
+}
+
+// Handle admin dashboard
+function handleAdminDashboard($method) {
+    if ($method === 'GET') {
+        $db = getDatabase();
+        
+        // Get dashboard statistics
+        $stats = [];
+        
+        // Total properties
+        $stmt = $db->query("SELECT COUNT(*) as count FROM properties WHERE is_active = 1");
+        $stats['total_properties'] = $stmt->fetch()['count'];
+        
+        // Total investors (unique emails from transactions)
+        $stmt = $db->query("SELECT COUNT(DISTINCT user_email) as count FROM nft_transactions WHERE status = 'completed'");
+        $stats['total_investors'] = $stmt->fetch()['count'];
+        
+        // Total NFTs sold
+        $stmt = $db->query("SELECT SUM(sold_nfts) as total FROM properties WHERE is_active = 1");
+        $stats['total_nfts_sold'] = $stmt->fetch()['total'] ?? 0;
+        
+        // Total volume
+        $stmt = $db->query("SELECT SUM(total_amount) as total FROM nft_transactions WHERE status = 'completed'");
+        $stats['total_volume'] = $stmt->fetch()['total'] ?? 0;
+        
+        // Recent transactions
+        $stmt = $db->prepare("SELECT nt.*, p.name as property_name 
+                             FROM nft_transactions nt 
+                             JOIN properties p ON nt.property_id = p.id 
+                             ORDER BY nt.created_at DESC 
+                             LIMIT 10");
+        $stmt->execute();
+        $recent_transactions = $stmt->fetchAll();
+        
+        sendResponse(true, [
+            'stats' => $stats,
+            'recent_transactions' => $recent_transactions
+        ], 'Dashboard data loaded successfully');
+    } else {
+        sendResponse(false, null, 'Method not allowed', 405);
+    }
+}
+
+// Handle admin login
+function handleAdminLogin($method) {
+    if ($method === 'POST') {
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        if (!$input || empty($input['username']) || empty($input['password'])) {
+            sendResponse(false, null, 'Username and password required', 400);
+        }
+        
+        // Simple admin authentication (in production, use proper hashing)
+        $validUsers = [
+            'admin' => 'arsa123',
+            'editor' => 'arsaedit',
+            'manager' => 'arsamgr'
+        ];
+        
+        $username = $input['username'];
+        $password = $input['password'];
+        
+        if (isset($validUsers[$username]) && $validUsers[$username] === $password) {
+            // Create session token (simplified)
+            $token = base64_encode($username . ':' . time());
+            
+            sendResponse(true, [
+                'token' => $token,
+                'username' => $username,
+                'role' => $username === 'admin' ? 'super_admin' : 'admin',
+                'expires_at' => date('c', time() + 86400) // 24 hours
+            ], 'Login successful');
+        } else {
+            sendResponse(false, null, 'Invalid credentials', 401);
+        }
+    } else {
+        sendResponse(false, null, 'Method not allowed', 405);
+    }
 }
 ?>

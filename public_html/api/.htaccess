@@ -1,4 +1,4 @@
-# ARSA Token API - Clean URLs
+# ARSA Token API - Clean URLs and Security
 RewriteEngine On
 
 # Handle all requests through index.php
@@ -8,19 +8,65 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 
 # Security headers
 <IfModule mod_headers.c>
+    # Prevent MIME type sniffing
     Header always set X-Content-Type-Options nosniff
+    
+    # Prevent clickjacking
     Header always set X-Frame-Options SAMEORIGIN
+    
+    # XSS Protection
     Header always set X-XSS-Protection "1; mode=block"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Remove server information
+    Header unset Server
+    Header unset X-Powered-By
+    
+    # CORS headers for API
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
 </IfModule>
 
 # Prevent access to sensitive files
-<FilesMatch "\.(env|ini|log|sql)$">
+<FilesMatch "\.(env|ini|log|sh|sql|htaccess|htpasswd|md)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
 
-# Enable compression
+# Enable compression for API responses
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE application/json
     AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+</IfModule>
+
+# Set proper MIME types
+<IfModule mod_mime.c>
+    AddType application/json .json
+</IfModule>
+
+# Cache control for API responses
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/json "access plus 5 minutes"
+</IfModule>
+
+# PHP Settings for API
+<IfModule mod_php.c>
+    # Increase memory limit for API operations
+    php_value memory_limit 128M
+    
+    # Set max execution time
+    php_value max_execution_time 30
+    
+    # Hide PHP version
+    php_flag expose_php off
+    
+    # Error handling
+    php_flag display_errors off
+    php_flag log_errors on
+</IfModule>
 </IfModule>
