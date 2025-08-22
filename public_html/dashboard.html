@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - ARSA Token</title>
+    <title data-i18n="dashboard.page.title">Dashboard - ARSA Token</title>
     <meta name="description" content="ARSA Token yatırım dashboard'u - Portföyünüzü yönetin">
     
     <!-- CSS -->
@@ -279,15 +279,15 @@
             
             <!-- Dashboard Header -->
             <div class="dashboard-header">
-                <h1 class="dashboard-title">Yatırım Dashboard'u</h1>
-                <p class="dashboard-subtitle">Gayrimenkul NFT portföyünüzü yönetin ve takip edin</p>
+                <h1 class="dashboard-title" data-i18n="dashboard.title">Yatırım Dashboard'u</h1>
+                <p class="dashboard-subtitle" data-i18n="dashboard.subtitle">Gayrimenkul NFT portföyünüzü yönetin ve takip edin</p>
             </div>
 
             <!-- Wallet Not Connected State -->
             <div id="walletPrompt" class="connect-wallet-prompt">
-                <h3>🔗 Cüzdanınızı Bağlayın</h3>
-                <p>Dashboard'unuzu görüntülemek için önce MetaMask veya uyumlu bir cüzdan bağlamanız gerekiyor.</p>
-                <button class="connect-btn" onclick="connectWallet()">
+                <h3 data-i18n="wallet.connect.title">🔗 Cüzdanınızı Bağlayın</h3>
+                <p data-i18n="wallet.connect.description">Dashboard'unuzu görüntülemek için önce MetaMask veya uyumlu bir cüzdan bağlamanız gerekiyor.</p>
+                <button class="connect-btn" onclick="connectWallet()" data-i18n="nav.connect">
                     <i class="fas fa-wallet"></i>
                     Cüzdan Bağla
                 </button>
@@ -302,7 +302,7 @@
                             <i class="fas fa-building"></i>
                         </div>
                         <div class="stat-number" id="totalProperties">0</div>
-                        <div class="stat-label">Sahip Olunan Emlak</div>
+                        <div class="stat-label" data-i18n="dashboard.stats.properties">Sahip Olunan Emlak</div>
                     </div>
                     
                     <div class="stat-card">
@@ -310,7 +310,7 @@
                             <i class="fas fa-coins"></i>
                         </div>
                         <div class="stat-number" id="totalNFTs">0</div>
-                        <div class="stat-label">Toplam NFT</div>
+                        <div class="stat-label" data-i18n="dashboard.stats.nfts">Toplam NFT</div>
                     </div>
                     
                     <div class="stat-card">
@@ -318,7 +318,7 @@
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                         <div class="stat-number" id="totalValue">$0</div>
-                        <div class="stat-label">Portföy Değeri</div>
+                        <div class="stat-label" data-i18n="dashboard.stats.value">Portföy Değeri</div>
                     </div>
                     
                     <div class="stat-card">
@@ -326,13 +326,13 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="stat-number" id="monthlyIncome">$0</div>
-                        <div class="stat-label">Aylık Gelir</div>
+                        <div class="stat-label" data-i18n="dashboard.stats.income">Aylık Gelir</div>
                     </div>
                 </div>
 
                 <!-- Portfolio Section -->
                 <div class="portfolio-section">
-                    <h2 class="section-title">📊 Portföyüm</h2>
+                    <h2 class="section-title" data-i18n="dashboard.portfolio.title">📊 Portföyüm</h2>
                     <div class="portfolio-grid" id="portfolioGrid">
                         <!-- Portfolio items will be loaded here -->
                     </div>
@@ -340,7 +340,7 @@
 
                 <!-- Recent Transactions -->
                 <div class="portfolio-section">
-                    <h2 class="section-title">📋 Son İşlemler</h2>
+                    <h2 class="section-title" data-i18n="dashboard.transactions.title">📋 Son İşlemler</h2>
                     <div id="recentTransactions">
                         <!-- Transactions will be loaded here -->
                     </div>
