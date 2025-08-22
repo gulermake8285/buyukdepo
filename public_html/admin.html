@@ -3,26 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARSA Token - Admin Panel</title>
+    <title>Admin Panel - ARSA Token</title>
+    <meta name="description" content="ARSA Token admin yönetim paneli">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a6fd8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --border: #e2e8f0;
-            --text: #334155;
-            --text-light: #64748b;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -30,10 +23,10 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a3e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
         }
 
         .admin-container {
@@ -44,89 +37,66 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(15, 15, 35, 0.95);
             backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 1000;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
         }
 
         .sidebar-header {
-            padding: 2rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            text-align: center;
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
         }
 
-        .logo {
-            font-size: 1.8rem;
+        .sidebar-logo {
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .subtitle {
-            color: var(--text-light);
-            font-size: 0.9rem;
+        .sidebar-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
         }
 
-        .nav-menu {
-            padding: 1rem 0;
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
         }
 
         .nav-item {
-            margin: 0.25rem 0;
+            margin-bottom: 0.5rem;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 0.875rem 1.5rem;
-            color: var(--text);
+            gap: 1rem;
+            padding: 1rem 2rem;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: all 0.3s ease;
-            cursor: pointer;
             border-left: 3px solid transparent;
         }
 
-        .nav-link:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-left-color: var(--primary);
-        }
-
+        .nav-link:hover,
         .nav-link.active {
-            background: rgba(102, 126, 234, 0.15);
-            border-left-color: var(--primary);
-            color: var(--primary);
-            font-weight: 600;
+            background: rgba(102, 126, 234, 0.1);
+            color: #ffffff;
+            border-left-color: #667eea;
         }
 
-        .nav-icon {
+        .nav-link i {
             width: 20px;
-            margin-right: 0.875rem;
-            font-size: 1.1rem;
-        }
-
-        .nav-text {
-            flex: 1;
-        }
-
-        .nav-badge {
-            background: var(--danger);
-            color: white;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            min-width: 20px;
             text-align: center;
         }
 
@@ -134,492 +104,63 @@
         .main-content {
             flex: 1;
             margin-left: 280px;
-            transition: margin-left 0.3s ease;
+            padding: 2rem;
         }
 
-        .main-content.expanded {
-            margin-left: 0;
-        }
-
-        .top-bar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border);
+        .content-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: var(--text);
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .menu-toggle:hover {
-            background: rgba(102, 126, 234, 0.1);
-        }
-
-        .breadcrumb {
-            display: flex;
             align-items: center;
-            color: var(--text-light);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
         }
 
-        .breadcrumb-separator {
-            margin: 0 0.5rem;
-            color: var(--border);
-        }
-
-        .top-bar-actions {
+        .user-info {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .btn {
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
             padding: 0.5rem 1rem;
-            border: none;
             border-radius: 8px;
-            font-size: 0.875rem;
-            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
         }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .btn-outline:hover {
-            background: var(--light);
-        }
-
-        /* Content Area */
-        .content {
-            padding: 2rem;
-        }
-
+        /* Sections */
         .section {
             display: none;
         }
 
         .section.active {
             display: block;
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
-        }
-
-        .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .page-description {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: between;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin: 0;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-icon.blue {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--info);
-        }
-
-        .stat-icon.green {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .stat-icon.orange {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .stat-icon.red {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-change {
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-        }
-
-        .stat-change.positive {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .stat-change.negative {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-        }
-
-        .textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        /* Table */
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th,
-        .table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .table th {
-            background: var(--light);
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .table tr:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .status-active {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .status-inactive {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .grid-2 {
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        }
-
-        .grid-3 {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-
-        /* Upload Area */
-        .upload-area {
-            border: 2px dashed var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .upload-area:hover,
-        .upload-area.dragover {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--text-light);
-            margin-bottom: 1rem;
-        }
-
-        .upload-text {
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
-        .upload-hint {
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
-
-        /* Image Preview */
-        .image-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 1px solid var(--border);
-        }
-
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .image-item {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .image-remove {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            width: 24px;
-            height: 24px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 0.75rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .content {
-                padding: 1rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-2,
-            .grid-3 {
-                grid-template-columns: 1fr;
-            }
-
-            .top-bar {
-                padding: 1rem;
-            }
-        }
-
-        /* Loading */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -627,763 +168,534 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: white;
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border);
-            padding: 1rem 1.5rem;
-            max-width: 400px;
-            z-index: 9999;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
         }
 
-        .notification.show {
-            transform: translateX(0);
+        .card-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
         }
 
-        .notification.success {
-            border-left: 4px solid var(--success);
+        .card-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
         }
 
-        .notification.error {
-            border-left: 4px solid var(--danger);
+        /* Tables */
+        .data-table {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
         }
 
-        .notification.warning {
-            border-left: 4px solid var(--warning);
+        .table-header {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .notification.info {
-            border-left: 4px solid var(--info);
+        .table-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .table-content {
+            padding: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-hot {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-sold {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 1001;
+                background: rgba(102, 126, 234, 0.9);
+                border: none;
+                color: white;
+                padding: 0.75rem;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* Loading states */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="admin-container">
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🏗️ ARSA</div>
-                <div class="subtitle">Admin Panel</div>
+                <div class="sidebar-logo">
+                    <i class="fas fa-building"></i>
+                    ARSA Admin
+                </div>
+                <div class="sidebar-subtitle">Yönetim Paneli</div>
             </div>
-            
-            <nav class="nav-menu">
-                <div class="nav-item">
-                    <a href="#" class="nav-link active" data-section="dashboard">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <span class="nav-text">Dashboard</span>
-                    </a>
-                </div>
-                
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="properties">
-                        <i class="nav-icon fas fa-building"></i>
-                        <span class="nav-text">Emlak Yönetimi</span>
-                        <span class="nav-badge">12</span>
-                    </a>
-                </div>
-                
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="content">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <span class="nav-text">İçerik Yönetimi</span>
-                    </a>
-                </div>
-                
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="site-settings">
-                        <i class="nav-icon fas fa-cog"></i>
-                        <span class="nav-text">Site Ayarları</span>
-                    </a>
-                </div>
-                
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="users">
-                        <i class="nav-icon fas fa-users"></i>
-                        <span class="nav-text">Kullanıcılar</span>
-                    </a>
-                </div>
-                
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="analytics">
-                        <i class="nav-icon fas fa-chart-line"></i>
-                        <span class="nav-text">Analitik</span>
-                    </a>
-                </div>
-                
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="settings">
-                        <i class="nav-icon fas fa-tools"></i>
-                        <span class="nav-text">Sistem Ayarları</span>
-                    </a>
-                </div>
+
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-section="dashboard">
+                            <i class="fas fa-chart-line"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="properties">
+                            <i class="fas fa-building"></i>
+                            Emlaklar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="transactions">
+                            <i class="fas fa-exchange-alt"></i>
+                            İşlemler
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="users">
+                            <i class="fas fa-users"></i>
+                            Kullanıcılar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="analytics">
+                            <i class="fas fa-chart-bar"></i>
+                            Analitik
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                    </li>
+                </ul>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <!-- Top Bar -->
-            <header class="top-bar">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <button class="menu-toggle" id="menuToggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <nav class="breadcrumb">
-                        <span class="breadcrumb-item">
-                            <i class="fas fa-home"></i>
-                        </span>
-                        <span class="breadcrumb-separator">/</span>
-                        <span class="breadcrumb-item" id="currentSection">Dashboard</span>
-                    </nav>
-                </div>
-                
-                <div class="top-bar-actions">
-                    <button class="btn btn-outline">
-                        <i class="fas fa-eye"></i>
-                        Siteyi Görüntüle
-                    </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Yeni Ekle
+        <main class="main-content">
+            <!-- Header -->
+            <div class="content-header">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <span>Admin</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış
                     </button>
                 </div>
-            </header>
-
-            <!-- Content -->
-            <div class="content">
-                <!-- Dashboard Section -->
-                <section id="dashboard" class="section active">
-                    <div class="page-header">
-                        <h1 class="page-title">Dashboard</h1>
-                        <p class="page-description">ARSA Token platformunuzun genel durumu ve istatistikleri</p>
-                    </div>
-
-                    <!-- Stats Grid -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon blue">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div class="stat-value">24</div>
-                            <div class="stat-label">Toplam Emlak</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +3 bu ay
-                            </span>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon green">
-                                <i class="fas fa-coins"></i>
-                            </div>
-                            <div class="stat-value">€2.4M</div>
-                            <div class="stat-label">Toplam Değer</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +12.5%
-                            </span>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon orange">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-value">1,247</div>
-                            <div class="stat-label">Aktif Yatırımcı</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +8.2%
-                            </span>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon red">
-                                <i class="fas fa-percentage"></i>
-                            </div>
-                            <div class="stat-value">8.7%</div>
-                            <div class="stat-label">Ortalama Getiri</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +0.3%
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Recent Activities -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Son Aktiviteler</h3>
-                            <button class="btn btn-outline">Tümünü Gör</button>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Aktivite</th>
-                                            <th>Emlak</th>
-                                            <th>Kullanıcı</th>
-                                            <th>Tarih</th>
-                                            <th>Durum</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Yeni NFT Satın Alma</td>
-                                            <td>Berlin Premium Office</td>
-                                            <td>ahmet.yilmaz@email.com</td>
-                                            <td>2 dakika önce</td>
-                                            <td><span class="status-badge status-active">Tamamlandı</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Emlak Eklendi</td>
-                                            <td>Hamburg Logistics Center</td>
-                                            <td>Admin</td>
-                                            <td>1 saat önce</td>
-                                            <td><span class="status-badge status-pending">İncelemede</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Getiri Dağıtımı</td>
-                                            <td>Munich Residential Complex</td>
-                                            <td>Sistem</td>
-                                            <td>3 saat önce</td>
-                                            <td><span class="status-badge status-active">Tamamlandı</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Properties Section -->
-                <section id="properties" class="section">
-                    <div class="page-header">
-                        <h1 class="page-title">Emlak Yönetimi</h1>
-                        <p class="page-description">Platformdaki tüm emlakları yönetin, düzenleyin ve yeni emlak ekleyin</p>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Yeni Emlak Ekle</h3>
-                        </div>
-                        <div class="card-body">
-                            <form id="propertyForm">
-                                <div class="grid grid-2">
-                                    <div class="form-group">
-                                        <label class="form-label">Emlak Adı</label>
-                                        <input type="text" class="form-control" placeholder="Örn: Berlin Premium Office Complex">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Emlak Türü</label>
-                                        <select class="form-control form-select">
-                                            <option>Ofis</option>
-                                            <option>Konut</option>
-                                            <option>Ticari</option>
-                                            <option>Lojistik</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Şehir</label>
-                                        <input type="text" class="form-control" placeholder="Örn: Berlin">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Ülke</label>
-                                        <select class="form-control form-select">
-                                            <option>Almanya</option>
-                                            <option>Avusturya</option>
-                                            <option>İsviçre</option>
-                                            <option>Hollanda</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Toplam Değer (€)</label>
-                                        <input type="number" class="form-control" placeholder="2500000">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">NFT Fiyatı (€)</label>
-                                        <input type="number" class="form-control" placeholder="100">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Toplam NFT Sayısı</label>
-                                        <input type="number" class="form-control" placeholder="1000">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">Yıllık Getiri (%)</label>
-                                        <input type="number" step="0.1" class="form-control" placeholder="8.5">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Açıklama</label>
-                                    <textarea class="form-control textarea" placeholder="Emlak hakkında detaylı açıklama..."></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Emlak Görselleri</label>
-                                    <div class="upload-area" id="imageUpload">
-                                        <i class="upload-icon fas fa-cloud-upload-alt"></i>
-                                        <div class="upload-text">Görselleri buraya sürükleyin veya tıklayın</div>
-                                        <div class="upload-hint">PNG, JPG veya WEBP (Maks. 5MB)</div>
-                                    </div>
-                                    <div class="image-grid" id="imagePreview"></div>
-                                </div>
-                                
-                                <div style="margin-top: 2rem;">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save"></i>
-                                        Emlak Kaydet
-                                    </button>
-                                    <button type="button" class="btn btn-outline">
-                                        <i class="fas fa-times"></i>
-                                        İptal
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Existing Properties -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Mevcut Emlaklar</h3>
-                            <div style="display: flex; gap: 1rem;">
-                                <input type="search" class="form-control" placeholder="Emlak ara..." style="max-width: 200px;">
-                                <select class="form-control form-select" style="max-width: 150px;">
-                                    <option>Tüm Durumlar</option>
-                                    <option>Aktif</option>
-                                    <option>Beklemede</option>
-                                    <option>Tükendi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Görsel</th>
-                                            <th>Emlak Adı</th>
-                                            <th>Şehir</th>
-                                            <th>Tür</th>
-                                            <th>Toplam Değer</th>
-                                            <th>NFT Fiyatı</th>
-                                            <th>Satılan/Toplam</th>
-                                            <th>Durum</th>
-                                            <th>İşlemler</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=80&h=60&fit=crop" 
-                                                     alt="Property" class="image-preview">
-                                            </td>
-                                            <td>
-                                                <div style="font-weight: 600;">Berlin Premium Office</div>
-                                                <div style="color: var(--text-light); font-size: 0.875rem;">Finansal bölge</div>
-                                            </td>
-                                            <td>Berlin</td>
-                                            <td>Ofis</td>
-                                            <td>€2,500,000</td>
-                                            <td>€100</td>
-                                            <td>847/1000</td>
-                                            <td><span class="status-badge status-active">Aktif</span></td>
-                                            <td>
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <button class="btn btn-warning" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-ban"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--warning), var(--danger)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                                        MD
-                                                    </div>
-                                                    <div>
-                                                        <div style="font-weight: 600;">Mehmet Demir</div>
-                                                        <div style="color: var(--text-light); font-size: 0.875rem;">@mehmetdemir</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>mehmet.demir@email.com</td>
-                                            <td>10 Nisan 2024</td>
-                                            <td>€25,600</td>
-                                            <td>128</td>
-                                            <td><span class="status-badge status-pending">Beklemede</span></td>
-                                            <td>
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-warning" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-ban"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Analytics Section -->
-                <section id="analytics" class="section">
-                    <div class="page-header">
-                        <h1 class="page-title">Analitik & Raporlar</h1>
-                        <p class="page-description">Platform performansı ve kullanıcı davranışları hakkında detaylı analitik</p>
-                    </div>
-
-                    <!-- Quick Stats -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon blue">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="stat-value">€847K</div>
-                            <div class="stat-label">Bu Ay Satış</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +23.4%
-                            </span>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon green">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <div class="stat-value">12,847</div>
-                            <div class="stat-label">Sayfa Görüntülenme</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +15.2%
-                            </span>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon orange">
-                                <i class="fas fa-mouse-pointer"></i>
-                            </div>
-                            <div class="stat-value">3.2%</div>
-                            <div class="stat-label">Dönüşüm Oranı</div>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> +0.8%
-                            </span>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon red">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-value">4:32</div>
-                            <div class="stat-label">Ortalama Süre</div>
-                            <span class="stat-change negative">
-                                <i class="fas fa-arrow-down"></i> -12s
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-2">
-                        <!-- Satış Trendi -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Satış Trendi (Son 7 Gün)</h3>
-                                <select class="form-control form-select" style="max-width: 120px;">
-                                    <option>7 Gün</option>
-                                    <option>30 Gün</option>
-                                    <option>90 Gün</option>
-                                </select>
-                            </div>
-                            <div class="card-body">
-                                <div style="height: 300px; display: flex; align-items: end; justify-content: space-between; padding: 1rem 0;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 180px; background: linear-gradient(to top, var(--primary), var(--primary-dark)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Pts</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€124K</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 150px; background: linear-gradient(to top, var(--primary), var(--primary-dark)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Sal</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€98K</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 220px; background: linear-gradient(to top, var(--success), var(--info)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Çar</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€156K</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 190px; background: linear-gradient(to top, var(--primary), var(--primary-dark)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Per</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€132K</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 170px; background: linear-gradient(to top, var(--primary), var(--primary-dark)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Cum</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€118K</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 140px; background: linear-gradient(to top, var(--warning), var(--danger)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Cts</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€87K</span>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                                        <div style="width: 40px; height: 200px; background: linear-gradient(to top, var(--success), var(--info)); border-radius: 4px;"></div>
-                                        <span style="font-size: 0.875rem; color: var(--text-light);">Paz</span>
-                                        <span style="font-size: 0.875rem; font-weight: 600;">€142K</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Popüler Emlaklar -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">En Popüler Emlaklar</h3>
-                            </div>
-                            <div class="card-body">
-                                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--light); border-radius: 8px;">
-                                        <div style="width: 50px; height: 50px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            1
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600;">Berlin Premium Office</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">847 NFT satıldı</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-weight: 600; color: var(--success);">€84,700</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">Bu ay</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--light); border-radius: 8px;">
-                                        <div style="width: 50px; height: 50px; border-radius: 8px; background: linear-gradient(135deg, var(--success), var(--info)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            2
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600;">Munich Residential</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">623 NFT satıldı</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-weight: 600; color: var(--success);">€93,450</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">Bu ay</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--light); border-radius: 8px;">
-                                        <div style="width: 50px; height: 50px; border-radius: 8px; background: linear-gradient(135deg, var(--warning), var(--danger)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                            3
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600;">Frankfurt Business</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">456 NFT satıldı</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-weight: 600; color: var(--success);">€68,400</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">Bu ay</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Settings Section -->
-                <section id="settings" class="section">
-                    <div class="page-header">
-                        <h1 class="page-title">Sistem Ayarları</h1>
-                        <p class="page-description">Platform güvenliği ve teknik ayarları</p>
-                    </div>
-
-                    <div class="grid grid-2">
-                        <!-- Güvenlik Ayarları -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Güvenlik Ayarları</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Admin Şifresi Değiştir</label>
-                                    <input type="password" class="form-control" placeholder="Mevcut şifre">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Yeni şifre">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Yeni şifre tekrar">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">İki Faktörlü Doğrulama</label>
-                                    <div style="display: flex; align-items: center; gap: 1rem;">
-                                        <input type="checkbox" id="2fa" style="width: 20px; height: 20px;">
-                                        <label for="2fa" style="margin: 0;">2FA'yı etkinleştir</label>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-shield-alt"></i>
-                                    Güvenlik Ayarlarını Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- API Ayarları -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">API Ayarları</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Blockchain Network</label>
-                                    <select class="form-control form-select">
-                                        <option>Ethereum Mainnet</option>
-                                        <option>Polygon</option>
-                                        <option>BSC</option>
-                                        <option>Testnet</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">RPC URL</label>
-                                    <input type="url" class="form-control" value="https://mainnet.infura.io/v3/...">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Contract Address</label>
-                                    <input type="text" class="form-control" value="0x742d35cc5ab...">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Gas Limit</label>
-                                    <input type="number" class="form-control" value="21000">
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-link"></i>
-                                    API Ayarlarını Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Backup & Restore -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Yedekleme & Geri Yükleme</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Otomatik Yedekleme</label>
-                                    <select class="form-control form-select">
-                                        <option>Günlük</option>
-                                        <option>Haftalık</option>
-                                        <option>Aylık</option>
-                                        <option>Kapalı</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Son Yedekleme</label>
-                                    <div style="color: var(--text-light);">15 Ağustos 2025, 14:30</div>
-                                </div>
-                                
-                                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                                    <button class="btn btn-success">
-                                        <i class="fas fa-download"></i>
-                                        Yedek Al
-                                    </button>
-                                    <button class="btn btn-warning">
-                                        <i class="fas fa-upload"></i>
-                                        Geri Yükle
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sistem Bilgileri -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Sistem Bilgileri</h3>
-                            </div>
-                            <div class="card-body">
-                                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-light);">Platform Versiyonu</span>
-                                        <span style="font-weight: 600;">v2.0.0</span>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-light);">PHP Versiyonu</span>
-                                        <span style="font-weight: 600;">8.1.0</span>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-light);">MySQL Versiyonu</span>
-                                        <span style="font-weight: 600;">8.0.35</span>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-light);">Sunucu</span>
-                                        <span style="font-weight: 600;">Apache/2.4.54</span>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
-                                        <span style="color: var(--text-light);">Son Güncelleme</span>
-                                        <span style="font-weight: 600;">15 Ağustos 2025</span>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-info" style="margin-top: 1.5rem; width: 100%;">
-                                    <i class="fas fa-sync-alt"></i>
-                                    Sistem Güncellemeyi Kontrol Et
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="card-number">12</div>
+                        <div class="card-label">Aktif Emlak</div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-number">1,247</div>
+                        <div class="card-label">Toplam Yatırımcı</div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="card-number">15,432</div>
+                        <div class="card-label">Satılan NFT</div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-number">€2.8M</div>
+                        <div class="card-label">Toplam İşlem Hacmi</div>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Son İşlemler</h3>
+                    </div>
+                    <div class="table-content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tarih</th>
+                                    <th>Kullanıcı</th>
+                                    <th>Emlak</th>
+                                    <th>NFT Sayısı</th>
+                                    <th>Tutar</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTransactions">
+                                <tr>
+                                    <td>15.01.2024</td>
+                                    <td>0x1234...5678</td>
+                                    <td>Berlin Office Complex</td>
+                                    <td>5</td>
+                                    <td>€500</td>
+                                    <td><span class="status-badge status-available">Tamamlandı</span></td>
+                                </tr>
+                                <tr>
+                                    <td>14.01.2024</td>
+                                    <td>0x9876...4321</td>
+                                    <td>Amsterdam Apartments</td>
+                                    <td>8</td>
+                                    <td>€1,200</td>
+                                    <td><span class="status-badge status-available">Tamamlandı</span></td>
+                                </tr>
+                                <tr>
+                                    <td>13.01.2024</td>
+                                    <td>0x5555...7777</td>
+                                    <td>Hamburg Logistics</td>
+                                    <td>12</td>
+                                    <td>€960</td>
+                                    <td><span class="status-badge status-hot">Beklemede</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Properties Section -->
+            <section id="properties" class="section">
+                <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Emlak Yönetimi</h2>
+                    <button class="btn btn-primary" onclick="showAddPropertyForm()">
+                        <i class="fas fa-plus"></i>
+                        Yeni Emlak Ekle
+                    </button>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Emlak Listesi</h3>
+                    </div>
+                    <div class="table-content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Emlak Adı</th>
+                                    <th>Şehir</th>
+                                    <th>Tür</th>
+                                    <th>Toplam Değer</th>
+                                    <th>NFT Fiyatı</th>
+                                    <th>Satış Durumu</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Berlin Premium Office Complex</td>
+                                    <td>Berlin</td>
+                                    <td>Office</td>
+                                    <td>€850,000</td>
+                                    <td>€100</td>
+                                    <td>73%</td>
+                                    <td><span class="status-badge status-available">Mevcut</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding: 0.5rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger" style="padding: 0.5rem; margin-left: 0.5rem;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Amsterdam Luxury Apartments</td>
+                                    <td>Amsterdam</td>
+                                    <td>Residential</td>
+                                    <td>€1,200,000</td>
+                                    <td>€150</td>
+                                    <td>56%</td>
+                                    <td><span class="status-badge status-hot">Popüler</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding: 0.5rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger" style="padding: 0.5rem; margin-left: 0.5rem;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other sections (placeholder) -->
+            <section id="transactions" class="section">
+                <h2>İşlem Yönetimi</h2>
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>İşlemler yükleniyor...</p>
+                </div>
+            </section>
+
+            <section id="users" class="section">
+                <h2>Kullanıcı Yönetimi</h2>
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Kullanıcılar yükleniyor...</p>
+                </div>
+            </section>
+
+            <section id="analytics" class="section">
+                <h2>Analitik Raporları</h2>
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analitik veriler yükleniyor...</p>
+                </div>
+            </section>
+
+            <section id="settings" class="section">
+                <h2>Sistem Ayarları</h2>
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Ayarlar yükleniyor...</p>
+                </div>
+            </section>
         </main>
     </div>
 
-    <!-- Notification Container -->
-    <div id="notification" class="notification">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <i id="notificationIcon" class="fas fa-check-circle" style="font-size: 1.25rem;"></i>
-            <div>
-                <div id="notificationTitle" style="font-weight: 600; margin-bottom: 0.25rem;">Başarılı!</div>
-                <div id="notificationMessage" style="color: var(--text-light); font-size: 0.875rem;">İşlem başarıyla tamamlandı.</div>
-            </div>
-        </div>
-    </div>
-
+    <script src="assets/script.js"></script>
     <script>
-        // Admin Panel Class
-        class AdminPanel {
+        // Modern Admin Panel Class
+        class ModernAdminPanel {
             constructor() {
                 this.currentSection = 'dashboard';
                 this.init();
             }
 
             init() {
+                this.checkAuthentication();
                 this.setupNavigation();
-                this.setupMobileMenu();
-                this.setupFormHandlers();
-                this.setupFileUploads();
-                this.loadStoredData();
+                this.setupEventListeners();
+                console.log('🔧 Admin Panel initialized');
+            }
+
+            checkAuthentication() {
+                const session = localStorage.getItem('arsa_admin_session');
+                if (!session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                console.log('✅ Admin authenticated');
             }
 
             setupNavigation() {
@@ -1391,7 +703,7 @@
                 navLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const section = e.target.closest('.nav-link').getAttribute('data-section');
+                        const section = e.target.getAttribute('data-section');
                         this.showSection(section);
                     });
                 });
@@ -1407,7 +719,6 @@
                 const targetSection = document.getElementById(sectionName);
                 if (targetSection) {
                     targetSection.classList.add('active');
-                    this.currentSection = sectionName;
                 }
 
                 // Update navigation
@@ -1420,981 +731,112 @@
                     activeLink.classList.add('active');
                 }
 
-                // Update breadcrumb
-                const breadcrumb = document.getElementById('currentSection');
-                if (breadcrumb) {
-                    const sectionTitles = {
-                        'dashboard': 'Dashboard',
-                        'properties': 'Emlak Yönetimi',
-                        'content': 'İçerik Yönetimi',
-                        'site-settings': 'Site Ayarları',
-                        'users': 'Kullanıcı Yönetimi',
-                        'analytics': 'Analitik & Raporlar',
-                        'settings': 'Sistem Ayarları'
-                    };
-                    breadcrumb.textContent = sectionTitles[sectionName] || sectionName;
-                }
+                // Update page title
+                const titles = {
+                    'dashboard': 'Dashboard',
+                    'properties': 'Emlak Yönetimi',
+                    'transactions': 'İşlem Yönetimi',
+                    'users': 'Kullanıcı Yönetimi',
+                    'analytics': 'Analitik Raporları',
+                    'settings': 'Sistem Ayarları'
+                };
 
-                // Add fade-in animation
-                targetSection.classList.add('fade-in');
+                document.getElementById('pageTitle').textContent = titles[sectionName] || 'Admin Panel';
+                this.currentSection = sectionName;
+
+                console.log(`📄 Section changed to: ${sectionName}`);
             }
 
-            setupMobileMenu() {
-                const menuToggle = document.getElementById('menuToggle');
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.getElementById('mainContent');
+            setupEventListeners() {
+                // Mobile menu toggle
+                window.toggleSidebar = () => {
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.classList.toggle('open');
+                };
 
-                if (menuToggle) {
-                    menuToggle.addEventListener('click', () => {
-                        sidebar.classList.toggle('show');
-                        mainContent.classList.toggle('expanded');
-                    });
-                }
+                // Logout function
+                window.logout = () => {
+                    if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                        localStorage.removeItem('arsa_admin_session');
+                        window.location.href = 'login.html';
+                    }
+                };
 
-                // Close sidebar when clicking outside on mobile
+                // Add property form
+                window.showAddPropertyForm = () => {
+                    alert('Emlak ekleme formu yakında eklenecek!');
+                };
+
+                // Close sidebar on mobile when clicking outside
                 document.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 768) {
-                        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-                            sidebar.classList.remove('show');
-                            mainContent.classList.remove('expanded');
-                        }
+                    const sidebar = document.getElementById('sidebar');
+                    const menuBtn = document.querySelector('.mobile-menu-btn');
+                    
+                    if (window.innerWidth <= 1024 && 
+                        !sidebar.contains(e.target) && 
+                        !menuBtn.contains(e.target)) {
+                        sidebar.classList.remove('open');
                     }
                 });
             }
 
-            setupFormHandlers() {
-                // Property Form
-                const propertyForm = document.getElementById('propertyForm');
-                if (propertyForm) {
-                    propertyForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.saveProperty();
-                    });
-                }
-
-                // Auto-save content changes
-                this.setupAutoSave();
-            }
-
-            setupAutoSave() {
-                const autoSaveInputs = [
-                    'homeTitle', 'homeSubtitle', 'heroButton',
-                    'aboutTitle', 'aboutDescription',
-                    'contactEmail', 'contactPhone', 'contactAddress',
-                    'siteTitle', 'siteSubtitle',
-                    'socialTwitter', 'socialTelegram', 'socialDiscord', 'socialInstagram', 'socialLinkedin',
-                    'metaTitle', 'metaDescription', 'metaKeywords'
-                ];
-
-                autoSaveInputs.forEach(inputId => {
-                    const input = document.getElementById(inputId);
-                    if (input) {
-                        input.addEventListener('input', () => {
-                            this.saveToLocalStorage(inputId, input.value);
-                        });
-                    }
-                });
-            }
-
-            setupFileUploads() {
-                // Logo upload
-                const logoUpload = document.getElementById('logoUpload');
-                if (logoUpload) {
-                    logoUpload.addEventListener('click', () => {
-                        this.triggerFileInput('logo');
-                    });
-                }
-
-                // Property images upload
-                const imageUpload = document.getElementById('imageUpload');
-                if (imageUpload) {
-                    imageUpload.addEventListener('click', () => {
-                        this.triggerFileInput('property-images', true);
-                    });
-
-                    // Drag and drop
-                    imageUpload.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        imageUpload.classList.add('dragover');
-                    });
-
-                    imageUpload.addEventListener('dragleave', () => {
-                        imageUpload.classList.remove('dragover');
-                    });
-
-                    imageUpload.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        imageUpload.classList.remove('dragover');
-                        this.handleFiles(e.dataTransfer.files, 'property-images');
-                    });
+            // API Methods (placeholder)
+            async loadDashboardData() {
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    console.log('📊 Dashboard data loaded');
+                } catch (error) {
+                    console.error('Dashboard data load error:', error);
                 }
             }
 
-            triggerFileInput(type, multiple = false) {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.multiple = multiple;
-                
-                input.addEventListener('change', (e) => {
-                    this.handleFiles(e.target.files, type);
-                });
-                
-                input.click();
-            }
-
-            handleFiles(files, type) {
-                Array.from(files).forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            this.processImage(e.target.result, type, file.name);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-
-            processImage(dataUrl, type, filename) {
-                if (type === 'logo') {
-                    const preview = document.getElementById('logoPreview');
-                    if (preview) {
-                        preview.src = dataUrl;
-                    }
-                    this.saveToLocalStorage('siteLogo', dataUrl);
-                } else if (type === 'property-images') {
-                    this.addImageToPreview(dataUrl, filename);
+            async loadProperties() {
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    console.log('🏢 Properties loaded');
+                } catch (error) {
+                    console.error('Properties load error:', error);
                 }
-
-                this.showNotification('Görsel başarıyla yüklendi!', 'success');
             }
 
-            addImageToPreview(dataUrl, filename) {
-                const preview = document.getElementById('imagePreview');
-                if (!preview) return;
-
-                const imageItem = document.createElement('div');
-                imageItem.className = 'image-item';
-                imageItem.innerHTML = `
-                    <img src="${dataUrl}" alt="${filename}" class="image-preview" style="width: 100%; height: 120px;">
-                    <button class="image-remove" onclick="this.parentElement.remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed; top: 20px; right: 20px; z-index: 10000;
+                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                    color: white; padding: 1rem 1.5rem; border-radius: 8px;
+                    font-weight: 600; animation: slideIn 0.3s ease;
                 `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
 
-                preview.appendChild(imageItem);
-            }
-
-            saveProperty() {
-                // Simulate property save
-                this.showNotification('Emlak başarıyla kaydedildi!', 'success');
-                
-                // Reset form
-                document.getElementById('propertyForm').reset();
-                document.getElementById('imagePreview').innerHTML = '';
-            }
-
-            saveToLocalStorage(key, value) {
-                try {
-                    localStorage.setItem(`arsa_admin_${key}`, value);
-                } catch (e) {
-                    console.log('LocalStorage not available, using memory storage');
-                    // Fallback to memory storage
-                    if (!window.arsaAdminData) window.arsaAdminData = {};
-                    window.arsaAdminData[key] = value;
-                }
-            }
-
-            loadFromLocalStorage(key) {
-                try {
-                    return localStorage.getItem(`arsa_admin_${key}`);
-                } catch (e) {
-                    // Fallback to memory storage
-                    return window.arsaAdminData ? window.arsaAdminData[key] : null;
-                }
-            }
-
-            loadStoredData() {
-                const autoLoadInputs = [
-                    'homeTitle', 'homeSubtitle', 'heroButton',
-                    'aboutTitle', 'aboutDescription',
-                    'contactEmail', 'contactPhone', 'contactAddress',
-                    'siteTitle', 'siteSubtitle',
-                    'socialTwitter', 'socialTelegram', 'socialDiscord', 'socialInstagram', 'socialLinkedin',
-                    'metaTitle', 'metaDescription', 'metaKeywords'
-                ];
-
-                autoLoadInputs.forEach(inputId => {
-                    const input = document.getElementById(inputId);
-                    const savedValue = this.loadFromLocalStorage(inputId);
-                    if (input && savedValue) {
-                        input.value = savedValue;
-                    }
-                });
-
-                // Load logo
-                const savedLogo = this.loadFromLocalStorage('siteLogo');
-                const logoPreview = document.getElementById('logoPreview');
-                if (savedLogo && logoPreview) {
-                    logoPreview.src = savedLogo;
-                }
-            }
-
-            showNotification(message, type = 'success', title = null) {
-                const notification = document.getElementById('notification');
-                const icon = document.getElementById('notificationIcon');
-                const titleEl = document.getElementById('notificationTitle');
-                const messageEl = document.getElementById('notificationMessage');
-
-                if (!notification) return;
-
-                // Set content
-                messageEl.textContent = message;
-                
-                // Set title and icon based on type
-                const config = {
-                    success: {
-                        title: title || 'Başarılı!',
-                        icon: 'fas fa-check-circle',
-                        class: 'success'
-                    },
-                    error: {
-                        title: title || 'Hata!',
-                        icon: 'fas fa-exclamation-circle',
-                        class: 'error'
-                    },
-                    warning: {
-                        title: title || 'Uyarı!',
-                        icon: 'fas fa-exclamation-triangle',
-                        class: 'warning'
-                    },
-                    info: {
-                        title: title || 'Bilgi',
-                        icon: 'fas fa-info-circle',
-                        class: 'info'
-                    }
-                };
-
-                const currentConfig = config[type] || config.info;
-                titleEl.textContent = currentConfig.title;
-                icon.className = currentConfig.icon;
-                
-                // Reset classes
-                notification.className = 'notification';
-                notification.classList.add(currentConfig.class);
-
-                // Show notification
-                notification.classList.add('show');
-
-                // Auto hide after 5 seconds
                 setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
-            }
-
-            // API Simulation Methods
-            async simulateAPICall(endpoint, data = null) {
-                // Simulate network delay
-                await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
-                
-                // Simulate success/error responses
-                if (Math.random() > 0.1) { // 90% success rate
-                    return { success: true, data: data };
-                } else {
-                    throw new Error('API çağrısı başarısız oldu');
-                }
-            }
-
-            // Database simulation
-            getStoredProperties() {
-                const stored = this.loadFromLocalStorage('properties');
-                return stored ? JSON.parse(stored) : [];
-            }
-
-            saveStoredProperties(properties) {
-                this.saveToLocalStorage('properties', JSON.stringify(properties));
-            }
-
-            // Export/Import functionality
-            exportSettings() {
-                const settings = {};
-                const keys = [
-                    'homeTitle', 'homeSubtitle', 'heroButton',
-                    'aboutTitle', 'aboutDescription',
-                    'contactEmail', 'contactPhone', 'contactAddress',
-                    'siteTitle', 'siteSubtitle', 'siteLogo',
-                    'socialTwitter', 'socialTelegram', 'socialDiscord', 'socialInstagram', 'socialLinkedin',
-                    'metaTitle', 'metaDescription', 'metaKeywords'
-                ];
-
-                keys.forEach(key => {
-                    const value = this.loadFromLocalStorage(key);
-                    if (value) settings[key] = value;
-                });
-
-                const dataStr = JSON.stringify(settings, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `arsa-admin-settings-${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-
-                this.showNotification('Ayarlar başarıyla dışa aktarıldı!', 'success');
-            }
-
-            importSettings(file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const settings = JSON.parse(e.target.result);
-                        Object.keys(settings).forEach(key => {
-                            this.saveToLocalStorage(key, settings[key]);
-                        });
-                        
-                        // Reload the page to apply changes
-                        location.reload();
-                    } catch (error) {
-                        this.showNotification('Ayarlar dosyası geçersiz!', 'error');
-                    }
-                };
-                reader.readAsText(file);
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => document.body.removeChild(notification), 300);
+                }, 3000);
             }
         }
 
-        // Initialize Admin Panel
+        // Initialize admin panel
         document.addEventListener('DOMContentLoaded', () => {
-            window.adminPanel = new AdminPanel();
-
-            // Add global event listeners
-            document.addEventListener('click', (e) => {
-                // Save buttons
-                if (e.target.closest('.btn-primary') && e.target.textContent.includes('Kaydet')) {
-                    e.preventDefault();
-                    window.adminPanel.showNotification('Ayarlar başarıyla kaydedildi!', 'success');
-                }
-
-                // Delete buttons
-                if (e.target.closest('.btn-danger')) {
-                    e.preventDefault();
-                    if (confirm('Bu işlemi gerçekleştirmek istediğinizden emin misiniz?')) {
-                        window.adminPanel.showNotification('Öğe başarıyla silindi!', 'success');
-                    }
-                }
-
-                // Export settings
-                if (e.target.textContent.includes('Yedek Al')) {
-                    e.preventDefault();
-                    window.adminPanel.exportSettings();
-                }
-            });
-
-            // Handle form submissions
-            document.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const form = e.target;
-                
-                if (form.id === 'propertyForm') {
-                    window.adminPanel.saveProperty();
-                } else {
-                    window.adminPanel.showNotification('Form başarıyla kaydedildi!', 'success');
-                }
-            });
-
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.getElementById('mainContent');
-                
-                if (window.innerWidth > 768) {
-                    sidebar.classList.remove('show');
-                    mainContent.classList.remove('expanded');
-                }
-            });
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                // Ctrl/Cmd + S to save
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    window.adminPanel.showNotification('Hızlı kaydetme: Tüm değişiklikler otomatik kaydedildi!', 'success');
-                }
-
-                // Escape to close modals/notifications
-                if (e.key === 'Escape') {
-                    const notification = document.getElementById('notification');
-                    if (notification.classList.contains('show')) {
-                        notification.classList.remove('show');
-                    }
-                }
-            });
-
-            // Auto-save indicator
-            let autoSaveTimeout;
-            document.addEventListener('input', (e) => {
-                if (e.target.matches('input, textarea, select')) {
-                    clearTimeout(autoSaveTimeout);
-                    
-                    // Show saving indicator
-                    const indicator = document.createElement('div');
-                    indicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
-                    indicator.style.cssText = `
-                        position: fixed;
-                        top: 1rem;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: var(--info);
-                        color: white;
-                        padding: 0.5rem 1rem;
-                        border-radius: 6px;
-                        font-size: 0.875rem;
-                        z-index: 9999;
-                        box-shadow: var(--shadow);
-                    `;
-                    document.body.appendChild(indicator);
-
-                    autoSaveTimeout = setTimeout(() => {
-                        indicator.innerHTML = '<i class="fas fa-check"></i> Kaydedildi';
-                        setTimeout(() => {
-                            document.body.removeChild(indicator);
-                        }, 1000);
-                    }, 1000);
-                }
-            });
-
-            // Performance monitoring
-            console.log('🚀 ARSA Admin Panel v2.0.0 loaded successfully!');
-            console.log('📊 Performance:', {
-                loadTime: performance.now(),
-                memory: performance.memory ? `${Math.round(performance.memory.usedJSHeapSize / 1024 / 1024)}MB` : 'N/A'
-            });
-
-            // Show welcome message
-            setTimeout(() => {
-                window.adminPanel.showNotification(
-                    'Admin paneline hoş geldiniz! Tüm özellikleri keşfetmek için menüyü kullanın.',
-                    'info',
-                    'Hoş Geldiniz!'
-                );
-            }, 1000);
+            window.adminPanel = new ModernAdminPanel();
         });
 
-        // Global utility functions
-        window.formatCurrency = (amount, currency = 'EUR') => {
-            return new Intl.NumberFormat('tr-TR', {
-                style: 'currency',
-                currency: currency
-            }).format(amount);
-        };
-
-        window.formatDate = (date) => {
-            return new Intl.DateTimeFormat('tr-TR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }).format(new Date(date));
-        };
-
-        // Error handling
-        window.addEventListener('error', (e) => {
-            console.error('Admin Panel Error:', e.error);
-            if (window.adminPanel) {
-                window.adminPanel.showNotification(
-                    'Beklenmeyen bir hata oluştu. Lütfen sayfayı yenileyin.',
-                    'error'
-                );
+        // CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
             }
-        });
-
-        // Unload warning
-        window.addEventListener('beforeunload', (e) => {
-            // Check if there are unsaved changes
-            const hasUnsavedChanges = document.querySelector('input[data-changed="true"], textarea[data-changed="true"]');
-            if (hasUnsavedChanges) {
-                e.preventDefault();
-                e.returnValue = 'Kaydedilmemiş değişiklikleriniz var. Sayfadan ayrılmak istediğinizden emin misiniz?';
-                return e.returnValue;
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
             }
-        });
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
-</html> btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=80&h=60&fit=crop" 
-                                                     alt="Property" class="image-preview">
-                                            </td>
-                                            <td>
-                                                <div style="font-weight: 600;">Munich Residential</div>
-                                                <div style="color: var(--text-light); font-size: 0.875rem;">Şehir merkezi</div>
-                                            </td>
-                                            <td>Munich</td>
-                                            <td>Konut</td>
-                                            <td>€1,800,000</td>
-                                            <td>€150</td>
-                                            <td>1200/1200</td>
-                                            <td><span class="status-badge status-inactive">Tükendi</span></td>
-                                            <td>
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&h=60&fit=crop" 
-                                                     alt="Property" class="image-preview">
-                                            </td>
-                                            <td>
-                                                <div style="font-weight: 600;">Hamburg Logistics</div>
-                                                <div style="color: var(--text-light); font-size: 0.875rem;">Liman bölgesi</div>
-                                            </td>
-                                            <td>Hamburg</td>
-                                            <td>Lojistik</td>
-                                            <td>€3,200,000</td>
-                                            <td>€80</td>
-                                            <td>0/1500</td>
-                                            <td><span class="status-badge status-pending">Beklemede</span></td>
-                                            <td>
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Content Management Section -->
-                <section id="content" class="section">
-                    <div class="page-header">
-                        <h1 class="page-title">İçerik Yönetimi</h1>
-                        <p class="page-description">Web sitenizdeki tüm içerikleri ve metinleri yönetin</p>
-                    </div>
-
-                    <div class="grid grid-2">
-                        <!-- Ana Sayfa İçeriği -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Ana Sayfa İçeriği</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Ana Başlık</label>
-                                    <input type="text" class="form-control" value="Gayrimenkul Yatırımında Yeni Çağ" id="homeTitle">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Alt Başlık</label>
-                                    <textarea class="form-control" id="homeSubtitle">Blockchain teknolojisi ile emlak yatırımını demokratikleştiriyoruz. NFT'ler aracılığıyla premium gayrimenkullere erişim sağlayın.</textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Hero Butonu Metni</label>
-                                    <input type="text" class="form-control" value="Yatırıma Başla" id="heroButton">
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    Ana Sayfa Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Hakkımızda İçeriği -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Hakkımızda Bölümü</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Başlık</label>
-                                    <input type="text" class="form-control" value="ARSA Token Hakkında" id="aboutTitle">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Açıklama</label>
-                                    <textarea class="form-control textarea" id="aboutDescription">ARSA Token, gayrimenkul sektöründe devrim yaratan bir blockchain projesidir. Premium emlakları NFT'lere dönüştürerek, herkesin erişebileceği bir yatırım ekosistemi oluşturuyoruz.</textarea>
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    Hakkımızda Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- İletişim Bilgileri -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">İletişim Bilgileri</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">E-posta</label>
-                                    <input type="email" class="form-control" value="info@arsatoken.com" id="contactEmail">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Telefon</label>
-                                    <input type="tel" class="form-control" value="+49 30 123456789" id="contactPhone">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Adres</label>
-                                    <textarea class="form-control" id="contactAddress">Unter den Linden 1, 10117 Berlin, Deutschland</textarea>
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    İletişim Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Dil Çevirileri -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Dil Çevirileri</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Dil Seçin</label>
-                                    <select class="form-control form-select" id="languageSelect">
-                                        <option value="tr">Türkçe</option>
-                                        <option value="en">English</option>
-                                        <option value="ar">العربية</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Anahtar</label>
-                                    <input type="text" class="form-control" placeholder="örn: menu.home" id="translationKey">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Çeviri</label>
-                                    <input type="text" class="form-control" placeholder="Çeviri metnini girin" id="translationValue">
-                                </div>
-                                
-                                <button class="btn btn-success">
-                                    <i class="fas fa-plus"></i>
-                                    Çeviri Ekle
-                                </button>
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    Çevirileri Kaydet
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Site Settings Section -->
-                <section id="site-settings" class="section">
-                    <div class="page-header">
-                        <h1 class="page-title">Site Ayarları</h1>
-                        <p class="page-description">Web sitenizin genel ayarlarını ve görünümünü yönetin</p>
-                    </div>
-
-                    <div class="grid grid-2">
-                        <!-- Logo ve Marka -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Logo ve Marka</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Site Logosu</label>
-                                    <div class="upload-area" id="logoUpload">
-                                        <i class="upload-icon fas fa-image"></i>
-                                        <div class="upload-text">Logo yükleyin</div>
-                                        <div class="upload-hint">PNG, SVG önerilir (Maks. 2MB)</div>
-                                    </div>
-                                    <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-                                        <img id="logoPreview" src="https://via.placeholder.com/60x40/667eea/ffffff?text=ARSA" 
-                                             alt="Logo" class="image-preview">
-                                        <div>
-                                            <div style="font-weight: 600;">Mevcut Logo</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">60x40 px</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Site Başlığı</label>
-                                    <input type="text" class="form-control" value="ARSA Token" id="siteTitle">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Site Alt Başlığı</label>
-                                    <input type="text" class="form-control" value="Gayrimenkul NFT Platformu" id="siteSubtitle">
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    Marka Ayarlarını Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Sosyal Medya -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Sosyal Medya Bağlantıları</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fab fa-twitter"></i> Twitter/X
-                                    </label>
-                                    <input type="url" class="form-control" placeholder="https://x.com/arsatoken" id="socialTwitter">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fab fa-telegram"></i> Telegram
-                                    </label>
-                                    <input type="url" class="form-control" placeholder="https://t.me/arsatoken" id="socialTelegram">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fab fa-discord"></i> Discord
-                                    </label>
-                                    <input type="url" class="form-control" placeholder="https://discord.gg/arsatoken" id="socialDiscord">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fab fa-instagram"></i> Instagram
-                                    </label>
-                                    <input type="url" class="form-control" placeholder="https://instagram.com/arsatoken" id="socialInstagram">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fab fa-linkedin"></i> LinkedIn
-                                    </label>
-                                    <input type="url" class="form-control" placeholder="https://linkedin.com/company/arsatoken" id="socialLinkedin">
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    Sosyal Medya Kaydet
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Menü Yönetimi -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Ana Menü Yönetimi</h3>
-                            </div>
-                            <div class="card-body">
-                                <div id="menuItems">
-                                    <div class="menu-item" style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem;">
-                                        <i class="fas fa-grip-vertical" style="color: var(--text-light); cursor: grab;"></i>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600;">Ana Sayfa</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">/index.html</div>
-                                        </div>
-                                        <span class="status-badge status-active">Aktif</span>
-                                        <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="menu-item" style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem;">
-                                        <i class="fas fa-grip-vertical" style="color: var(--text-light); cursor: grab;"></i>
-                                        <div style="flex: 1;">
-                                            <div style="font-weight: 600;">Emlaklar</div>
-                                            <div style="color: var(--text-light); font-size: 0.875rem;">/properties.html</div>
-                                        </div>
-                                        <span class="status-badge status-active">Aktif</span>
-                                        <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-                                    <div class="form-group">
-                                        <label class="form-label">Yeni Menü Öğesi</label>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 0.5rem;">
-                                            <input type="text" class="form-control" placeholder="Menü Adı" id="newMenuText">
-                                            <input type="text" class="form-control" placeholder="URL" id="newMenuUrl">
-                                            <button class="btn btn-success">
-                                                <i class="fas fa-plus"></i>
-                                                Ekle
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- SEO Ayarları -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">SEO Ayarları</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Meta Title</label>
-                                    <input type="text" class="form-control" value="ARSA Token - Gayrimenkul NFT Platformu" id="metaTitle">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Meta Description</label>
-                                    <textarea class="form-control" id="metaDescription">Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiren ARSA Token platformu. Premium emlakları NFT'lere dönüştürüp herkesin erişebileceği yatırım fırsatları sunuyoruz.</textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Meta Keywords</label>
-                                    <input type="text" class="form-control" value="gayrimenkul, NFT, blockchain, yatırım, emlak, tokenizasyon" id="metaKeywords">
-                                </div>
-                                
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    SEO Ayarlarını Kaydet
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Users Section -->
-                <section id="users" class="section">
-                    <div class="page-header">
-                        <h1 class="page-title">Kullanıcı Yönetimi</h1>
-                        <p class="page-description">Platform kullanıcılarını görüntüleyin ve yönetin</p>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Kullanıcı Listesi</h3>
-                            <div style="display: flex; gap: 1rem;">
-                                <input type="search" class="form-control" placeholder="Kullanıcı ara..." style="max-width: 200px;">
-                                <select class="form-control form-select" style="max-width: 150px;">
-                                    <option>Tüm Kullanıcılar</option>
-                                    <option>Aktif</option>
-                                    <option>Beklemede</option>
-                                    <option>Pasif</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Kullanıcı</th>
-                                            <th>E-posta</th>
-                                            <th>Kayıt Tarihi</th>
-                                            <th>Toplam Yatırım</th>
-                                            <th>NFT Sayısı</th>
-                                            <th>Durum</th>
-                                            <th>İşlemler</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                                        AY
-                                                    </div>
-                                                    <div>
-                                                        <div style="font-weight: 600;">Ahmet Yılmaz</div>
-                                                        <div style="color: var(--text-light); font-size: 0.875rem;">@ahmetyilmaz</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>ahmet.yilmaz@email.com</td>
-                                            <td>15 Mart 2024</td>
-                                            <td>€12,500</td>
-                                            <td>47</td>
-                                            <td><span class="status-badge status-active">Aktif</span></td>
-                                            <td>
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-warning" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-ban"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success), var(--info)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                                                        FK
-                                                    </div>
-                                                    <div>
-                                                        <div style="font-weight: 600;">Fatma Koç</div>
-                                                        <div style="color: var(--text-light); font-size: 0.875rem;">@fatmakoc</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>fatma.koc@email.com</td>
-                                            <td>28 Şubat 2024</td>
-                                            <td>€8,200</td>
-                                            <td>31</td>
-                                            <td><span class="status-badge status-active">Aktif</span></td>
-                                            <td>
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn
+</html>
