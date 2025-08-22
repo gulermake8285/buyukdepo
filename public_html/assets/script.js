@@ -1,4 +1,4 @@
-// 🔧 ARSA Finance - Navigation ve Dil Çevirileri Düzeltmesi
+// 🔧 ARSA Finance - Enhanced Translation System with RTL Support
 
 // 1. ✅ DÜZELTİLMİŞ DİL ÇEVİRİ SİSTEMİ
 class ARSATranslator {
@@ -6,6 +6,9 @@ class ARSATranslator {
         this.currentLanguage = localStorage.getItem('selectedLanguage') || 'tr';
         this.translations = {
             tr: {
+                // Site Meta
+                'site.title': 'ARSA Token - Gayrimenkul NFT Platformu',
+                
                 // Navigation
                 'nav.home': 'Ana Sayfa',
                 'nav.features': 'Özellikler', 
@@ -13,6 +16,8 @@ class ARSATranslator {
                 'nav.properties': 'Emlaklar',
                 'nav.dashboard': 'Panel',
                 'nav.roadmap': 'Yol Haritası',
+                'nav.about': 'Hakkımızda',
+                'nav.contact': 'İletişim',
                 'nav.connect': 'Cüzdan Bağla',
                 
                 // Hero Section
@@ -21,6 +26,16 @@ class ARSATranslator {
                 'hero.subtitle': 'Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz. Gerçek mülklerle desteklenen parçalı NFT\'ler satın alın ve aylık kira geliri kazanın.',
                 'hero.cta.primary': 'Hemen Başla',
                 'hero.cta.secondary': 'Nasıl Çalışır?',
+                
+                // Roadmap
+                'roadmap.title': 'Yol Haritamız',
+                'roadmap.subtitle': 'ARSA Token\'ın gelişim süreci ve gelecek planları',
+                'roadmap.q1.date': 'Q1 2024 - Tamamlandı',
+                'roadmap.q1.title': 'Platform Geliştirme',
+                'roadmap.q1.desc': 'Temel platform altyapısı ve smart contract geliştirme tamamlandı.',
+                'roadmap.q1.item1': 'Smart contract geliştirme',
+                'roadmap.q1.item2': 'Web platform beta',
+                'roadmap.q1.item3': 'Güvenlik denetimleri',
                 
                 // Features
                 'features.title': 'Neden ARSA Token?',
@@ -66,9 +81,23 @@ class ARSATranslator {
                 'footer.description': 'Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz.',
                 'footer.links': 'Bağlantılar',
                 'footer.legal': 'Yasal',
-                'footer.social': 'Sosyal Medya'
+                'footer.social': 'İletişim',
+                'footer.privacy': 'Gizlilik Politikası',
+                'footer.terms': 'Kullanım Şartları',
+                'footer.risk': 'Risk Bildirimi',
+                'footer.kvkk': 'KVKK',
+                'footer.copyright': '© 2024 ARSA Token. Tüm hakları saklıdır.',
+                'footer.tagline': 'Blockchain ile gayrimenkul yatırımının geleceği',
+                
+                // Contact
+                'contact.email': 'info@arsatoken.com',
+                'contact.phone': '+90 555 123 45 67',
+                'contact.address': 'İstanbul, Türkiye'
             },
             en: {
+                // Site Meta
+                'site.title': 'ARSA Token - Real Estate NFT Platform',
+                
                 // Navigation
                 'nav.home': 'Home',
                 'nav.features': 'Features',
@@ -76,6 +105,8 @@ class ARSATranslator {
                 'nav.properties': 'Properties',
                 'nav.dashboard': 'Dashboard', 
                 'nav.roadmap': 'Roadmap',
+                'nav.about': 'About',
+                'nav.contact': 'Contact',
                 'nav.connect': 'Connect Wallet',
                 
                 // Hero Section
@@ -84,6 +115,16 @@ class ARSATranslator {
                 'hero.subtitle': 'Democratizing real estate investment through blockchain technology. Buy fractionalized NFTs backed by real properties and earn monthly rental income.',
                 'hero.cta.primary': 'Get Started',
                 'hero.cta.secondary': 'How It Works',
+                
+                // Roadmap
+                'roadmap.title': 'Our Roadmap',
+                'roadmap.subtitle': 'ARSA Token development process and future plans',
+                'roadmap.q1.date': 'Q1 2024 - Completed',
+                'roadmap.q1.title': 'Platform Development',
+                'roadmap.q1.desc': 'Core platform infrastructure and smart contract development completed.',
+                'roadmap.q1.item1': 'Smart contract development',
+                'roadmap.q1.item2': 'Web platform beta',
+                'roadmap.q1.item3': 'Security audits',
                 
                 // Features
                 'features.title': 'Why ARSA Token?',
@@ -129,9 +170,23 @@ class ARSATranslator {
                 'footer.description': 'Democratizing real estate investment through blockchain technology.',
                 'footer.links': 'Links',
                 'footer.legal': 'Legal',
-                'footer.social': 'Social Media'
+                'footer.social': 'Contact',
+                'footer.privacy': 'Privacy Policy',
+                'footer.terms': 'Terms of Service',
+                'footer.risk': 'Risk Disclosure',
+                'footer.kvkk': 'GDPR',
+                'footer.copyright': '© 2024 ARSA Token. All rights reserved.',
+                'footer.tagline': 'The future of real estate investment with blockchain',
+                
+                // Contact
+                'contact.email': 'info@arsatoken.com',
+                'contact.phone': '+90 555 123 45 67',
+                'contact.address': 'Istanbul, Turkey'
             },
             ar: {
+                // Site Meta
+                'site.title': 'ARSA Token - منصة NFT العقارية',
+                
                 // Navigation
                 'nav.home': 'الرئيسية',
                 'nav.features': 'المميزات',
@@ -139,6 +194,8 @@ class ARSATranslator {
                 'nav.properties': 'العقارات',
                 'nav.dashboard': 'لوحة التحكم',
                 'nav.roadmap': 'خارطة الطريق',
+                'nav.about': 'حول',
+                'nav.contact': 'اتصل بنا',
                 'nav.connect': 'ربط المحفظة',
                 
                 // Hero Section
@@ -147,6 +204,16 @@ class ARSATranslator {
                 'hero.subtitle': 'إضفاء الطابع الديمقراطي على الاستثمار العقاري من خلال تقنية البلوك تشين. اشتر NFTs مجزأة مدعومة بعقارات حقيقية واحصل على دخل إيجاري شهري.',
                 'hero.cta.primary': 'ابدأ الآن',
                 'hero.cta.secondary': 'كيف يعمل؟',
+                
+                // Roadmap
+                'roadmap.title': 'خارطة طريقنا',
+                'roadmap.subtitle': 'عملية تطوير ARSA Token والخطط المستقبلية',
+                'roadmap.q1.date': 'الربع الأول 2024 - مكتمل',
+                'roadmap.q1.title': 'تطوير المنصة',
+                'roadmap.q1.desc': 'تم إكمال البنية التحتية الأساسية للمنصة وتطوير العقود الذكية.',
+                'roadmap.q1.item1': 'تطوير العقود الذكية',
+                'roadmap.q1.item2': 'نسخة تجريبية من المنصة',
+                'roadmap.q1.item3': 'عمليات التدقيق الأمني',
                 
                 // Features
                 'features.title': 'لماذا ARSA Token؟',
@@ -192,7 +259,18 @@ class ARSATranslator {
                 'footer.description': 'إضفاء الطابع الديمقراطي على الاستثمار العقاري من خلال تقنية البلوك تشين.',
                 'footer.links': 'الروابط',
                 'footer.legal': 'قانوني',
-                'footer.social': 'وسائل التواصل الاجتماعي'
+                'footer.social': 'اتصل بنا',
+                'footer.privacy': 'سياسة الخصوصية',
+                'footer.terms': 'شروط الخدمة',
+                'footer.risk': 'إفصاح المخاطر',
+                'footer.kvkk': 'حماية البيانات',
+                'footer.copyright': '© 2024 ARSA Token. جميع الحقوق محفوظة.',
+                'footer.tagline': 'مستقبل الاستثمار العقاري مع البلوك تشين',
+                
+                // Contact
+                'contact.email': 'info@arsatoken.com',
+                'contact.phone': '+90 555 123 45 67',
+                'contact.address': 'اسطنبول، تركيا'
             }
         };
         
@@ -200,6 +278,7 @@ class ARSATranslator {
     }
     
     init() {
+        this.loadSavedLanguage();
         this.updateLanguageDisplay();
         this.translatePage();
         this.setupLanguageSelector();
@@ -207,6 +286,12 @@ class ARSATranslator {
     
     // ✅ Çeviri fonksiyonu düzeltildi
     translatePage() {
+        // Update page title
+        const titleElement = document.querySelector('title');
+        if (titleElement) {
+            titleElement.textContent = this.getTranslation('site.title');
+        }
+        
         // Tüm data-i18n elementlerini çevir
         document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
@@ -221,6 +306,13 @@ class ARSATranslator {
             }
         });
         
+        // Placeholder çevirileri
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            const translation = this.getTranslation(key);
+            if (translation) element.placeholder = translation;
+        });
+        
         // Placeholder'ları güncelle
         this.updatePlaceholders();
         
@@ -230,6 +322,13 @@ class ARSATranslator {
         console.log(`✅ Sayfa ${this.currentLanguage} diline çevrildi`);
     }
     
+    loadSavedLanguage() {
+        const saved = localStorage.getItem('selectedLanguage');
+        if (saved && this.translations[saved]) {
+            this.currentLanguage = saved;
+        }
+    }
+    
     getTranslation(key) {
         return this.translations[this.currentLanguage] && this.translations[this.currentLanguage][key] 
                ? this.translations[this.currentLanguage][key] 
@@ -237,6 +336,7 @@ class ARSATranslator {
     }
     
     updatePlaceholders() {
+        // Newsletter email input
         // Email input placeholder
         const emailInput = document.querySelector('input[type="email"]');
         if (emailInput) {
@@ -248,6 +348,12 @@ class ARSATranslator {
         if (searchInput) {
             searchInput.placeholder = this.getTranslation('search.placeholder');
         }
+        
+        // Contact form placeholders (if exists)
+        const nameInput = document.querySelector('input[name="name"]');
+        if (nameInput) {
+            nameInput.placeholder = this.getTranslation('contact.name.placeholder');
+        }
     }
     
     updatePageDirection() {
@@ -255,10 +361,15 @@ class ARSATranslator {
             document.documentElement.setAttribute('dir', 'rtl');
             document.documentElement.classList.add('rtl');
             document.body.style.fontFamily = "'Cairo', 'Noto Sans Arabic', Arial, sans-serif";
+            
+            // RTL specific adjustments
+            document.body.classList.add('rtl-layout');
         } else {
             document.documentElement.setAttribute('dir', 'ltr');
             document.documentElement.classList.remove('rtl');
             document.body.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+            
+            document.body.classList.remove('rtl-layout');
         }
     }
     
@@ -276,6 +387,10 @@ class ARSATranslator {
         
         // HTML lang attribute güncelle
         document.documentElement.setAttribute('lang', this.currentLanguage);
+        
+        // Update language selector if exists
+        const langSelect = document.getElementById('languageSelect');
+        if (langSelect) langSelect.value = this.currentLanguage;
     }
     
     setupLanguageSelector() {
@@ -293,6 +408,15 @@ class ARSATranslator {
                 this.toggleLanguage();
             }
         });
+        
+        // Language dropdown change
+        const langSelect = document.getElementById('languageSelect');
+        if (langSelect) {
+            langSelect.addEventListener('change', (e) => {
+                const newLang = e.target.value;
+                this.changeLanguage(newLang);
+            });
+        }
     }
     
     changeLanguage(language) {
@@ -300,12 +424,17 @@ class ARSATranslator {
         localStorage.setItem('selectedLanguage', language);
         this.updateLanguageDisplay();
         this.translatePage();
+        this.updatePageDirection();
         
         // Close dropdown
         const dropdown = document.querySelector('.language-dropdown');
         if (dropdown) {
             dropdown.classList.remove('active');
         }
+    }
+    
+    getCurrentLanguage() {
+        return this.currentLanguage;
     }
     
     toggleLanguage() {

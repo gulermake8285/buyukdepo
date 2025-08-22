@@ -1,4 +1,4 @@
-/* 🔧 ARSA Finance - CSS Düzeltmeleri ve İyileştirmeler */
+/* 🔧 ARSA Finance - Enhanced CSS with RTL Support */
 
 /* ✅ 1. HEADER VE NAVİGASYON DÜZELTMELERİ */
 .header {
@@ -870,6 +870,111 @@
 /* ✅ 15. RTL LANGUAGE SUPPORT */
 .rtl {
     direction: rtl;
+    text-align: right;
+}
+
+/* RTL Navigation adjustments */
+.rtl .nav-container {
+    direction: rtl;
+}
+
+.rtl .nav-brand {
+    flex-direction: row-reverse;
+}
+
+.rtl .nav-actions {
+    flex-direction: row-reverse;
+}
+
+/* RTL Content adjustments */
+.rtl .hero-content {
+    text-align: right;
+}
+
+.rtl .section-header {
+    text-align: right;
+}
+
+.rtl .feature-card {
+    text-align: right;
+}
+
+.rtl .step-card {
+    text-align: right;
+}
+
+.rtl .newsletter-content {
+    text-align: right;
+}
+
+/* RTL Footer adjustments */
+.rtl .footer-content {
+    direction: rtl;
+}
+
+.rtl .footer-brand {
+    flex-direction: row-reverse;
+}
+
+.rtl .footer-social {
+    flex-direction: row-reverse;
+}
+
+.rtl .footer-links a {
+    flex-direction: row-reverse;
+}
+
+.rtl .social-link {
+    margin-left: 0;
+    margin-right: 1rem;
+}
+
+/* RTL Form adjustments */
+.rtl .newsletter-input-group {
+    flex-direction: row-reverse;
+}
+
+.rtl .hero-cta {
+    flex-direction: row-reverse;
+}
+
+/* RTL Property cards */
+.rtl .property-location {
+    flex-direction: row-reverse;
+}
+
+.rtl .property-actions {
+    flex-direction: row-reverse;
+}
+
+/* RTL Timeline adjustments */
+.rtl .roadmap-timeline::before {
+    right: 30px;
+    left: auto;
+}
+
+.rtl .timeline-item {
+    padding-right: 80px;
+    padding-left: 0;
+}
+
+.rtl .timeline-marker {
+    right: 20px;
+    left: auto;
+}
+
+/* RTL Mobile adjustments */
+@media (max-width: 768px) {
+    .rtl .timeline-item {
+        padding-right: 60px;
+        margin-right: 60px;
+        margin-left: 0;
+    }
+    
+    .rtl .timeline-marker {
+        right: 10px;
+        left: auto;
+    }
 }
 
 .rtl .nav-links,
@@ -877,18 +982,7 @@
 .rtl .hero-cta,
 .rtl .newsletter-input-group {
     direction: ltr; /* Keep these components LTR */
-}
-
-.rtl .hero-content,
-.rtl .section-header,
-.rtl .feature-card,
-.rtl .step-card {
-    text-align: right;
-}
-
-.rtl .property-location,
-.rtl .footer-links a {
-    flex-direction: row-reverse;
+    /* Override for specific components that should remain LTR */
 }
 
 /* ✅ 16. ANIMATION CLASSES */
@@ -896,6 +990,137 @@
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease;
+    will-change: opacity, transform;
+}
+
+.fade-in.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Enhanced roadmap styles */
+.roadmap {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.roadmap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="2"/></g></svg>');
+    opacity: 0.3;
+}
+
+.roadmap .section-title,
+.roadmap .section-subtitle {
+    color: #ffffff;
+}
+
+.roadmap-timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 80px;
+    margin-bottom: 3rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    z-index: 2;
+}
+
+.timeline-item.completed .timeline-marker {
+    background: #10b981;
+    border-color: #10b981;
+}
+
+.timeline-item.current .timeline-marker {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.timeline-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-date {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.timeline-content h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.timeline-content p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.timeline-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.timeline-content li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
 }
 
 .fade-in.animate-in {

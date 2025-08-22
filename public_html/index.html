@@ -41,7 +41,7 @@
                 <a href="#features" class="nav-link" data-i18n="nav.features">Özellikler</a>
                 <a href="properties.html" class="nav-link" data-i18n="nav.properties">Emlaklar</a>
                 <a href="dashboard.html" class="nav-link" data-i18n="nav.dashboard">Panel</a>
-                <a href="roadmap.html" class="nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
+                <a href="#roadmap" class="nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
             </div>
             
             <div class="nav-actions">
@@ -69,7 +69,7 @@
                 <a href="#features" class="mobile-nav-link" data-i18n="nav.features">Özellikler</a>
                 <a href="properties.html" class="mobile-nav-link" data-i18n="nav.properties">Emlaklar</a>
                 <a href="dashboard.html" class="mobile-nav-link" data-i18n="nav.dashboard">Panel</a>
-                <a href="roadmap.html" class="mobile-nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
+                <a href="#roadmap" class="mobile-nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
             </div>
             <div class="mobile-nav-actions">
                 <button class="connect-wallet-btn" type="button">
@@ -239,6 +239,32 @@
         </div>
     </section>
 
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="roadmap">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="roadmap.title">Yol Haritamız</h2>
+                <p class="section-subtitle" data-i18n="roadmap.subtitle">ARSA Token'ın gelişim süreci ve gelecek planları</p>
+            </div>
+            
+            <div class="roadmap-timeline">
+                <div class="timeline-item completed fade-in">
+                    <div class="timeline-marker"><i class="fas fa-check"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date" data-i18n="roadmap.q1.date">Q1 2024</div>
+                        <h3 data-i18n="roadmap.q1.title">Platform Geliştirme</h3>
+                        <p data-i18n="roadmap.q1.desc">Temel platform altyapısı ve smart contract geliştirme tamamlandı.</p>
+                        <ul>
+                            <li data-i18n="roadmap.q1.item1">✅ Smart contract geliştirme</li>
+                            <li data-i18n="roadmap.q1.item2">✅ Web platform beta</li>
+                            <li data-i18n="roadmap.q1.item3">✅ Güvenlik denetimleri</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Newsletter Section -->
     <section class="newsletter">
         <div class="container">
@@ -250,7 +276,7 @@
                 
                 <form class="newsletter-form">
                     <div class="newsletter-input-group">
-                        <input type="email" class="newsletter-input" placeholder="E-posta adresinizi girin" required>
+                        <input type="email" class="newsletter-input" data-i18n-placeholder="newsletter.placeholder" placeholder="E-posta adresinizi girin" required>
                         <button type="submit" class="newsletter-btn">
                             <i class="fas fa-paper-plane"></i>
                             <span data-i18n="newsletter.subscribe">Abone Ol</span>
@@ -282,37 +308,37 @@
                 <div class="footer-section">
                     <h3 data-i18n="footer.links">Bağlantılar</h3>
                     <ul class="footer-links">
-                        <li><a href="#home">Ana Sayfa</a></li>
+                        <li><a href="#home" data-i18n="nav.home">Ana Sayfa</a></li>
                         <li><a href="properties.html">Emlaklar</a></li>
                         <li><a href="dashboard.html">Dashboard</a></li>
-                        <li><a href="roadmap.html">Yol Haritası</a></li>
+                        <li><a href="#roadmap" data-i18n="nav.roadmap">Yol Haritası</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
                     <h3 data-i18n="footer.legal">Yasal</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Gizlilik Politikası</a></li>
-                        <li><a href="#">Kullanım Şartları</a></li>
-                        <li><a href="#">Risk Bildirimi</a></li>
-                        <li><a href="#">KVKK</a></li>
+                        <li><a href="#" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
+                        <li><a href="#" data-i18n="footer.terms">Kullanım Şartları</a></li>
+                        <li><a href="#" data-i18n="footer.risk">Risk Bildirimi</a></li>
+                        <li><a href="#" data-i18n="footer.kvkk">KVKK</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
                     <h3 data-i18n="footer.social">İletişim</h3>
                     <ul class="footer-links">
-                        <li><a href="mailto:info@arsatoken.com"><i class="fas fa-envelope"></i> info@arsatoken.com</a></li>
-                        <li><a href="tel:+905551234567"><i class="fas fa-phone"></i> +90 555 123 45 67</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> İstanbul, Türkiye</a></li>
+                        <li><a href="mailto:info@arsatoken.com"><i class="fas fa-envelope"></i> <span data-i18n="contact.email">info@arsatoken.com</span></a></li>
+                        <li><a href="tel:+905551234567"><i class="fas fa-phone"></i> <span data-i18n="contact.phone">+90 555 123 45 67</span></a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> <span data-i18n="contact.address">İstanbul, Türkiye</span></a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
-                    <p>&copy; 2024 ARSA Token. Tüm hakları saklıdır.</p>
-                    <p>Blockchain ile gayrimenkul yatırımının geleceği</p>
+                    <p data-i18n="footer.copyright">&copy; 2024 ARSA Token. Tüm hakları saklıdır.</p>
+                    <p data-i18n="footer.tagline">Blockchain ile gayrimenkul yatırımının geleceği</p>
                 </div>
             </div>
         </div>
