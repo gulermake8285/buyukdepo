@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Emlak Detayı - ARSA Token</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .property-detail-container {
+            padding: 120px 0 60px;
+            min-height: 100vh;
+        }
+        
+        .property-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .property-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .property-location {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+        
+        .property-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .property-badge {
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .badge-available {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .badge-verified {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .property-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+        
+        .property-gallery {
+            margin-bottom: 3rem;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .thumbnail {
+            height: 80px;
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .property-details {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .details-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .investment-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .panel-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+            text-align: center;
+        }
+        
+        .nft-status {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .nft-numbers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .nft-stat {
+            text-align: center;
+        }
+        
+        .nft-stat .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+        
+        .nft-stat .label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .investment-stats {
+            margin-bottom: 2rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .calculator {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calc-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .amount-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-input:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-amount {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-amount:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+        
+        .calc-result {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .calc-row:last-child {
+            margin-bottom: 0;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #10b981;
+            border-top: 1px solid rgba(16, 185, 129, 0.3);
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .buy-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .buy-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .buy-button:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .connect-wallet-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .connect-wallet-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 20px;
+            color: #ef4444;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .property-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .investment-panel {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .property-title {
+                font-size: 2rem;
+            }
+            
+            .main-image {
+                height: 250px;
+            }
+            
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-amounts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .property-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">🏗️ ARSA Token</div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="properties.html">Emlaklar</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html#about">Hakkımızda</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <div class="language-selector">
+                    <select id="languageSelect" class="language-dropdown">
+                        <option value="tr">🇹🇷 TR</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="ar">🇸🇦 AR</option>
+                    </select>
+                </div>
+                <a href="properties.html" class="back-btn">
+                    ← Emlaklar Sayfasına Dön
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Property Detail Container -->
+    <section class="property-detail-container">
+        <div class="container">
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="loading-spinner"></div>
+                <h3>Emlak bilgileri yükleniyor...</h3>
+                <p>Lütfen bekleyin</p>
+            </div>
+            
+            <!-- Error State -->
+            <div id="errorState" class="error-state" style="display: none;">
+                <h3>❌ Emlak Bulunamadı</h3>
+                <p>Bu emlak mevcut değil veya yüklenirken hata oluştu.</p>
+                <div style="margin-top: 2rem;">
+                    <button class="btn-secondary" onclick="retryLoad()">🔄 Tekrar Dene</button>
+                    <a href="properties.html" class="btn-primary" style="margin-left: 1rem;">📋 Tüm Emlaklar</a>
+                </div>
+            </div>
+            
+            <!-- Property Content -->
+            <div id="propertyContent" style="display: none;">
+                <!-- Property Header -->
+                <div class="property-header">
+                    <h1 class="property-title" id="propertyTitle">Emlak Yükleniyor...</h1>
+                    <p class="property-location" id="propertyLocation">📍 Konum yükleniyor...</p>
+                    <div class="property-badges">
+                        <span class="property-badge badge-available" id="propertyStatus">🟢 Yatırım İçin Mevcut</span>
+                        <span class="property-badge badge-verified">✅ Doğrulanmış Mülk</span>
+                    </div>
+                </div>
+
+                <!-- Property Content Grid -->
+                <div class="property-content">
+                    <!-- Left Column -->
+                    <div class="left-column">
+                        <!-- Property Gallery -->
+                        <div class="property-gallery">
+                            <div class="main-image" id="mainImage">
+                                <div class="image-overlay">
+                                    <h3 id="imageTitle">Premium Emlak</h3>
+                                    <p id="imageDescription">Modern tasarım ve konfor</p>
+                                </div>
+                            </div>
+                            <div class="thumbnail-grid" id="thumbnailGrid">
+                                <!-- Thumbnails will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Property Details -->
+                        <div class="property-details">
+                            <h3 class="details-title">📋 Emlak Bilgileri</h3>
+                            <div id="propertyDetailsContent">
+                                <!-- Details will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- How It Works Info -->
+                        <div class="property-details">
+                            <h3 class="details-title">💡 Nasıl Çalışır?</h3>
+                            <div style="color: rgba(255,255,255,0.8); line-height: 1.7;">
+                                <p style="margin-bottom: 1rem;">
+                                    <strong style="color: #667eea;">1. Gerçek Mülk:</strong> 
+                                    Bu yasal olarak sahip olduğumuz gerçek bir emlaktır. Gerçek kiracıları var ve gerçek kira ödüyorlar.
+                                </p>
+                                <p style="margin-bottom: 1rem;">
+                                    <strong style="color: #667eea;">2. NFT Parçalara Bölünmüş:</strong> 
+                                    Bu emlağı binlerce dijital parçaya (NFT) böldük. Her parça eşit değerde.
+                                </p>
+                                <p style="margin-bottom: 1rem;">
+                                    <strong style="color: #667eea;">3. NFT Satın Alın:</strong> 
+                                    NFT satın aldığınızda, gerçek emlağın o kısmına sahip olursunuz.
+                                </p>
+                                <p>
+                                    <strong style="color: #667eea;">4. Kira Kazanın:</strong> 
+                                    Her ay emlağın kira gelirini sahip olduğunuz NFT sayısına göre paylaşırız.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Investment Panel -->
+                    <div class="right-column">
+                        <div class="investment-panel">
+                            <h3 class="panel-title">🏗️ Yatırım Fırsatı</h3>
+                            
+                            <!-- NFT Status -->
+                            <div class="nft-status">
+                                <h4 style="margin: 0 0 1rem 0; color: #667eea;">NFT Satış Durumu</h4>
+                                <div class="nft-numbers">
+                                    <div class="nft-stat">
+                                        <span class="number" id="soldNFTs">0</span>
+                                        <span class="label">Satıldı</span>
+                                    </div>
+                                    <div class="nft-stat">
+                                        <span class="number" id="availableNFTs">0</span>
+                                        <span class="label">Mevcut</span>
+                                    </div>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-header">
+                                        <span>Fonlama İlerlemesi</span>
+                                        <span id="progressText">0% Tamamlandı</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressBar"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Investment Stats -->
+                            <div class="investment-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Toplam Emlak Değeri</span>
+                                    <span class="stat-value" id="totalValue">$0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">NFT Başına Fiyat</span>
+                                    <span class="stat-value" id="nftPrice">$0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Aylık Kira (Toplam)</span>
+                                    <span class="stat-value" id="monthlyRent">$0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Yıllık Getiri</span>
+                                    <span class="stat-value" id="annualYield">0%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">NFT Başına Aylık Gelir</span>
+                                    <span class="stat-value" id="monthlyIncomePerNFT">$0</span>
+                                </div>
+                            </div>
+
+                            <!-- Investment Calculator -->
+                            <div class="calculator">
+                                <h4 class="calc-title">💰 Yatırım Hesaplayıcısı</h4>
+                                <input type="number" class="amount-input" id="investmentAmount" placeholder="$ cinsinden tutar girin" min="100" step="100" value="500">
+                                
+                                <div class="quick-amounts">
+                                    <button class="quick-amount" onclick="setAmount(100)">$100</button>
+                                    <button class="quick-amount" onclick="setAmount(500)">$500</button>
+                                    <button class="quick-amount" onclick="setAmount(1000)">$1,000</button>
+                                </div>
+
+                                <div class="calc-result" id="calcResult">
+                                    <div class="calc-row">
+                                        <span>Sahip olacağınız NFT:</span>
+                                        <span id="nftCount">0</span>
+                                    </div>
+                                    <div class="calc-row">
+                                        <span>Aylık gelir:</span>
+                                        <span id="monthlyIncome">$0.00</span>
+                                    </div>
+                                    <div class="calc-row">
+                                        <span>Yıllık getiri:</span>
+                                        <span id="annualReturn">$0.00</span>
+                                    </div>
+                                    <div class="calc-row">
+                                        <span>Toplam yatırım:</span>
+                                        <span id="totalCost">$0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <button class="connect-wallet-btn" id="connectWallet">🔗 Cüzdan Bağla</button>
+                            <button class="buy-button" id="buyButton" disabled>NFT Satın Al</button>
+                            
+                            <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: rgba(255,255,255,0.6);">
+                                💳 ARSA Token veya ETH ile ödeme
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Property Detail Script with API Integration
+        console.log('🏢 Property Detail page loading...');
+        
+        const API_BASE = '/api';
+        let currentProperty = null;
+        let walletConnected = false;
+        
+        // Get property ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id');
+        
+        // Default images for demo
+        const defaultImages = [
+            'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+        ];
+        
+        const imageTitles = [
+            { title: 'Ana Bina Görünümü', desc: 'Modern mimari ve profesyonel cephe' },
+            { title: 'Bina Dışı', desc: 'Çevre düzenlemesi ve ana giriş' },
+            { title: 'İç Mekan', desc: 'Şehir manzaralı üst düzey alanlar' },
+            { title: 'Ortak Alanlar', desc: 'Toplantı odaları ve iş olanakları' }
+        ];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!propertyId) {
+                showError('Property ID not found in URL');
+                return;
+            }
+            
+            loadPropertyDetails();
+            setupEventListeners();
+        });
+        
+        // Load Property Details
+        async function loadPropertyDetails() {
+            try {
+                const response = await fetch(`${API_BASE}/properties.php?action=get&id=${propertyId}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        currentProperty = data.data;
+                        renderPropertyDetails(currentProperty);
+                        return;
+                    }
+                }
+                
+                throw new Error('Property not found');
+            } catch (error) {
+                console.error('Property load error:', error);
+                
+                // Fallback to demo data for testing
+                if (propertyId === '1' || propertyId === '2') {
+                    loadDemoProperty(propertyId);
+                } else {
+                    showError('Property not found or API error');
+                }
+            }
+        }
+        
+        // Load Demo Property
+        function loadDemoProperty(id) {
+            const demoProperties = {
+                '1': {
+                    id: 1,
+                    name: "Berlin Premium Office Complex",
+                    city: "Berlin",
+                    country: "Germany",
+                    property_type: "Office",
+                    total_value: 850000,
+                    nft_price: 100,
+                    total_nfts: 8500,
+                    sold_nfts: 6205,
+                    available_nfts: 2295,
+                    monthly_rent: 51200,
+                    annual_yield: 7.2,
+                    status: "Available",
+                    main_image: defaultImages[0],
+                    progress_percentage: 73,
+                    monthly_income_per_nft: 0.60,
+                    description: "Modern workspace in Berlin's financial district with premium facilities.",
+                    images: defaultImages.map((url, i) => ({
+                        image_url: url,
+                        image_title: imageTitles[i].title,
+                        is_main: i === 0 ? 1 : 0
+                    }))
+                },
+                '2': {
+                    id: 2,
+                    name: "Amsterdam Luxury Apartments",
+                    city: "Amsterdam", 
+                    country: "Netherlands",
+                    property_type: "Residential",
+                    total_value: 1200000,
+                    nft_price: 150,
+                    total_nfts: 8000,
+                    sold_nfts: 4453,
+                    available_nfts: 3547,
+                    monthly_rent: 68000,
+                    annual_yield: 6.8,
+                    status: "Hot",
+                    main_image: defaultImages[1],
+                    progress_percentage: 56,
+                    monthly_income_per_nft: 0.85,
+                    description: "Luxury residential complex in Jordaan district.",
+                    images: defaultImages.map((url, i) => ({
+                        image_url: url,
+                        image_title: imageTitles[i].title,
+                        is_main: i === 0 ? 1 : 0
+                    }))
+                }
+            };
+            
+            currentProperty = demoProperties[id];
+            if (currentProperty) {
+                renderPropertyDetails(currentProperty);
+                showNotification('📊 Demo verileri yüklendi', 'info');
+            } else {
+                showError('Demo property not found');
+            }
+        }
+        
+        // Render Property Details
+        function renderPropertyDetails(property) {
+            // Hide loading, show content
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('propertyContent').style.display = 'block';
+            
+            // Update page title
+            document.title = `${property.name} - ARSA Token`;
+            document.getElementById('pageTitle').textContent = `${property.name} - ARSA Token`;
+            
+            // Update header
+            document.getElementById('propertyTitle').textContent = property.name;
+            document.getElementById('propertyLocation').textContent = `📍 ${property.city}, ${property.country}`;
+            
+            // Update status badge
+            const statusElement = document.getElementById('propertyStatus');
+            const statusTexts = {
+                'Available': '🟢 Yatırım İçin Mevcut',
+                'Hot': '🔥 Hızla Satıyor',
+                'Sold Out': '🔴 Tükendi',
+                'Pending': '⏳ Beklemede'
+            };
+            statusElement.textContent = statusTexts[property.status] || statusTexts['Available'];
+            
+            // Update gallery
+            setupGallery(property);
+            
+            // Update details
+            updatePropertyDetails(property);
+            
+            // Update investment panel
+            updateInvestmentPanel(property);
+            
+            // Setup calculator
+            setupCalculator(property);
+        }
+        
+        // Setup Gallery
+        function setupGallery(property) {
+            const mainImage = document.getElementById('mainImage');
+            const thumbnailGrid = document.getElementById('thumbnailGrid');
+            
+            // Use property images or fallback to default
+            const images = property.images && property.images.length > 0 ? property.images : 
+                defaultImages.map((url, i) => ({
+                    image_url: url,
+                    image_title: imageTitles[i].title,
+                    is_main: i === 0 ? 1 : 0
+                }));
+            
+            // Set main image
+            const mainImg = images.find(img => img.is_main) || images[0];
+            mainImage.style.backgroundImage = `url('${mainImg.image_url}')`;
+            
+            // Update overlay
+            const titleIndex = images.findIndex(img => img === mainImg);
+            document.getElementById('imageTitle').textContent = imageTitles[titleIndex]?.title || 'Premium Emlak';
+            document.getElementById('imageDescription').textContent = imageTitles[titleIndex]?.desc || 'Modern tasarım';
+            
+            // Create thumbnails
+            thumbnailGrid.innerHTML = images.slice(0, 4).map((img, index) => 
+                `<div class="thumbnail ${index === 0 ? 'active' : ''}" 
+                      style="background-image: url('${img.image_url}')" 
+                      onclick="changeMainImage(${index})"></div>`
+            ).join('');
+        }
+        
+        // Change Main Image
+        window.changeMainImage = function(index) {
+            const mainImage = document.getElementById('mainImage');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const images = currentProperty?.images || defaultImages.map(url => ({image_url: url}));
+            
+            if (images[index]) {
+                mainImage.style.backgroundImage = `url('${images[index].image_url}')`;
+                
+                // Update overlay
+                document.getElementById('imageTitle').textContent = imageTitles[index]?.title || 'Premium Emlak';
+                document.getElementById('imageDescription').textContent = imageTitles[index]?.desc || 'Modern tasarım';
+                
+                // Update active thumbnail
+                thumbnails.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                });
+            }
+        };
+        
+        // Update Property Details
+        function updatePropertyDetails(property) {
+            const detailsContent = document.getElementById('propertyDetailsContent');
+            
+            detailsContent.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Emlak Türü</span>
+                    <span class="detail-value">${property.property_type}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Toplam Değer</span>
+                    <span class="detail-value">${formatNumber(property.total_value)}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">NFT Sayısı</span>
+                    <span class="detail-value">${formatNumber(property.total_nfts)} adet</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Aylık Kira</span>
+                    <span class="detail-value">${formatNumber(property.monthly_rent)}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Yıllık Getiri</span>
+                    <span class="detail-value">${property.annual_yield}%</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">NFT Başına Aylık Gelir</span>
+                    <span class="detail-value">${property.monthly_income_per_nft}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Durum</span>
+                    <span class="detail-value">${property.status}</span>
+                </div>
+            `;
+        }
+        
+        // Update Investment Panel
+        function updateInvestmentPanel(property) {
+            // NFT Numbers
+            document.getElementById('soldNFTs').textContent = formatNumber(property.sold_nfts);
+            document.getElementById('availableNFTs').textContent = formatNumber(property.available_nfts);
+            
+            // Progress
+            const progress = property.progress_percentage || Math.round((property.sold_nfts / property.total_nfts) * 100);
+            document.getElementById('progressText').textContent = `${progress}% Tamamlandı`;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // Investment Stats
+            document.getElementById('totalValue').textContent = `${formatNumber(property.total_value)}`;
+            document.getElementById('nftPrice').textContent = `${formatNumber(property.nft_price)}`;
+            document.getElementById('monthlyRent').textContent = `${formatNumber(property.monthly_rent)}`;
+            document.getElementById('annualYield').textContent = `${property.annual_yield}%`;
+            document.getElementById('monthlyIncomePerNFT').textContent = `${property.monthly_income_per_nft}`;
+        }
+        
+        // Setup Calculator
+        function setupCalculator(property) {
+            const amountInput = document.getElementById('investmentAmount');
+            
+            amountInput.addEventListener('input', () => updateCalculation(property));
+            updateCalculation(property);
+        }
+        
+        // Update Calculation
+        function updateCalculation(property) {
+            const amount = parseFloat(document.getElementById('investmentAmount').value) || 0;
+            const nftCount = Math.floor(amount / property.nft_price);
+            const monthlyIncome = nftCount * property.monthly_income_per_nft;
+            const annualReturn = monthlyIncome * 12;
+            const totalCost = nftCount * property.nft_price;
+            
+            document.getElementById('nftCount').textContent = nftCount;
+            document.getElementById('monthlyIncome').textContent = `${monthlyIncome.toFixed(2)}`;
+            document.getElementById('annualReturn').textContent = `${annualReturn.toFixed(2)}`;
+            document.getElementById('totalCost').textContent = `${totalCost.toFixed(0)}`;
+            
+            // Update actual investment amount to match whole NFTs
+            document.getElementById('investmentAmount').value = totalCost;
+        }
+        
+        // Set Amount
+        window.setAmount = function(amount) {
+            document.getElementById('investmentAmount').value = amount;
+            updateCalculation(currentProperty);
+        };
+        
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Wallet Connection
+            document.getElementById('connectWallet').addEventListener('click', function() {
+                if (walletConnected) return;
+                
+                this.textContent = '🔄 Bağlanıyor...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    walletConnected = true;
+                    this.textContent = '✅ Cüzdan Bağlandı';
+                    this.style.background = 'rgba(16, 185, 129, 0.2)';
+                    this.style.borderColor = '#10b981';
+                    this.disabled = false;
+                    document.getElementById('buyButton').disabled = false;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = '✅ 0x1234...5678<br><small style="font-size: 0.8rem;">Cüzdan değiştirmek için tıklayın</small>';
+                    }, 1000);
+                }, 2000);
+            });
+            
+            // Buy Button
+            document.getElementById('buyButton').addEventListener('click', function() {
+                if (!walletConnected) {
+                    showNotification('⚠️ Önce cüzdanınızı bağlayın', 'warning');
+                    return;
+                }
+                
+                const nftCount = document.getElementById('nftCount').textContent;
+                const totalCost = document.getElementById('totalCost').textContent;
+                const monthlyIncome = document.getElementById('monthlyIncome').textContent;
+                
+                const confirmation = confirm(`🏗️ NFT Satın Alımını Onayla
+
+📊 Yatırım Detayları:
+• NFT'ler: ${nftCount} adet
+• Toplam Maliyet: ${totalCost}
+• Aylık Gelir: ${monthlyIncome}
+• Emlak: ${currentProperty.name}
+
+✅ Dahil Edilen Yasal Haklar:
+• Sahiplik sertifikası
+• Oy hakları
+• Kira geliri hakları
+• Yeniden satış hakları
+
+Satın almaya devam et?`);
+                
+                if (confirmation) {
+                    this.textContent = '⏳ İşleniyor...';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        showNotification(`🎉 Satın Alma Başarılı!
+
+✅ Artık ${currentProperty.name}'nin ${nftCount} NFT'sine sahipsiniz
+💰 Beklenen aylık gelir: ${monthlyIncome}
+📜 Sahiplik sertifikaları cüzdanınıza gönderildi
+🔗 İşlem: 0xabc123...def789
+
+ARSA Token gayrimenkul yatırımına hoş geldiniz!`, 'success');
+                        
+                        this.textContent = '✅ Satın Alma Tamamlandı';
+                        this.style.background = 'rgba(16, 185, 129, 0.8)';
+                    }, 3000);
+                }
+            });
+        }
+        
+        // Retry Load
+        window.retryLoad = function() {
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('loadingState').style.display = 'block';
+            loadPropertyDetails();
+        };
+        
+        // Show Error
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('propertyContent').style.display = 'none';
+        }
+        
+        // Utility Functions
+        function formatNumber(num) {
+            return new Intl.NumberFormat().format(num);
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            let bgColor;
+            switch(type) {
+                case 'success': bgColor = 'rgba(16, 185, 129, 0.9)'; break;
+                case 'warning': bgColor = 'rgba(245, 158, 11, 0.9)'; break;
+                case 'error': bgColor = 'rgba(239, 68, 68, 0.9)'; break;
+                default: bgColor = 'rgba(102, 126, 234, 0.9)';
+            }
+            
+            notification.style.cssText = `
+                position: fixed; top: 100px; right: 20px; z-index: 10000;
+                background: ${bgColor}; color: white; padding: 1rem 1.5rem;
+                border-radius: 12px; font-weight: 600; max-width: 350px;
+                animation: slideInRight 0.4s ease; line-height: 1.4;
+                white-space: pre-line;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.4s ease';
+                setTimeout(() => document.body.removeChild(notification), 400);
+            }, 5000);
+        }
+        
+        // CSS Animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            
+            .loading-spinner {
+                width: 40px;
+                height: 40px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: #667eea;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            }
+            
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            
+            .progress-container {
+                margin-top: 1rem;
+            }
+            
+            .progress-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .progress-bar {
+                width: 100%;
+                height: 8px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                transition: width 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
+            

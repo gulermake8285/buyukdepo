@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yol Haritası - ARSA Token</title>
+    <meta name="description" content="ARSA Token'ın gelişim yol haritası ve gelecek planları">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #0a0a0f;
+            --dark-surface: rgba(15, 15, 35, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-actions a {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-actions a:hover {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(10, 10, 15, 0.9) 0%, rgba(26, 26, 62, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Timeline Styles */
+        .roadmap-timeline {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, 
+                var(--primary-gradient) 0%, 
+                var(--primary-gradient) 60%, 
+                rgba(102, 126, 234, 0.3) 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 4rem;
+            position: relative;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-10px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -15px;
+            border-color: transparent transparent transparent var(--glass-border);
+            border-width: 15px 0 15px 15px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -15px;
+            border-color: transparent var(--glass-border) transparent transparent;
+            border-width: 15px 15px 15px 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gradient);
+            border: 4px solid var(--dark-bg);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .timeline-marker.completed {
+            background: var(--success-gradient);
+        }
+
+        .timeline-marker.current {
+            background: var(--secondary-gradient);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+
+        .quarter {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .phase-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .phase-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .phase-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .phase-features li i {
+            color: #10b981;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-gradient);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+                margin-left: 60px;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-content::before {
+                left: -15px !important;
+                border-color: transparent var(--glass-border) transparent transparent !important;
+                border-width: 15px 15px 15px 0 !important;
+            }
+
+            .timeline-marker {
+                left: 20px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-building"></i>
+                <span>ARSA Token</span>
+            </a>
+            
+            <div class="nav-actions">
+                <a href="index.html">
+                    <i class="fas fa-home"></i>
+                    Ana Sayfaya Dön
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Yol Haritamız</h1>
+                <p>ARSA Token'ın gelişim sürecini ve gelecek planlarını keşfedin. Blockchain tabanlı gayrimenkul yatırım platformunun büyüme yolculuğuna tanık olun.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="roadmap-timeline">
+        <div class="container">
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+
+                <!-- Q1 2024 - Completed -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q1 2024 - Tamamlandı</div>
+                        <h3 class="phase-title">Kavram ve Araştırma</h3>
+                        <p class="phase-description">
+                            ARSA Token'ın temel kavramının geliştirilmesi ve pazar araştırması tamamlandı.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-check"></i> Pazar araştırması ve fizibilite analizi</li>
+                            <li><i class="fas fa-check"></i> Teknik mimarinin tasarlanması</li>
+                            <li><i class="fas fa-check"></i> Yasal düzenlemelerin incelenmesi</li>
+                            <li><i class="fas fa-check"></i> İlk ekip üyelerinin katılımı</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-text">100% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker completed">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                </div>
+
+                <!-- Q2 2024 - Completed -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q2 2024 - Tamamlandı</div>
+                        <h3 class="phase-title">MVP Geliştirme</h3>
+                        <p class="phase-description">
+                            Minimum Viable Product (MVP) geliştirme süreci ve ilk prototip oluşturma.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-check"></i> Smart contract geliştirme</li>
+                            <li><i class="fas fa-check"></i> Web platformu beta versiyonu</li>
+                            <li><i class="fas fa-check"></i> İlk güvenlik denetimleri</li>
+                            <li><i class="fas fa-check"></i> Testnet üzerinde deneme işlemleri</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-text">100% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker completed">
+                        <i class="fas fa-code"></i>
+                    </div>
+                </div>
+
+                <!-- Q3 2024 - Completed -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q3 2024 - Tamamlandı</div>
+                        <h3 class="phase-title">İlk Emlak Ortaklıkları</h3>
+                        <p class="phase-description">
+                            Premium gayrimenkul projelerinin tokenizasyonu ve ilk satışların başlatılması.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-check"></i> Berlin ofis kompleksi tokenizasyonu</li>
+                            <li><i class="fas fa-check"></i> Amsterdam konut projesi eklendi</li>
+                            <li><i class="fas fa-check"></i> Yasal compliance süreçleri</li>
+                            <li><i class="fas fa-check"></i> İlk 1000 NFT satışı gerçekleşti</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-text">100% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker completed">
+                        <i class="fas fa-building"></i>
+                    </div>
+                </div>
+
+                <!-- Q4 2024 - Completed -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q4 2024 - Tamamlandı</div>
+                        <h3 class="phase-title">Platform Lansmanı</h3>
+                        <p class="phase-description">
+                            ARSA Token platformunun resmi lansmanı ve topluluk oluşturma.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-check"></i> Mainnet'te platform lansmanı</li>
+                            <li><i class="fas fa-check"></i> 6 emlak projesi tokenize edildi</li>
+                            <li><i class="fas fa-check"></i> 1,247 aktif yatırımcı katılımı</li>
+                            <li><i class="fas fa-check"></i> İlk kira dağıtımları başladı</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-text">100% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker completed">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                </div>
+
+                <!-- Q1 2025 - Current -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q1 2025 - Devam Ediyor</div>
+                        <h3 class="phase-title">Ölçeklendirme ve Büyüme</h3>
+                        <p class="phase-description">
+                            Platform kapasitesinin artırılması ve yeni pazarlara açılım.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-check"></i> 15+ yeni emlak projesi</li>
+                            <li><i class="fas fa-spinner fa-spin"></i> Mobil uygulama geliştirme</li>
+                            <li><i class="fas fa-spinner fa-spin"></i> Avrupa pazarında genişleme</li>
+                            <li><i class="fas fa-clock"></i> İkincil pazar özelliği</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                        <div class="progress-text">65% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker current">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+
+                <!-- Q2 2025 - Planned -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q2 2025 - Planlandı</div>
+                        <h3 class="phase-title">DeFi Entegrasyonu</h3>
+                        <p class="phase-description">
+                            Merkeziyetsiz finans protokolleriyle entegrasyon ve gelişmiş özellikler.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-clock"></i> Staking mekanizması</li>
+                            <li><i class="fas fa-clock"></i> Yield farming imkânları</li>
+                            <li><i class="fas fa-clock"></i> NFT teminatıyla kredi</li>
+                            <li><i class="fas fa-clock"></i> Governance token lansmanı</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 15%"></div>
+                        </div>
+                        <div class="progress-text">15% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                </div>
+
+                <!-- Q3 2025 - Planned -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q3 2025 - Planlandı</div>
+                        <h3 class="phase-title">Global Expanison</h3>
+                        <p class="phase-description">
+                            Dünya çapında yeni pazarlara girişim ve stratejik ortaklıklar.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-clock"></i> ABD pazarına giriş</li>
+                            <li><i class="fas fa-clock"></i> Asya-Pasifik bölgesi</li>
+                            <li><i class="fas fa-clock"></i> İnstitüsyonel yatırımcılar</li>
+                            <li><i class="fas fa-clock"></i> Multi-chain desteği</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 5%"></div>
+                        </div>
+                        <div class="progress-text">5% Tamamlandı</div>
+                    </div>
+                    <div class="timeline-marker">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                </div>
+
+                <!-- Q4 2025 - Vision -->
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="quarter">Q4 2025 - Vizyon</div>
+                        <h3 class="phase-title">Ekosistem Tamamlanması</h3>
+                        <p class="phase-description">
+                            Tam entegre edilmiş gayrimenkul blockchain ekosisteminin tamamlanması.
+                        </p>
+                        <ul class="phase-features">
+                            <li><i class="fas fa-clock"></i> AI destekli değerleme</li>
+                            <li><i class="fas fa-clock"></i> Virtual & Augmented Reality</li>
+                            <li><i class="fas fa-clock"></i> Metaverse entegrasyonu</li>
+                            <li><i class="fas fa-clock"></i> DAO governance</li>
+                        </ul>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">Planlama Aşamasında</div>
+                    </div>
+                    <div class="timeline-marker">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Aylık Hedef</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-number">74%</div>
+                    <div class="stat-label">Ortalama Tamamlanma</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Ekip Üyesi</div>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Hedef Proje (2025)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = Math.random() * 0.3 + 's';
+                        entry.target.classList.add('fade-in-visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 100) {
+                    navbar.style.background = 'rgba(10, 10, 15, 0.95)';
+                } else {
+                    navbar.style.background = 'rgba(10, 10, 15, 0.9)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
