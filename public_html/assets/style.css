@@ -1,1579 +1,352 @@
-/* 🔧 ARSA Finance - Enhanced CSS with RTL Support */
-
-/* ✅ 1. HEADER VE NAVİGASYON DÜZELTMELERİ */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(10, 10, 15, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.header.scrolled {
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(25px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 70px;
-}
-
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: #ffffff;
-    background: rgba(102, 126, 234, 0.15);
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* ✅ 2. DİL DEĞİŞTİRİCİ DÜZELTMELERİ */
-.language-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 80px;
-}
-
-.language-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(102, 126, 234, 0.5);
-    transform: translateY(-1px);
-}
-
-.language-btn i.fa-chevron-down {
-    font-size: 0.75rem;
-    opacity: 0.7;
-}
-
-/* ✅ 3. CÜZDAN BAĞLAMA BUTONU DÜZELTMELERİ */
-.connect-wallet-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 25px;
-    color: #ffffff;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 140px;
-    justify-content: center;
-}
-
-.connect-wallet-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.connect-wallet-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.connect-wallet-btn.connected {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-/* ✅ 4. MOBİLE NAVİGASYON DÜZELTMELERİ */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: #ffffff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-   z-index: 101;
-}
-
-.mobile-menu-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.mobile-nav {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 15, 0.98);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 99;
-   max-height: calc(100vh - 70px);
-   overflow-y: auto;
-}
-
-.mobile-nav.active {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-}
-
-.mobile-nav-links {
-    padding: 1.5rem;
-    display: flex;
-   flex-direction: column;
-   gap: 0.5rem;
-}
-
-.mobile-nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-    display: block;
-}
-
-.mobile-nav-link:hover {
-    color: #ffffff;
-    background: rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.3);
-    transform: translateX(5px);
-}
-
-.mobile-nav-actions {
-    margin-top: 1rem;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.mobile-nav-actions .connect-wallet-btn {
-    width: 100%;
-    justify-content: center;
-}
-.cta-primary {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    color: #667eea;
-    border: none;
-    border-radius: 30px;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-}
-
-.cta-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
-}
-
-.cta-secondary {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 30px;
-    color: #ffffff;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    backdrop-filter: blur(10px);
-}
-
-.cta-secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-3px);
-}
-
-/* ✅ 7. HERO STATS DÜZELTMELERİ */
-.hero-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 2rem;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 0.25rem;
-}
-
-.stat-label {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-}
-
-/* ✅ 8. SECTION STYLING */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.section-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 1rem;
-}
-
-.section-subtitle {
-    font-size: 1.2rem;
-    color: #64748b;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* ✅ 9. FEATURES SECTION */
-.features {
-    padding: 8rem 0;
-    background: #ffffff;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.feature-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 2.5rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border-color: #667eea;
-}
-
-.feature-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    color: #ffffff;
-    font-size: 2rem;
-}
-
-.feature-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 1rem;
-}
-
-.feature-card p {
-    color: #64748b;
-    line-height: 1.6;
-}
-
-/* ✅ 10. PROPERTIES SECTION */
-.properties-preview {
-    padding: 8rem 0;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.properties-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-}
-
-.property-card {
-    background: #ffffff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.property-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.property-image {
-    position: relative;
-    height: 200px;
-    overflow: hidden;
-}
-
-.property-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.property-card:hover .property-image img {
-    transform: scale(1.05);
-}
-
-.property-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.property-content {
-    padding: 1.5rem;
-}
-
-.property-content h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 0.5rem;
-}
-
-.property-location {
-    color: #64748b;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.property-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat-value {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #667eea;
-}
-
-.stat-label {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin-top: 0.25rem;
-}
-
-.property-progress {
-    margin-bottom: 1.5rem;
-}
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-    color: #64748b;
-}
-
-.progress-bar {
-    height: 8px;
-    background: #e2e8f0;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    transition: width 0.3s ease;
-}
-
-.property-actions {
-    display: flex;
-    gap: 1rem;
-}
-
-.btn-secondary {
-    flex: 1;
-    background: transparent;
-    border: 2px solid #e2e8f0;
-    color: #64748b;
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-    border-color: #667eea;
-    color: #667eea;
-}
-
-.btn-primary {
-    flex: 1;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    color: #ffffff;
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-}
-
-.properties-cta {
-    text-align: center;
-}
-
-.btn-outline {
-    background: transparent;
-    border: 2px solid #667eea;
-    color: #667eea;
-    padding: 1rem 2rem;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.btn-outline:hover {
-    background: #667eea;
-    color: #ffffff;
-    transform: translateY(-2px);
-}
-
-/* ✅ 11. HOW IT WORKS SECTION */
-.how-it-works {
-    padding: 8rem 0;
-    background: #ffffff;
-}
-
-.steps-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.step-card {
-    text-align: center;
-    position: relative;
-    padding: 2rem;
-}
-
-.step-number {
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.2rem;
-}
-
-.step-icon {
-    width: 80px;
-    height: 80px;
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 2rem auto 1.5rem;
-    color: #667eea;
-    font-size: 2rem;
-}
-
-.step-card h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 1rem;
-}
-
-.step-card p {
-    color: #64748b;
-    line-height: 1.6;
-}
-
-/* ✅ 12. ROADMAP SECTION */
-.roadmap {
-    padding: 8rem 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-}
-
-.roadmap .section-title,
-.roadmap .section-subtitle {
-    color: #ffffff;
-}
-
-.roadmap-timeline {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.roadmap-timeline::before {
-    content: '';
-    position: absolute;
-    left: 30px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.timeline-item {
-    position: relative;
-    padding-left: 80px;
-    margin-bottom: 3rem;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: 20px;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 3px solid rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-}
-
-.timeline-item.completed .timeline-marker {
-    background: #10b981;
-    border-color: #10b981;
-}
-
-.timeline-item.current .timeline-marker {
-    background: #f59e0b;
-    border-color: #f59e0b;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-.timeline-content {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.timeline-date {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 0.5rem;
-}
-
-.timeline-content h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.timeline-content ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 1rem;
-}
-
-.timeline-content li {
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* ✅ 13. NEWSLETTER SECTION */
-.newsletter {
-    padding: 6rem 0;
-    background: #1a1a1a;
-    color: #ffffff;
-}
-
-.newsletter-content {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.newsletter-text h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.newsletter-text p {
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2rem;
-}
-
-.newsletter-input-group {
-    display: flex;
-    gap: 1rem;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.newsletter-input {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    color: #ffffff;
-    font-size: 1rem;
-}
-
-.newsletter-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.newsletter-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    border-radius: 12px;
-    color: #ffffff;
-    padding: 1rem 1.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.newsletter-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-}
-
-/* ✅ 14. FOOTER */
-.footer {
-    background: #0a0a0f;
-    color: #ffffff;
-    padding: 4rem 0 2rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 3rem;
-    margin-bottom: 3rem;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.footer-logo {
-    width: 40px;
-    height: 40px;
-}
-
-.footer-brand-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.footer-section h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #ffffff;
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.75rem;
-}
-
-.footer-links a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.footer-links a:hover {
-    color: #667eea;
-}
-
-.footer-social {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.social-link {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    transition: all 0.3s ease;
-}
-
-.social-link:hover {
-    background: #667eea;
-    transform: translateY(-2px);
-}
-
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 2rem;
-}
-
-.footer-bottom-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* ✅ 15. RTL LANGUAGE SUPPORT */
-.rtl {
-    direction: rtl;
-    text-align: right;
-}
-
-/* RTL Navigation adjustments */
-.rtl .nav-container {
-    direction: rtl;
-}
-
-.rtl .nav-brand {
-    flex-direction: row-reverse;
-}
-
-.rtl .nav-actions {
-    flex-direction: row-reverse;
-}
-
-/* RTL Content adjustments */
-.rtl .hero-content {
-    text-align: right;
-}
-
-.rtl .section-header {
-    text-align: right;
-}
-
-.rtl .feature-card {
-    text-align: right;
-}
-
-.rtl .step-card {
-    text-align: right;
-}
-
-.rtl .newsletter-content {
-    text-align: right;
-}
-
-/* RTL Footer adjustments */
-.rtl .footer-content {
-    direction: rtl;
-}
-
-.rtl .footer-brand {
-    flex-direction: row-reverse;
-}
-
-.rtl .footer-social {
-    flex-direction: row-reverse;
-}
-
-.rtl .footer-links a {
-    flex-direction: row-reverse;
-}
-
-.rtl .social-link {
-    margin-left: 0;
-    margin-right: 1rem;
-}
-
-/* RTL Form adjustments */
-.rtl .newsletter-input-group {
-    flex-direction: row-reverse;
-}
-
-.rtl .hero-cta {
-    flex-direction: row-reverse;
-}
-
-/* RTL Property cards */
-.rtl .property-location {
-    flex-direction: row-reverse;
-}
-
-.rtl .property-actions {
-    flex-direction: row-reverse;
-}
-
-/* RTL Timeline adjustments */
-.rtl .roadmap-timeline::before {
-    right: 30px;
-    left: auto;
-}
-
-.rtl .timeline-item {
-    padding-right: 80px;
-    padding-left: 0;
-}
-
-.rtl .timeline-marker {
-    right: 20px;
-    left: auto;
-}
-
-/* RTL Mobile adjustments */
-@media (max-width: 768px) {
-    .rtl .timeline-item {
-        padding-right: 60px;
-        margin-right: 60px;
-        margin-left: 0;
-    }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="site.title">ARSA Token - Gayrimenkul NFT Platformu</title>
+    <meta name="description" content="Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiren ARSA Token. NFT'ler aracılığıyla premium emlakları parçalı olarak satın alın.">
     
-    .rtl .timeline-marker {
-        right: 10px;
-        left: auto;
-    }
-}
-
-.rtl .nav-links,
-.rtl .nav-actions,
-.rtl .hero-cta,
-.rtl .newsletter-input-group {
-    direction: ltr; /* Keep these components LTR */
-    /* Override for specific components that should remain LTR */
-}
-
-/* ✅ 16. ANIMATION CLASSES */
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease;
-    will-change: opacity, transform;
-}
-
-.fade-in.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Enhanced roadmap styles */
-.roadmap {
-    padding: 8rem 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-    position: relative;
-    overflow: hidden;
-}
-
-.roadmap::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="2"/></g></svg>');
-    opacity: 0.3;
-}
-
-.roadmap .section-title,
-.roadmap .section-subtitle {
-    color: #ffffff;
-}
-
-.roadmap-timeline {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-}
-
-.roadmap-timeline::before {
-    content: '';
-    position: absolute;
-    left: 30px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.timeline-item {
-    position: relative;
-    padding-left: 80px;
-    margin-bottom: 3rem;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: 20px;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 3px solid rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    z-index: 2;
-}
-
-.timeline-item.completed .timeline-marker {
-    background: #10b981;
-    border-color: #10b981;
-}
-
-.timeline-item.current .timeline-marker {
-    background: #f59e0b;
-    border-color: #f59e0b;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-.timeline-content {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative;
-    z-index: 1;
-}
-
-.timeline-date {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-.timeline-content h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #ffffff;
-}
-
-.timeline-content p {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1rem;
-    line-height: 1.6;
-}
-
-.timeline-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.timeline-content li {
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
-}
-
-.fade-in.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.slide-up {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease;
-}
-
-.slide-up.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.slide-in {
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: all 0.8s ease;
-}
-
-.slide-in.animate-in {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* ✅ 17. NOTIFICATION SYSTEM */
-.notification {
-    position: fixed;
-    top: 90px;
-    right: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    max-width: 350px;
-    border-left: 4px solid #3b82f6;
-}
-
-.notification.notification-success {
-    border-left-color: #10b981;
-}
-
-.notification.notification-error {
-    border-left-color: #ef4444;
-}
-
-.notification.notification-warning {
-    border-left-color: #f59e0b;
-}
-
-/* ✅ 18. RESPONSIVE IMPROVEMENTS */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 1rem;
-    }
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     
-    .hero-cta {
-        flex-direction: column;
-        gap: 1rem;
-    }
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/style.css">
     
-    .cta-primary,
-    .cta-secondary {
-        width: 100%;
-        justify-content: center;
-    }
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    .hero-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        padding: 1.5rem;
-    }
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    .properties-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .newsletter-input-group {
-        flex-direction: column;
-        max-width: 100%;
-    }
-    
-    .footer-bottom-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .timeline-item {
-        padding-left: 60px;
-    }
-    
-    .roadmap-timeline::before {
-        left: 20px;
-    }
-    
-    .timeline-marker {
-        left: 10px;
-        width: 30px;
-        height: 30px;
-    }
-}
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ARSA Token - Gayrimenkul NFT Platformu">
+    <meta property="og:description" content="Blockchain ile gayrimenkul yatırımını demokratikleştiriyoruz">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arsatoken.com">
+    <meta property="og:image" content="https://arsatoken.com/assets/og-image.jpg">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="nav-logo">
+                    <i class="fas fa-building"></i>
+                    <span>ARSA Token</span>
+                </a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link" data-i18n="nav.home">Ana Sayfa</a>
+                <a href="#features" class="nav-link" data-i18n="nav.features">Özellikler</a>
+                <a href="properties.html" class="nav-link" data-i18n="nav.properties">Emlaklar</a>
+                <a href="dashboard.html" class="nav-link" data-i18n="nav.dashboard">Panel</a>
+                <a href="#roadmap" class="nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="language-btn" type="button">
+                    <i class="fas fa-globe"></i>
+                    <span data-current-lang>TR</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                
+                <button class="connect-wallet-btn" type="button">
+                    <i class="fas fa-wallet"></i>
+                    <span data-i18n="nav.connect">Cüzdan Bağla</span>
+                </button>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav">
+            <div class="mobile-nav-links">
+                <a href="#home" class="mobile-nav-link" data-i18n="nav.home">Ana Sayfa</a>
+                <a href="#features" class="mobile-nav-link" data-i18n="nav.features">Özellikler</a>
+                <a href="properties.html" class="mobile-nav-link" data-i18n="nav.properties">Emlaklar</a>
+                <a href="dashboard.html" class="mobile-nav-link" data-i18n="nav.dashboard">Panel</a>
+                <a href="#roadmap" class="mobile-nav-link" data-i18n="nav.roadmap">Yol Haritası</a>
+            </div>
+            <div class="mobile-nav-actions">
+                <button class="connect-wallet-btn" type="button">
+                    <i class="fas fa-wallet"></i>
+                    <span data-i18n="nav.connect">Cüzdan Bağla</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-@media (max-width: 480px) {
-    .hero-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .features-grid,
-    .steps-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .property-stats {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
-    
-    .property-actions {
-        flex-direction: column;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-}
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content fade-in">
+                <div class="hero-badge">
+                    <i class="fas fa-circle" style="color: #10b981; font-size: 0.5rem;"></i>
+                    <span data-i18n="hero.badge">Canlı - Gayrimenkul NFT Platformu</span>
+                </div>
+                
+                <h1 class="hero-title" data-i18n="hero.title">NFT ile Gayrimenkule<br>Yatırım Yapın</h1>
+                
+                <p class="hero-subtitle" data-i18n="hero.subtitle">
+                    Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz. 
+                    Gerçek mülklerle desteklenen parçalı NFT'ler satın alın ve aylık kira geliri kazanın.
+                </p>
+                
+                <div class="hero-cta">
+                    <button class="cta-primary">
+                        <i class="fas fa-rocket"></i>
+                        <span data-i18n="hero.cta.primary">Hemen Başla</span>
+                    </button>
+                    <button class="cta-secondary">
+                        <i class="fas fa-play"></i>
+                        <span data-i18n="hero.cta.secondary">Nasıl Çalışır?</span>
+                    </button>
+                </div>
+                
+                <div class="hero-stats slide-up">
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.properties">12</div>
+                        <div class="stat-label">Aktif Emlak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.investors">1,247</div>
+                        <div class="stat-label">Yatırımcı</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.volume">€2.8M</div>
+                        <div class="stat-label">İşlem Hacmi</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="stats.yield">8.2%</div>
+                        <div class="stat-label">Ortalama Getiri</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-/* ✅ 19. ACCESSIBILITY IMPROVEMENTS */
-.nav-link:focus,
-.connect-wallet-btn:focus,
-.language-btn:focus,
-button:focus,
-input:focus {
-    outline: 2px solid #667eea;
-    outline-offset: 2px;
-}
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="features.title">Neden ARSA Token?</h2>
+                <p class="section-subtitle" data-i18n="features.subtitle">Gayrimenkul yatırımının geleceği burada</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card slide-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 data-i18n="features.real.title">Gerçek Emlak</h3>
+                    <p data-i18n="features.real.desc">Her NFT gerçek bir gayrimenkulle destekleniyor</p>
+                </div>
+                
+                <div class="feature-card slide-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 data-i18n="features.income.title">Pasif Gelir</h3>
+                    <p data-i18n="features.income.desc">Aylık kira ödemelerini otomatik alın</p>
+                </div>
+                
+                <div class="feature-card slide-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 data-i18n="features.fractional.title">Parçalı Sahiplik</h3>
+                    <p data-i18n="features.fractional.desc">Küçük miktarlarla büyük projelere yatırım yapın</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
+    <!-- Properties Preview Section -->
+    <section class="properties-preview">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="properties.title">Öne Çıkan Projeler</h2>
+                <p class="section-subtitle" data-i18n="properties.subtitle">Yüksek getirili gayrimenkul fırsatları</p>
+            </div>
+            
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Properties will be loaded here -->
+            </div>
+            
+            <div class="properties-cta fade-in">
+                <a href="properties.html" class="btn-outline">
+                    <i class="fas fa-th-large"></i>
+                    <span>Tüm Emlakları Görüntüle</span>
+                </a>
+            </div>
+        </div>
+    </section>
 
-/* ✅ 20. PERFORMANCE OPTIMIZATIONS */
-* {
-    box-sizing: border-box;
-}
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="how.title">Nasıl Çalışır?</h2>
+                <p class="section-subtitle" data-i18n="how.subtitle">4 basit adımda gayrimenkul yatırımcısı olun</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step-card slide-in">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 data-i18n="how.step1.title">Cüzdan Bağla</h3>
+                    <p data-i18n="how.step1.desc">MetaMask veya uyumlu bir cüzdan bağlayın</p>
+                </div>
+                
+                <div class="step-card slide-in">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 data-i18n="how.step2.title">Proje Seç</h3>
+                    <p data-i18n="how.step2.desc">Yatırım yapmak istediğiniz emlağı seçin</p>
+                </div>
+                
+                <div class="step-card slide-in">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 data-i18n="how.step3.title">NFT Satın Al</h3>
+                    <p data-i18n="how.step3.desc">İstediğiniz miktarda NFT parçası satın alın</p>
+                </div>
+                
+                <div class="step-card slide-in">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 data-i18n="how.step4.title">Gelir Kazanın</h3>
+                    <p data-i18n="how.step4.desc">Aylık kira ödemelerini otomatik alın</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-img {
-    max-width: 100%;
-    height: auto;
-}
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="roadmap">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title" data-i18n="roadmap.title">Yol Haritamız</h2>
+                <p class="section-subtitle" data-i18n="roadmap.subtitle">ARSA Token'ın gelişim süreci ve gelecek planları</p>
+            </div>
+            
+            <div class="roadmap-timeline">
+                <div class="timeline-item completed fade-in">
+                    <div class="timeline-marker"><i class="fas fa-check"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date" data-i18n="roadmap.q1.date">Q1 2024</div>
+                        <h3 data-i18n="roadmap.q1.title">Platform Geliştirme</h3>
+                        <p data-i18n="roadmap.q1.desc">Temel platform altyapısı ve smart contract geliştirme tamamlandı.</p>
+                        <ul>
+                            <li data-i18n="roadmap.q1.item1">✅ Smart contract geliştirme</li>
+                            <li data-i18n="roadmap.q1.item2">✅ Web platform beta</li>
+                            <li data-i18n="roadmap.q1.item3">✅ Güvenlik denetimleri</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-.property-image img {
-    will-change: transform;
-}
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content fade-in">
+                <div class="newsletter-text">
+                    <h2 data-i18n="newsletter.title">Güncellemelerden Haberdar Olun</h2>
+                    <p data-i18n="newsletter.subtitle">Yeni projeler ve önemli güncellemeler hakkında ilk siz haberdar olun</p>
+                </div>
+                
+                <form class="newsletter-form">
+                    <div class="newsletter-input-group">
+                        <input type="email" class="newsletter-input" data-i18n-placeholder="newsletter.placeholder" placeholder="E-posta adresinizi girin" required>
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span data-i18n="newsletter.subscribe">Abone Ol</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 
-.fade-in,
-.slide-up,
-.slide-in {
-    will-change: opacity, transform;
-}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <i class="fas fa-building footer-logo"></i>
+                        <span class="footer-brand-text">ARSA Token</span>
+                    </div>
+                    <p data-i18n="footer.description">Blockchain teknolojisi ile gayrimenkul yatırımını demokratikleştiriyoruz.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.links">Bağlantılar</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" data-i18n="nav.home">Ana Sayfa</a></li>
+                        <li><a href="properties.html">Emlaklar</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="#roadmap" data-i18n="nav.roadmap">Yol Haritası</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.legal">Yasal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
+                        <li><a href="#" data-i18n="footer.terms">Kullanım Şartları</a></li>
+                        <li><a href="#" data-i18n="footer.risk">Risk Bildirimi</a></li>
+                        <li><a href="#" data-i18n="footer.kvkk">KVKK</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.social">İletişim</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:info@arsatoken.com"><i class="fas fa-envelope"></i> <span data-i18n="contact.email">info@arsatoken.com</span></a></li>
+                        <li><a href="tel:+905551234567"><i class="fas fa-phone"></i> <span data-i18n="contact.phone">+90 555 123 45 67</span></a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> <span data-i18n="contact.address">İstanbul, Türkiye</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p data-i18n="footer.copyright">&copy; 2024 ARSA Token. Tüm hakları saklıdır.</p>
+                    <p data-i18n="footer.tagline">Blockchain ile gayrimenkul yatırımının geleceği</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-/* ✅ Print Styles */
-@media print {
-    .header,
-    .mobile-nav,
-    .newsletter,
-    .footer {
-        display: none;
-    }
-    
-    .hero {
-        min-height: auto;
-        padding: 2rem 0;
-    }
-    
-    .hero-background {
-        display: none;
-    }
-}direction: column;
-    gap: 0.5rem;
-}
-
-.mobile-nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.mobile-nav-link:hover {
-    color: #ffffff;
-    background: rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.3);
-    transform: translateX(5px);
-}
-
-.mobile-nav-actions {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.mobile-nav-actions .connect-wallet-btn {
-    width: 100%;
-    justify-content: center;
-}
-
-/* ✅ 5. RESPONSIVE BREAKPOINTS */
-@media (max-width: 1024px) {
-    .nav-container {
-        padding: 0 1.5rem;
-    }
-    
-    .nav-links {
-        gap: 1.5rem;
-    }
-    
-    .properties-container {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-    
-    .container {
-        padding: 0 1.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .mobile-menu-btn {
-        display: block;
-    }
-    
-    .nav-actions {
-        gap: 0.75rem;
-    }
-    
-    .language-btn,
-    .connect-wallet-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-        min-width: auto;
-    }
-    
-    .properties-container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    
-    .container {
-        padding: 0 1rem;
-    }
-    
-    /* Properties page specific fixes */
-    .properties-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .property-card {
-        margin: 0;
-    }
-    
-    .property-filters {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .search-input {
-        width: 100%;
-    }
-    
-    /* Hero section mobile fixes */
-    .hero-cta {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .cta-primary,
-    .cta-secondary {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .hero-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .nav-container {
-        padding: 0 1rem;
-        height: 60px;
-    }
-    
-    .mobile-nav {
-        top: 60px;
-        max-height: calc(100vh - 60px);
-    }
-    
-    .nav-brand span {
-        font-size: 1.2rem;
-    }
-    
-    .properties-container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-    
-    .container {
-        padding: 0 0.5rem;
-    }
-    
-    .hero-stats {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .features-grid,
-    .steps-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .property-stats {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
-    
-    .property-actions {
-        flex-direction: column;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .newsletter-input-group {
-        flex-direction: column;
-        max-width: 100%;
-    }
-    
-    .footer-bottom-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-}
-
-/* ✅ 6. HERO SECTION DÜZELTMELERİ */
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding-top: 70px;
-    overflow: hidden;
-}
-
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-}
-
-.hero-gradient {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    opacity: 0.9;
-}
-
-.hero-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="2"/></g></svg>');
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    padding: 0.75rem 1.5rem;
-    color: #ffffff;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-}
-
-.hero-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 1.5rem;
-    line-height: 1.1;
-}
-
-.hero-subtitle {
-    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 3rem;
-    line-height: 1.6;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.hero-cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-    flex-
+    <!-- JavaScript -->
+    <script src="assets/script.js"></script>
+</body>
+</html>
