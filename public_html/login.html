@@ -628,7 +628,13 @@
         if (user) {
           // Create session
           sessionManager.createSession(user.username, user.role);
-          localStorage.setItem('arsa_admin_session', 'true');
+          // Set both session formats for compatibility
+          localStorage.setItem('arsa_admin_session', JSON.stringify({
+            username: user.username,
+            role: user.role,
+            loginTime: Date.now(),
+            isAdmin: true
+          }));
           // Success state
           setSuccessState();
           
