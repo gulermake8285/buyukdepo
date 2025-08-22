@@ -20,23 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// Load environment variables if available
-if (file_exists(__DIR__ . '/../env.sh')) {
-    $envFile = file_get_contents(__DIR__ . '/../env.sh');
-    preg_match_all('/^([A-Z_]+)=(.*)$/m', $envFile, $matches);
-    for ($i = 0; $i < count($matches[1]); $i++) {
-        $_ENV[$matches[1][$i]] = trim($matches[2][$i], '"\'');
-    }
-}
-
-// Database configuration - Unified config
-$DB_CONFIG = [
-    'host' => $_ENV['DB_HOST'] ?? 'localhost',
-    'name' => $_ENV['DB_NAME'] ?? 'u2368732_arsanew',
-    'user' => $_ENV['DB_USER'] ?? 'u2368732_arsa',
-    'pass' => $_ENV['DB_PASS'] ?? 'R0DE034jvc56!!!',
-    'charset' => $_ENV['DB_CHARSET'] ?? 'utf8mb4'
-];
+// Load unified database configuration
+require_once __DIR__ . '/../config/database.php';
 
 // Helper function for JSON responses
 function sendResponse($success, $data = null, $message = '', $status = 200) {
@@ -53,16 +38,16 @@ function sendResponse($success, $data = null, $message = '', $status = 200) {
 
 // Database connection with error handling
 function getDatabase() {
-    global $DB_CONFIG;
     static $pdo = null;
     
     if ($pdo === null) {
         try {
-            $dsn = "mysql:host={$DB_CONFIG['host']};dbname={$DB_CONFIG['name']};charset={$DB_CONFIG['charset']}";
-            $pdo = new PDO($dsn, $DB_CONFIG['user'], $DB_CONFIG['pass'], [
+            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES " . DB_CHARSET
             ]);
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -146,6 +131,7 @@ function testDatabaseConnection() {
         $stmt = $db->query('SELECT 1');
         return 'connected';
     } catch (Exception $e) {
+        error_log("Database test error: " . $e->getMessage());
         return 'failed';
     }
 }
